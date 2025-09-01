@@ -55,6 +55,7 @@ class GitHubPublisher:
         """Create Jekyll markdown content"""
         content = f"""---
 layout: post
+title: "{article['original_title']}"
 author: archie
 categories: news
 image: {image_url}
@@ -73,4 +74,4 @@ image: {image_url}
         """Create URL-safe slug from title"""
         slug = re.sub(r'[^\w\s-]', '', title.lower())
         slug = re.sub(r'[-\s]+', '-', slug).strip('-')
-        return slug[:50]
+        return slug[:100]  # Increased from 50 to 100 characters for longer titles
