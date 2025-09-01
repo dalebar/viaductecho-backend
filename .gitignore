@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pytest_cache/
 *.pyc
 *.pyo
 *.pyd
@@ -19,6 +20,7 @@ pyproject.toml
 uv.lock
 
 #claude
+.claude/
 CLAUDE.md
 
 .DS_Store
