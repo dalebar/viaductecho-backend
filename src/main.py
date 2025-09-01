@@ -1,11 +1,11 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-from src.database.operations import DatabaseOperations
-from src.sources.bbc_source import BBCSource
-from src.sources.men_source import MENSource
-from src.sources.nub_source import NubSource
-from src.processors.content_extractor import ContentExtractor
-from src.processors.ai_summarizer import AISummarizer
-from src.publishers.github_publisher import GitHubPublisher
+from .database.operations import DatabaseOperations
+from .sources.bbc_source import BBCSource
+from .sources.men_source import MENSource
+from .sources.nub_source import NubSource
+from .processors.content_extractor import ContentExtractor
+from .processors.ai_summarizer import AISummarizer
+from .publishers.github_publisher import GitHubPublisher
 import logging
 import time
 

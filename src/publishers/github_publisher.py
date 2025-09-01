@@ -2,7 +2,10 @@ import requests
 import base64
 import re
 from datetime import datetime
-from ..config import Config
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
 import logging
 
 class GitHubPublisher:

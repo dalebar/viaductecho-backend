@@ -2,7 +2,10 @@ import feedparser
 from datetime import datetime
 from typing import List, Dict
 from .base_source import BaseNewsSource
-from ..config import Config
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
 import logging
 
 class BBCSource(BaseNewsSource):

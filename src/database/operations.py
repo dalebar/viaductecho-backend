@@ -2,7 +2,10 @@ import hashlib
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from .models import RSSArticle, Base
-from ..config import Config
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
 import logging
 
 class DatabaseOperations:

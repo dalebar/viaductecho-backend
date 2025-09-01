@@ -1,5 +1,8 @@
 import openai
-from ..config import Config
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
 import logging
 
 class AISummarizer:
