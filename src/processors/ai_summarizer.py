@@ -1,5 +1,5 @@
 import openai
-from config import Config
+from ..config import Config
 import logging
 
 class AISummarizer:
