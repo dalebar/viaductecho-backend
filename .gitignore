@@ -16,6 +16,7 @@ instructions.md
 .venv
 .python-version
 pyproject.toml
+uv.lock
 
 #claude
 CLAUDE.md

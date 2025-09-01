@@ -7,8 +7,7 @@ import logging
 
 class AISummarizer:
     def __init__(self):
-        openai.api_key = Config.OPENAI_API_KEY
-        self.client = openai.OpenAI()
+        self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
     
     def summarize(self, content: str) -> str:
         """Create AI summary of content"""
