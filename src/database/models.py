@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, func
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, func
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
+
 class RSSArticle(Base):
-    __tablename__ = 'rss_articles'
-    
+    __tablename__ = "rss_articles"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     original_title = Column(String(500), nullable=False)
     original_link = Column(Text, nullable=False, unique=True)
