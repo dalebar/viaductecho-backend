@@ -10,5 +10,20 @@ class Config:
     GITHUB_REPO = os.getenv("GITHUB_REPO")
     GITHUB_BRANCH = os.getenv("GITHUB_BRANCH", "main")
     
-    KEYWORDS = ['stockport', 'macclesfield', 'buxton', 'high peak', 
-                'wilmslow', 'cheadle', 'glossop', 'hyde', 'dukinfield', 'stalybridge']
+    KEYWORDS = [
+        'stockport', 'manchester', 'macclesfield', 'wilmslow', 'altrincham',
+        'sale', 'urmston', 'stretford', 'chorlton', 'didsbury', 'burnage',
+        'levenshulme', 'longsight', 'fallowfield', 'withington', 'wythenshawe',
+        'oldham', 'rochdale', 'bury', 'bolton', 'salford', 'eccles', 'swinton',
+        'worsley', 'walkden', 'farnworth', 'little lever', 'kearsley',
+        'prestwich', 'whitefield', 'radcliffe', 'ramsbottom', 'tottington',
+        'heywood', 'middleton', 'chadderton', 'shaw', 'royton', 'lees',
+        'mossley', 'stalybridge', 'hyde', 'denton', 'audenshaw', 'dukinfield',
+        'ashton-under-lyne', 'droylsden', 'failsworth', 'moston', 'blackley',
+        'crumpsall', 'cheetham hill', 'higher blackley', 'harpurhey',
+        'collyhurst', 'newton heath', 'clayton', 'openshaw', 'gorton',
+        'belle vue', 'reddish', 'bredbury', 'marple', 'poynton', 'bollington',
+        'knutsford', 'northwich', 'winsford', 'middlewich', 'sandbach',
+        'crewe', 'nantwich', 'congleton', 'buxton', 'glossop', 'hadfield',
+        'new mills', 'whaley bridge', 'chapel-en-le-frith', 'high peak'
+    ]
