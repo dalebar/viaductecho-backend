@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from .models import RSSArticle
+from .models import RSSArticle, Base
 
 try:
     from ..config import Config
@@ -24,6 +24,9 @@ class DatabaseOperations:
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
         self.logger = logging.getLogger(__name__)
+        
+        # Create tables if they don't exist
+        Base.metadata.create_all(self.engine)
         self.logger.info("Database connection established")
 
     def _reconnect_if_needed(self):

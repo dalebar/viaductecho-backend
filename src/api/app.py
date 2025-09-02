@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
     # Configure uvicorn to use our logging setup
     uvicorn.run(
-        "app:app",
+        "src.api.app:app",
         host="0.0.0.0",
         port=8000,
         reload=True,

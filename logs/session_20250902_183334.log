@@ -1,7 +1,0 @@
-2025-09-02 18:33:34,295 - INFO - Session started - logging to logs/session_20250902_183334.log
-2025-09-02 18:33:34,332 - INFO - Database connection established
-2025-09-02 18:33:34,364 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
-2025-09-02 18:33:34,364 - INFO - Scheduler started - running hourly between 5 AM and 8 PM
-2025-09-02 18:33:34,364 - INFO - Added job "ViaductEcho.run_aggregation" to job store "default"
-2025-09-02 18:33:34,364 - INFO - Scheduler started
-2025-09-02 18:45:46,724 - INFO - Scheduler stopped

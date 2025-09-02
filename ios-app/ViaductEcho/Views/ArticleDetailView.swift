@@ -77,15 +77,6 @@ struct ArticleDetailView: View {
                         }
                     }
                     
-                    if !article.summary.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Summary")
-                                .font(.headline)
-                            Text(article.summary)
-                                .font(.body)
-                                .foregroundColor(.primary)
-                        }
-                    }
                     
                     if let aiSummary = article.aiSummary, !aiSummary.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
@@ -104,15 +95,6 @@ struct ArticleDetailView: View {
                         }
                     }
                     
-                    if let extractedContent = article.extractedContent, !extractedContent.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Full Article")
-                                .font(.headline)
-                            Text(extractedContent)
-                                .font(.body)
-                                .lineLimit(nil)
-                        }
-                    }
                     
                     Link(destination: URL(string: article.link)!) {
                         HStack {

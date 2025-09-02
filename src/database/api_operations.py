@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 
-from sqlalchemy import and_, desc, func, or_
+from sqlalchemy import and_, desc, func, or_, text
 
 from .models import RSSArticle
 from .operations import DatabaseOperations
@@ -228,7 +228,7 @@ class APIOperations(DatabaseOperations):
             recent_count = len(self.get_recent_articles(hours=24, limit=1))
 
             # Test database connection
-            self.session.execute("SELECT 1")
+            self.session.execute(text("SELECT 1"))
 
             return {
                 "status": "healthy",

@@ -26,13 +26,6 @@ struct ArticleRowView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
             
-            if !article.summary.isEmpty {
-                Text(article.summary)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .lineLimit(3)
-                    .multilineTextAlignment(.leading)
-            }
             
             if let imageUrl = article.imageUrl, !imageUrl.isEmpty {
                 AsyncImage(url: URL(string: imageUrl)) { image in
