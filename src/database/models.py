@@ -1,7 +1,6 @@
 from sqlalchemy import Boolean, Column, DateTime, Index, Integer, String, Text, func
 from sqlalchemy.orm import declarative_base
 from typing import Dict, Any
-from datetime import datetime
 
 Base = declarative_base()
 

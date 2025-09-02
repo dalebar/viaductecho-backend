@@ -5,7 +5,7 @@ try:
 except ImportError:
     from database.api_operations import APIOperations
 
-from ..schemas.articles import ArticleSummary, PaginatedArticles, PaginationInfo
+from ..schemas.articles import ArticleSummary, PaginatedArticles
 from ..schemas.common import ErrorResponse
 from ..schemas.sources import SourceStats, SourcesResponse
 from .articles import create_pagination_info
@@ -86,9 +86,7 @@ async def get_articles_by_source(
                 detail=f"Source '{source_name}' not found",
             )
 
-        articles, total_count = db.get_articles_by_source(
-            source=source_name, page=page, per_page=per_page
-        )
+        articles, total_count = db.get_articles_by_source(source=source_name, page=page, per_page=per_page)
 
         # Convert to response models
         article_summaries = [

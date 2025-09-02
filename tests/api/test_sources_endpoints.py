@@ -4,20 +4,20 @@ Comprehensive test suite for Sources API endpoints
 """
 import os
 import sys
-from datetime import datetime
-from unittest.mock import Mock, patch
 
-import pytest
+from unittest.mock import patch
+
+
 from fastapi import status
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 
 class TestSourcesEndpoints:
     """Test suite for Sources API endpoints"""
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_sources_success(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
         """Test successful sources retrieval"""
         # Setup mock
@@ -30,7 +30,7 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         assert "sources" in data
         assert "total_sources" in data
         assert len(data["sources"]) == 3
@@ -43,7 +43,7 @@ class TestSourcesEndpoints:
         assert source["processed_count"] == 23
         assert source["latest_article"] == "2024-01-20T15:30:00"
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_sources_empty(self, mock_get_db, client, mock_api_operations):
         """Test sources retrieval with no sources"""
         # Setup mock
@@ -56,11 +56,11 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         assert data["sources"] == []
         assert data["total_sources"] == 0
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_sources_database_error(self, mock_get_db, client, mock_api_operations):
         """Test sources retrieval with database error"""
         # Setup mock to raise exception
@@ -76,8 +76,10 @@ class TestSourcesEndpoints:
         assert "error" in data
         assert "Failed to retrieve sources" in data["error"]
 
-    @patch('api.routes.sources.get_db')
-    def test_get_articles_by_source_success(self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles):
+    @patch("api.routes.sources.get_db")
+    def test_get_articles_by_source_success(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles
+    ):
         """Test successful articles by source retrieval"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -90,7 +92,7 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         assert "articles" in data
         assert "pagination" in data
         assert len(data["articles"]) == 3
@@ -99,11 +101,9 @@ class TestSourcesEndpoints:
         assert data["pagination"]["per_page"] == 3
 
         # Verify correct parameters were passed
-        mock_api_operations.get_articles_by_source.assert_called_once_with(
-            source="BBC News", page=1, per_page=3
-        )
+        mock_api_operations.get_articles_by_source.assert_called_once_with(source="BBC News", page=1, per_page=3)
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_articles_by_source_not_found(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
         """Test articles by source when source doesn't exist"""
         # Setup mock
@@ -119,7 +119,7 @@ class TestSourcesEndpoints:
         assert "error" in data
         assert "Source 'Nonexistent Source' not found" in data["error"]
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_articles_by_source_empty_results(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
         """Test articles by source with no articles"""
         # Setup mock
@@ -133,12 +133,12 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         assert len(data["articles"]) == 0
         assert data["pagination"]["total_items"] == 0
         assert data["pagination"]["total_pages"] == 0
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_get_articles_by_source_validation(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
         """Test articles by source parameter validation"""
         # Setup mock
@@ -158,8 +158,10 @@ class TestSourcesEndpoints:
         response = client.get("/api/v1/sources/BBC News/articles?page=1&per_page=100")
         assert response.status_code == status.HTTP_200_OK
 
-    @patch('api.routes.sources.get_db')
-    def test_get_articles_by_source_database_error(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    @patch("api.routes.sources.get_db")
+    def test_get_articles_by_source_database_error(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test articles by source with database error"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -175,8 +177,10 @@ class TestSourcesEndpoints:
         assert "error" in data
         assert "Failed to retrieve articles from source 'BBC News'" in data["error"]
 
-    @patch('api.routes.sources.get_db')
-    def test_get_articles_by_source_special_characters(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    @patch("api.routes.sources.get_db")
+    def test_get_articles_by_source_special_characters(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test articles by source with special characters in source name"""
         # Add source with special characters
         special_source_stats = sample_sources_stats + [
@@ -187,7 +191,7 @@ class TestSourcesEndpoints:
                 "latest_article": "2024-01-20T12:00:00",
             }
         ]
-        
+
         # Setup mock
         mock_get_db.return_value = mock_api_operations
         mock_api_operations.get_sources_with_stats.return_value = special_source_stats
@@ -198,13 +202,13 @@ class TestSourcesEndpoints:
 
         # Assertions
         assert response.status_code == status.HTTP_200_OK
-        
+
         # Verify correct parameters were passed (FastAPI handles URL decoding)
         mock_api_operations.get_articles_by_source.assert_called_once_with(
             source="Source & News (UK)", page=1, per_page=20
         )
 
-    @patch('api.routes.sources.get_db')
+    @patch("api.routes.sources.get_db")
     def test_sources_response_format(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
         """Test sources response format matches schema"""
         # Setup mock
@@ -217,18 +221,18 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         # Verify response structure
         assert isinstance(data["sources"], list)
         assert isinstance(data["total_sources"], int)
-        
+
         # Verify each source has required fields
         for source in data["sources"]:
             assert "name" in source
             assert "article_count" in source
             assert "processed_count" in source
             assert "latest_article" in source
-            
+
             assert isinstance(source["name"], str)
             assert isinstance(source["article_count"], int)
             assert isinstance(source["processed_count"], int)
@@ -236,8 +240,10 @@ class TestSourcesEndpoints:
             assert source["processed_count"] >= 0
             assert source["processed_count"] <= source["article_count"]
 
-    @patch('api.routes.sources.get_db')
-    def test_articles_by_source_pagination(self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles):
+    @patch("api.routes.sources.get_db")
+    def test_articles_by_source_pagination(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles
+    ):
         """Test pagination for articles by source"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -250,11 +256,11 @@ class TestSourcesEndpoints:
         # Assertions
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        
+
         pagination = data["pagination"]
         assert pagination["page"] == 2
         assert pagination["per_page"] == 10
         assert pagination["total_items"] == 23
         assert pagination["total_pages"] == 3  # ceil(23/10)
-        assert pagination["has_next"] == True   # page 2 of 3
-        assert pagination["has_prev"] == True   # page 2
+        assert pagination["has_next"] is True  # page 2 of 3
+        assert pagination["has_prev"] is True  # page 2

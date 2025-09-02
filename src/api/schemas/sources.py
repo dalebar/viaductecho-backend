@@ -11,8 +11,8 @@ class SourceStats(BaseModel):
     article_count: int = Field(..., description="Total articles from this source", ge=0)
     processed_count: int = Field(..., description="Processed articles from this source", ge=0)
     latest_article: Optional[datetime] = Field(None, description="Date of latest article")
-    
-    @field_serializer('latest_article')
+
+    @field_serializer("latest_article")
     def serialize_latest_article(self, value: Optional[datetime]) -> Optional[str]:
         return value.isoformat() if value else None
 

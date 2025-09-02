@@ -7,10 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 try:
-    from ..config import Config
     from ..database.api_operations import APIOperations
 except ImportError:
-    from config import Config
     from database.api_operations import APIOperations
 
 from .routes import articles, sources
@@ -108,7 +106,9 @@ async def health_check():
         health_status = db.health_check()
         db.close()
 
-        status_code = status.HTTP_200_OK if health_status["status"] == "healthy" else status.HTTP_503_SERVICE_UNAVAILABLE
+        status_code = (
+            status.HTTP_200_OK if health_status["status"] == "healthy" else status.HTTP_503_SERVICE_UNAVAILABLE
+        )
 
         return JSONResponse(status_code=status_code, content=health_status)
 
@@ -158,18 +158,16 @@ app.include_router(sources.router, prefix="/api/v1", tags=["Sources"])
 async def log_requests(request: Request, call_next):
     """Log incoming requests"""
     start_time = datetime.now()
-    
+
     # Process the request
     response = await call_next(request)
-    
+
     # Calculate processing time
     process_time = (datetime.now() - start_time).total_seconds()
-    
+
     # Log the request
-    logger.info(
-        f"{request.method} {request.url} - {response.status_code} - {process_time:.3f}s"
-    )
-    
+    logger.info(f"{request.method} {request.url} - {response.status_code} - {process_time:.3f}s")
+
     return response
 
 

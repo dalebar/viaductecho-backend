@@ -11,7 +11,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 from api.app import app
 from api.routes.articles import get_db as get_articles_db
@@ -22,17 +22,18 @@ from database.models import RSSArticle
 @pytest.fixture
 def client(mock_api_operations):
     """FastAPI test client with mocked database dependencies"""
+
     # Override the dependencies
     def override_get_db():
         yield mock_api_operations
-    
+
     app.dependency_overrides[get_articles_db] = override_get_db
     app.dependency_overrides[get_sources_db] = override_get_db
-    
+
     test_client = TestClient(app)
-    
+
     yield test_client
-    
+
     # Clean up overrides
     app.dependency_overrides.clear()
 

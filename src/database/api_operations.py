@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 
 from sqlalchemy import and_, desc, func, or_
-from sqlalchemy.orm import Session
 
 from .models import RSSArticle
 from .operations import DatabaseOperations
@@ -48,9 +47,7 @@ class APIOperations(DatabaseOperations):
         total_count = query.count()
 
         # Apply ordering and pagination
-        articles = (
-            query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
-        )
+        articles = query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
 
         return articles, total_count
 
@@ -81,9 +78,7 @@ class APIOperations(DatabaseOperations):
             .all()
         )
 
-    def search_articles(
-        self, query: str, page: int = 1, per_page: int = 20
-    ) -> Tuple[List[RSSArticle], int]:
+    def search_articles(self, query: str, page: int = 1, per_page: int = 20) -> Tuple[List[RSSArticle], int]:
         """
         Search articles by title, summary, or content
 
@@ -119,15 +114,11 @@ class APIOperations(DatabaseOperations):
 
         total_count = base_query.count()
 
-        articles = (
-            base_query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
-        )
+        articles = base_query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
 
         return articles, total_count
 
-    def get_articles_by_source(
-        self, source: str, page: int = 1, per_page: int = 20
-    ) -> Tuple[List[RSSArticle], int]:
+    def get_articles_by_source(self, source: str, page: int = 1, per_page: int = 20) -> Tuple[List[RSSArticle], int]:
         """
         Get articles from a specific source
 
@@ -139,9 +130,7 @@ class APIOperations(DatabaseOperations):
         Returns:
             Tuple of (articles, total_count)
         """
-        return self.get_articles_paginated(
-            page=page, per_page=per_page, source=source, processed_only=True
-        )
+        return self.get_articles_paginated(page=page, per_page=per_page, source=source, processed_only=True)
 
     def get_article_by_id(self, article_id: int) -> Optional[RSSArticle]:
         """
@@ -181,9 +170,9 @@ class APIOperations(DatabaseOperations):
                     RSSArticle.original_source,
                     func.count(RSSArticle.id).label("article_count"),
                     func.max(RSSArticle.created_at).label("latest_article"),
-                    func.count(
-                        func.nullif(RSSArticle.processed, False)
-                    ).label("processed_count"),  # Count processed articles
+                    func.count(func.nullif(RSSArticle.processed, False)).label(
+                        "processed_count"
+                    ),  # Count processed articles
                 )
                 .filter(RSSArticle.processed == True)  # noqa: E712
                 .group_by(RSSArticle.original_source)
@@ -198,9 +187,7 @@ class APIOperations(DatabaseOperations):
                         "name": result.original_source,
                         "article_count": result.article_count,
                         "processed_count": result.processed_count,
-                        "latest_article": (
-                            result.latest_article.isoformat() if result.latest_article else None
-                        ),
+                        "latest_article": (result.latest_article.isoformat() if result.latest_article else None),
                     }
                 )
 

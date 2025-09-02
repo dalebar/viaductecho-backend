@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field, field_serializer
 
@@ -10,8 +10,8 @@ class ErrorResponse(BaseModel):
     error: str = Field(..., description="Error message")
     detail: Optional[str] = Field(None, description="Detailed error information")
     timestamp: datetime = Field(default_factory=datetime.now, description="Error timestamp")
-    
-    @field_serializer('timestamp')
+
+    @field_serializer("timestamp")
     def serialize_timestamp(self, value: datetime) -> str:
         return value.isoformat()
 
@@ -25,8 +25,8 @@ class HealthResponse(BaseModel):
     database_connected: bool = Field(..., description="Database connection status")
     timestamp: datetime = Field(..., description="Health check timestamp")
     error: Optional[str] = Field(None, description="Error message if unhealthy")
-    
-    @field_serializer('timestamp')
+
+    @field_serializer("timestamp")
     def serialize_timestamp(self, value: datetime) -> str:
         return value.isoformat()
 
@@ -36,7 +36,7 @@ class MessageResponse(BaseModel):
 
     message: str = Field(..., description="Response message")
     timestamp: datetime = Field(default_factory=datetime.now, description="Response timestamp")
-    
-    @field_serializer('timestamp')
+
+    @field_serializer("timestamp")
     def serialize_timestamp(self, value: datetime) -> str:
         return value.isoformat()

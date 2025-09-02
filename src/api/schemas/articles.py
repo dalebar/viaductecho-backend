@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
@@ -13,8 +13,8 @@ class ArticleBase(BaseModel):
     source: str = Field(..., description="Source name")
     source_type: Optional[str] = Field(None, description="Type of source (RSS, Web scraping)")
     published_date: Optional[datetime] = Field(None, description="Original publication date")
-    
-    @field_serializer('published_date')
+
+    @field_serializer("published_date")
     def serialize_published_date(self, value: Optional[datetime]) -> Optional[str]:
         return value.isoformat() if value else None
 
@@ -27,8 +27,8 @@ class ArticleSummary(ArticleBase):
     ai_image_url: Optional[str] = Field(None, description="AI-generated image URL")
 
     model_config = ConfigDict(from_attributes=True)
-    
-    @field_serializer('created_at')
+
+    @field_serializer("created_at")
     def serialize_created_at(self, value: datetime) -> str:
         return value.isoformat()
 
@@ -45,12 +45,12 @@ class ArticleDetail(ArticleBase):
     ai_image_url: Optional[str] = Field(None, description="AI-generated image URL")
 
     model_config = ConfigDict(from_attributes=True)
-    
-    @field_serializer('created_at')
+
+    @field_serializer("created_at")
     def serialize_created_at(self, value: datetime) -> str:
         return value.isoformat()
-        
-    @field_serializer('updated_at')
+
+    @field_serializer("updated_at")
     def serialize_updated_at(self, value: Optional[datetime]) -> Optional[str]:
         return value.isoformat() if value else None
 

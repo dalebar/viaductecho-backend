@@ -5,13 +5,13 @@ Comprehensive test suite for API schemas
 import os
 import sys
 from datetime import datetime
-from typing import Any, Dict
+
 
 import pytest
 from pydantic import ValidationError
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 from api.schemas.articles import (
     ArticleBase,
@@ -40,9 +40,9 @@ class TestArticleSchemas:
             "source_type": "RSS News",
             "published_date": datetime(2024, 1, 15, 10, 30, 0),
         }
-        
+
         article = ArticleBase(**data)
-        
+
         assert article.title == "Test Article"
         assert article.link == "https://example.com/article"
         assert article.summary == "Test summary"
@@ -57,9 +57,9 @@ class TestArticleSchemas:
             "link": "https://example.com/article",
             "source": "Test Source",
         }
-        
+
         article = ArticleBase(**data)
-        
+
         assert article.title == "Test Article"
         assert article.link == "https://example.com/article"
         assert article.source == "Test Source"
@@ -97,9 +97,9 @@ class TestArticleSchemas:
             "created_at": datetime(2024, 1, 15, 10, 35, 0),
             "ai_image_url": "https://example.com/image.jpg",
         }
-        
+
         article = ArticleSummary(**data)
-        
+
         assert article.id == 1
         assert article.created_at == datetime(2024, 1, 15, 10, 35, 0)
         assert article.ai_image_url == "https://example.com/image.jpg"
@@ -121,10 +121,10 @@ class TestArticleSchemas:
             "ai_summary": "AI summary",
             "ai_image_url": "https://example.com/image.jpg",
         }
-        
+
         article = ArticleDetail(**data)
-        
-        assert article.processed == True
+
+        assert article.processed is True
         assert article.extracted_content == "Full content"
         assert article.ai_summary == "AI summary"
         assert article.updated_at == datetime(2024, 1, 15, 10, 40, 0)
@@ -139,15 +139,15 @@ class TestArticleSchemas:
             "has_next": True,
             "has_prev": True,
         }
-        
+
         pagination = PaginationInfo(**data)
-        
+
         assert pagination.page == 2
         assert pagination.per_page == 20
         assert pagination.total_items == 47
         assert pagination.total_pages == 3
-        assert pagination.has_next == True
-        assert pagination.has_prev == True
+        assert pagination.has_next is True
+        assert pagination.has_prev is True
 
     def test_pagination_info_validation(self):
         """Test PaginationInfo validation"""
@@ -188,7 +188,7 @@ class TestArticleSchemas:
         pagination = PaginationInfo(**pagination_data)
 
         paginated = PaginatedArticles(articles=[article], pagination=pagination)
-        
+
         assert len(paginated.articles) == 1
         assert paginated.articles[0].id == 1
         assert paginated.pagination.total_items == 1
@@ -196,7 +196,7 @@ class TestArticleSchemas:
     def test_article_search_params_valid(self):
         """Test valid ArticleSearchParams creation"""
         params = ArticleSearchParams(query="test search", page=2, per_page=10)
-        
+
         assert params.query == "test search"
         assert params.page == 2
         assert params.per_page == 10
@@ -204,7 +204,7 @@ class TestArticleSchemas:
     def test_article_search_params_defaults(self):
         """Test ArticleSearchParams with defaults"""
         params = ArticleSearchParams(query="test")
-        
+
         assert params.query == "test"
         assert params.page == 1
         assert params.per_page == 20
@@ -233,7 +233,7 @@ class TestArticleSchemas:
         assert params.page == 1
         assert params.per_page == 50
         assert params.source == "Test Source"
-        assert params.processed_only == False
+        assert params.processed_only is False
 
         # Invalid per_page (too high)
         with pytest.raises(ValidationError) as exc_info:
@@ -269,9 +269,9 @@ class TestSourceSchemas:
             "processed_count": 23,
             "latest_article": datetime(2024, 1, 20, 15, 30, 0),
         }
-        
+
         source = SourceStats(**data)
-        
+
         assert source.name == "BBC News"
         assert source.article_count == 25
         assert source.processed_count == 23
@@ -285,9 +285,9 @@ class TestSourceSchemas:
             "processed_count": 0,
             "latest_article": None,
         }
-        
+
         source = SourceStats(**data)
-        
+
         assert source.latest_article is None
 
     def test_source_stats_validation(self):
@@ -313,7 +313,7 @@ class TestSourceSchemas:
         source = SourceStats(**source_data)
 
         response = SourcesResponse(sources=[source], total_sources=1)
-        
+
         assert len(response.sources) == 1
         assert response.total_sources == 1
         assert response.sources[0].name == "Test Source"
@@ -336,7 +336,7 @@ class TestCommonSchemas:
             detail="Detailed error message",
             timestamp=datetime(2024, 1, 15, 10, 30, 0),
         )
-        
+
         assert error.error == "Test error"
         assert error.detail == "Detailed error message"
         assert error.timestamp == datetime(2024, 1, 15, 10, 30, 0)
@@ -344,7 +344,7 @@ class TestCommonSchemas:
     def test_error_response_minimal(self):
         """Test ErrorResponse with minimal fields"""
         error = ErrorResponse(error="Test error")
-        
+
         assert error.error == "Test error"
         assert error.detail is None
         assert isinstance(error.timestamp, datetime)
@@ -358,11 +358,11 @@ class TestCommonSchemas:
             database_connected=True,
             timestamp=datetime(2024, 1, 15, 10, 30, 0),
         )
-        
+
         assert health.status == "healthy"
         assert health.total_articles == 100
         assert health.recent_articles_24h == 5
-        assert health.database_connected == True
+        assert health.database_connected is True
         assert health.error is None
 
     def test_health_response_unhealthy(self):
@@ -373,9 +373,9 @@ class TestCommonSchemas:
             timestamp=datetime(2024, 1, 15, 10, 30, 0),
             error="Database connection failed",
         )
-        
+
         assert health.status == "unhealthy"
-        assert health.database_connected == False
+        assert health.database_connected is False
         assert health.error == "Database connection failed"
         assert health.total_articles is None
 
@@ -385,14 +385,14 @@ class TestCommonSchemas:
             message="Operation completed successfully",
             timestamp=datetime(2024, 1, 15, 10, 30, 0),
         )
-        
+
         assert message.message == "Operation completed successfully"
         assert message.timestamp == datetime(2024, 1, 15, 10, 30, 0)
 
     def test_message_response_with_default_timestamp(self):
         """Test MessageResponse with default timestamp"""
         message = MessageResponse(message="Test message")
-        
+
         assert message.message == "Test message"
         assert isinstance(message.timestamp, datetime)
 
@@ -418,27 +418,36 @@ class TestSchemaIntegration:
             "ai_summary": "AI-generated summary",
             "ai_image_url": "https://example.com/image.jpg",
         }
-        
+
         # Test ArticleDetail creation
         detail = ArticleDetail(**article_data)
         assert detail.id == 1
-        assert detail.processed == True
+        assert detail.processed is True
 
         # Test conversion to ArticleSummary (subset of fields)
         summary_data = {
-            k: v for k, v in article_data.items() 
-            if k in ["id", "title", "link", "summary", "source", "source_type", 
-                    "published_date", "created_at", "ai_image_url"]
+            k: v
+            for k, v in article_data.items()
+            if k
+            in [
+                "id",
+                "title",
+                "link",
+                "summary",
+                "source",
+                "source_type",
+                "published_date",
+                "created_at",
+                "ai_image_url",
+            ]
         }
         summary = ArticleSummary(**summary_data)
         assert summary.id == 1
         assert summary.title == "Complete Test Article"
 
         # Test in paginated response
-        pagination = PaginationInfo(
-            page=1, per_page=20, total_items=1, total_pages=1, has_next=False, has_prev=False
-        )
+        pagination = PaginationInfo(page=1, per_page=20, total_items=1, total_pages=1, has_next=False, has_prev=False)
         paginated = PaginatedArticles(articles=[summary], pagination=pagination)
-        
+
         assert len(paginated.articles) == 1
         assert paginated.pagination.total_items == 1
