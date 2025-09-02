@@ -9,6 +9,7 @@ import base64
 from datetime import datetime
 from unittest.mock import Mock, patch
 import requests
+import pytest
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -109,13 +110,13 @@ class TestGitHubPublisher:
 
         publisher = GitHubPublisher()
 
-        # Test very long title (should be truncated to 50 chars)
+        # Test very long title (should be truncated to 100 chars)
         long_title = (
-            "This is a very long article title that should be truncated because it exceeds the fifty character limit"
+            "This is a very long article title that should be truncated because it exceeds the hundred character limit for slugs"
         )
         slug = publisher._create_slug(long_title)
-        assert len(slug) <= 50
-        assert slug == "this-is-a-very-long-article-title-that-should-be-t"
+        assert len(slug) <= 100
+        assert slug == "this-is-a-very-long-article-title-that-should-be-truncated-because-it-exceeds-the-hundred-character-"[:100]
 
     @patch("publishers.github_publisher.Config")
     def test_create_slug_edge_cases(self, mock_config):

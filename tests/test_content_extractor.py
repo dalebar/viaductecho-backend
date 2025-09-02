@@ -8,6 +8,7 @@ import sys
 import json
 from unittest.mock import Mock, patch
 import requests
+import pytest
 
 
 # Add src to path so we can import our modules

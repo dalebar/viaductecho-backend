@@ -7,6 +7,7 @@ import os
 import sys
 from abc import ABC
 from typing import List, Dict
+import pytest
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))

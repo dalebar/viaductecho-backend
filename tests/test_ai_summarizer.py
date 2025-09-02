@@ -7,6 +7,7 @@ import os
 import sys
 from unittest.mock import Mock, patch, ANY
 import openai
+import pytest
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -71,9 +72,9 @@ class TestAISummarizer:
 
         with patch("openai.OpenAI") as mock_openai:
             summarizer = AISummarizer()
-
-            # Verify API key was set
-            assert openai.api_key == "test-api-key-123"
+            
+            # Verify OpenAI client was created
+            mock_openai.assert_called_once_with(api_key="test-api-key-123")
 
     def test_summarize_success(self, sample_content, mock_openai_response):
         """Test successful summarization with OpenAI API"""
