@@ -26,8 +26,9 @@ CLAUDE.md
 .DS_Store
 .env
 
-# Logs
-logs/
+# Logs - organized structure
+logs/sessions/
+logs/api/
 
 # iOS / Xcode
 ios-app/ViaductEcho.xcodeproj/project.xcworkspace/

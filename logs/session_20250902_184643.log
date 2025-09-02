@@ -1,0 +1,7 @@
+2025-09-02 18:46:43,507 - INFO - Session started - logging to logs/session_20250902_184643.log
+2025-09-02 18:46:43,545 - INFO - Database connection established
+2025-09-02 18:46:44,312 - INFO - Database connection established
+2025-09-02 18:46:46,229 - INFO - Updated content for: Murder charge over man's stabbing death
+2025-09-02 18:46:49,188 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 18:46:49,194 - INFO - AI summary generated
+2025-09-02 18:46:49,469 - INFO - Updated AI summary for: Murder charge over man's stabbing death

@@ -16,12 +16,12 @@ from .sources.nub_source import NubSource
 
 def setup_logging():
     """Setup logging with timestamped file output"""
-    # Create logs directory if it doesn't exist
-    os.makedirs("logs", exist_ok=True)
+    # Create organized logs directory structure
+    os.makedirs("logs/sessions", exist_ok=True)
     
     # Generate timestamped filename
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_filename = f"logs/session_{timestamp}.log"
+    log_filename = f"logs/sessions/session_{timestamp}.log"
     
     # Configure logging to write to both file and console
     logging.basicConfig(

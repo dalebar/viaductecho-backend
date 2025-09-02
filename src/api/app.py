@@ -1,4 +1,5 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime
 
@@ -14,8 +15,32 @@ except ImportError:
 from .routes import articles, sources
 from .schemas.common import ErrorResponse
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+def setup_api_logging():
+    """Setup API logging with timestamped file output"""
+    # Create organized logs directory structure
+    os.makedirs("logs/api", exist_ok=True)
+    
+    # Generate timestamped filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"logs/api/api_{timestamp}.log"
+    
+    # Configure logging to write to both file and console
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler(log_filename),
+            logging.StreamHandler()
+        ],
+        force=True  # Override any existing configuration
+    )
+    
+    logger = logging.getLogger(__name__)
+    logger.info(f"API session started - logging to {log_filename}")
+    return log_filename
+
+# Set up API logging
+api_log_file = setup_api_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -174,10 +199,66 @@ async def log_requests(request: Request, call_next):
 if __name__ == "__main__":
     import uvicorn
 
+    # Configure uvicorn to use our logging setup
     uvicorn.run(
         "app:app",
         host="0.0.0.0",
         port=8000,
         reload=True,
         log_level="info",
+        log_config={
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "default": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                },
+                "access": {
+                    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                },
+            },
+            "handlers": {
+                "default": {
+                    "formatter": "default",
+                    "class": "logging.FileHandler",
+                    "filename": api_log_file,
+                },
+                "access": {
+                    "formatter": "access",
+                    "class": "logging.FileHandler", 
+                    "filename": api_log_file,
+                },
+                "console": {
+                    "formatter": "default",
+                    "class": "logging.StreamHandler",
+                    "stream": "ext://sys.stdout",
+                },
+            },
+            "loggers": {
+                "uvicorn": {
+                    "handlers": ["default", "console"], 
+                    "level": "INFO",
+                    "propagate": False
+                },
+                "uvicorn.error": {
+                    "handlers": ["default", "console"],
+                    "level": "INFO", 
+                    "propagate": False
+                },
+                "uvicorn.access": {
+                    "handlers": ["access", "console"],
+                    "level": "INFO",
+                    "propagate": False
+                },
+                "fastapi": {
+                    "handlers": ["default", "console"],
+                    "level": "INFO",
+                    "propagate": False
+                },
+            },
+            "root": {
+                "level": "INFO",
+                "handlers": ["default", "console"]
+            }
+        }
     )

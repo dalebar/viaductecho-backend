@@ -1,0 +1,150 @@
+2025-09-02 15:04:32,773 - INFO - Database connection established
+2025-09-02 15:04:32,801 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-09-02 15:04:32,801 - INFO - Scheduler started - running hourly between 5 AM and 8 PM
+2025-09-02 15:04:32,801 - INFO - Added job "ViaductEcho.run_aggregation" to job store "default"
+2025-09-02 15:04:32,801 - INFO - Scheduler started
+2025-09-02 16:00:01,363 - WARNING - Run time of job "ViaductEcho.run_aggregation (trigger: cron[hour='5-20', minute='0'], next run at: 2025-09-02 16:00:00 BST)" was missed by 0:00:01.360243
+2025-09-02 17:00:00,010 - INFO - Running job "ViaductEcho.run_aggregation (trigger: cron[hour='5-20', minute='0'], next run at: 2025-09-02 18:00:00 BST)" (scheduled at 2025-09-02 17:00:00+01:00)
+2025-09-02 17:00:00,015 - INFO - Starting aggregation run
+2025-09-02 17:00:00,353 - INFO - BBC: 11 articles found
+2025-09-02 17:00:01,832 - INFO - Inserted article: Affordable homes plan scaled back in £2.5bn scheme
+2025-09-02 17:00:06,411 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:06,419 - INFO - AI summary generated
+2025-09-02 17:00:10,710 - INFO - Published: Affordable homes plan scaled back in £2.5bn scheme
+2025-09-02 17:00:10,920 - INFO - Marked processed: Affordable homes plan scaled back in £2.5bn scheme
+2025-09-02 17:00:13,328 - INFO - Inserted article: Oldham bring in Blackburn midfielder O'Grady-Macken
+2025-09-02 17:00:16,301 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:16,302 - INFO - AI summary generated
+2025-09-02 17:00:17,164 - INFO - Published: Oldham bring in Blackburn midfielder O'Grady-Macken
+2025-09-02 17:00:17,376 - INFO - Marked processed: Oldham bring in Blackburn midfielder O'Grady-Macken
+2025-09-02 17:00:19,921 - INFO - MEN: 10 articles found
+2025-09-02 17:00:20,184 - INFO - Inserted article: Man jailed for murder of former Manchester Grammar School teacher to have conviction reviewed
+2025-09-02 17:00:26,682 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:26,683 - INFO - AI summary generated
+2025-09-02 17:00:27,606 - INFO - Published: Man jailed for murder of former Manchester Grammar School teacher to have conviction reviewed
+2025-09-02 17:00:27,826 - INFO - Marked processed: Man jailed for murder of former Manchester Grammar School teacher to have conviction reviewed
+2025-09-02 17:00:30,027 - INFO - Inserted article: Manhunt underway after 'armed robbery' at frozen food store
+2025-09-02 17:00:36,515 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:36,516 - INFO - AI summary generated
+2025-09-02 17:00:37,284 - INFO - Published: Manhunt underway after 'armed robbery' at frozen food store
+2025-09-02 17:00:37,518 - INFO - Marked processed: Manhunt underway after 'armed robbery' at frozen food store
+2025-09-02 17:00:39,752 - INFO - Inserted article: Salford-born hypnotherapist Zack Polanski becomes new Green Party leader
+2025-09-02 17:00:46,653 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:46,655 - INFO - AI summary generated
+2025-09-02 17:00:47,576 - INFO - Published: Salford-born hypnotherapist Zack Polanski becomes new Green Party leader
+2025-09-02 17:00:47,785 - INFO - Marked processed: Salford-born hypnotherapist Zack Polanski becomes new Green Party leader
+2025-09-02 17:00:50,003 - INFO - Inserted article: Police and paramedics descend on major Greater Manchester road following crash
+2025-09-02 17:00:53,411 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:00:53,412 - INFO - AI summary generated
+2025-09-02 17:00:54,177 - INFO - Published: Police and paramedics descend on major Greater Manchester road following crash
+2025-09-02 17:00:54,347 - INFO - Marked processed: Police and paramedics descend on major Greater Manchester road following crash
+2025-09-02 17:00:56,713 - INFO - Inserted article: 'It's like a cruise ship built next to our homes - when I think about it I feel sick'
+2025-09-02 17:01:03,085 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:03,087 - INFO - AI summary generated
+2025-09-02 17:01:03,814 - INFO - Published: 'It's like a cruise ship built next to our homes - when I think about it I feel sick'
+2025-09-02 17:01:03,990 - INFO - Marked processed: 'It's like a cruise ship built next to our homes - when I think about it I feel sick'
+2025-09-02 17:01:06,241 - INFO - Inserted article: Teen's inspiring musical legacy after Manchester Arena horror
+2025-09-02 17:01:11,842 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:11,844 - INFO - AI summary generated
+2025-09-02 17:01:12,577 - INFO - Published: Teen's inspiring musical legacy after Manchester Arena horror
+2025-09-02 17:01:12,790 - INFO - Marked processed: Teen's inspiring musical legacy after Manchester Arena horror
+2025-09-02 17:01:15,049 - INFO - Inserted article: M60: Two incidents cause long traffic delays on three Greater Manchester motorways
+2025-09-02 17:01:17,892 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:17,897 - INFO - AI summary generated
+2025-09-02 17:01:18,908 - INFO - Published: M60: Two incidents cause long traffic delays on three Greater Manchester motorways
+2025-09-02 17:01:19,113 - INFO - Marked processed: M60: Two incidents cause long traffic delays on three Greater Manchester motorways
+2025-09-02 17:01:23,490 - INFO - Nub News: 15 articles found
+2025-09-02 17:01:23,703 - INFO - Inserted article: Andy Burnham introduces major Bee Network changes including cheaper travel, digital passes, and more
+2025-09-02 17:01:30,580 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:30,581 - INFO - AI summary generated
+2025-09-02 17:01:31,502 - INFO - Published: Andy Burnham introduces major Bee Network changes including cheaper travel, digital passes, and more
+2025-09-02 17:01:31,703 - INFO - Marked processed: Andy Burnham introduces major Bee Network changes including cheaper travel, digital passes, and more
+2025-09-02 17:01:33,939 - INFO - Inserted article: Today's weather in Stockport - 2 September
+2025-09-02 17:01:40,135 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:40,139 - INFO - AI summary generated
+2025-09-02 17:01:41,027 - INFO - Published: Today's weather in Stockport - 2 September
+2025-09-02 17:01:41,517 - INFO - Marked processed: Today's weather in Stockport - 2 September
+2025-09-02 17:01:43,753 - INFO - Inserted article: Wellness day to take place in Bramhall village featuring market, exercise, 'reading spa' and more
+2025-09-02 17:01:50,153 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:01:50,155 - INFO - AI summary generated
+2025-09-02 17:01:51,165 - INFO - Published: Wellness day to take place in Bramhall village featuring market, exercise, 'reading spa' and more
+2025-09-02 17:01:51,345 - INFO - Marked processed: Wellness day to take place in Bramhall village featuring market, exercise, 'reading spa' and more
+2025-09-02 17:01:53,589 - INFO - Inserted article: Stockport Masonic Guildhall restored to former glory after extensive renovation
+2025-09-02 17:02:00,999 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:01,003 - INFO - AI summary generated
+2025-09-02 17:02:01,916 - INFO - Published: Stockport Masonic Guildhall restored to former glory after extensive renovation
+2025-09-02 17:02:02,124 - INFO - Marked processed: Stockport Masonic Guildhall restored to former glory after extensive renovation
+2025-09-02 17:02:04,347 - INFO - Inserted article: Former Stockport business manager sets off on 40,000 mile round the world yacht race
+2025-09-02 17:02:10,662 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:10,668 - INFO - AI summary generated
+2025-09-02 17:02:11,442 - INFO - Published: Former Stockport business manager sets off on 40,000 mile round the world yacht race
+2025-09-02 17:02:11,658 - INFO - Marked processed: Former Stockport business manager sets off on 40,000 mile round the world yacht race
+2025-09-02 17:02:13,886 - INFO - Inserted article: Weather forecast for this week in Stockport - 1 Sep to 7 Sep
+2025-09-02 17:02:24,205 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:24,212 - INFO - AI summary generated
+2025-09-02 17:02:25,018 - INFO - Published: Weather forecast for this week in Stockport - 1 Sep to 7 Sep
+2025-09-02 17:02:25,218 - INFO - Marked processed: Weather forecast for this week in Stockport - 1 Sep to 7 Sep
+2025-09-02 17:02:27,447 - INFO - Inserted article: How a struggling town ‘restored pride’ – and what could happen next
+2025-09-02 17:02:33,220 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:33,244 - INFO - AI summary generated
+2025-09-02 17:02:34,047 - INFO - Published: How a struggling town ‘restored pride’ – and what could happen next
+2025-09-02 17:02:34,237 - INFO - Marked processed: How a struggling town ‘restored pride’ – and what could happen next
+2025-09-02 17:02:36,479 - INFO - Inserted article: Former mill in Heaton Norris up for sale, with plans for new apartments
+2025-09-02 17:02:42,775 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:42,776 - INFO - AI summary generated
+2025-09-02 17:02:43,470 - INFO - Published: Former mill in Heaton Norris up for sale, with plans for new apartments
+2025-09-02 17:02:43,673 - INFO - Marked processed: Former mill in Heaton Norris up for sale, with plans for new apartments
+2025-09-02 17:02:45,922 - INFO - Inserted article: Today's weather in Stockport - 31 August
+2025-09-02 17:02:51,990 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:02:51,995 - INFO - AI summary generated
+2025-09-02 17:02:52,910 - INFO - Published: Today's weather in Stockport - 31 August
+2025-09-02 17:02:53,118 - INFO - Marked processed: Today's weather in Stockport - 31 August
+2025-09-02 17:02:55,387 - INFO - Inserted article: Today's weather in Stockport - 30 August
+2025-09-02 17:03:03,053 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:03,054 - INFO - AI summary generated
+2025-09-02 17:03:03,969 - INFO - Published: Today's weather in Stockport - 30 August
+2025-09-02 17:03:04,225 - INFO - Marked processed: Today's weather in Stockport - 30 August
+2025-09-02 17:03:06,449 - INFO - Inserted article: Six jobs available in and around Stockport now - Superdrug, Pizza Express, The Works and more
+2025-09-02 17:03:14,415 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:14,419 - INFO - AI summary generated
+2025-09-02 17:03:15,110 - INFO - Published: Six jobs available in and around Stockport now - Superdrug, Pizza Express, The Works and more
+2025-09-02 17:03:15,325 - INFO - Marked processed: Six jobs available in and around Stockport now - Superdrug, Pizza Express, The Works and more
+2025-09-02 17:03:17,567 - INFO - Inserted article: The ‘major redevelopment’ planned for Stockport station
+2025-09-02 17:03:23,164 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:23,175 - INFO - AI summary generated
+2025-09-02 17:03:24,034 - INFO - Published: The ‘major redevelopment’ planned for Stockport station
+2025-09-02 17:03:24,232 - INFO - Marked processed: The ‘major redevelopment’ planned for Stockport station
+2025-09-02 17:03:26,468 - INFO - Inserted article: Andy Burnham to host question and answer session at Edgeley Park
+2025-09-02 17:03:32,222 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:32,223 - INFO - AI summary generated
+2025-09-02 17:03:33,065 - INFO - Published: Andy Burnham to host question and answer session at Edgeley Park
+2025-09-02 17:03:33,294 - INFO - Marked processed: Andy Burnham to host question and answer session at Edgeley Park
+2025-09-02 17:03:35,519 - INFO - Inserted article: Inquest opening after body found by canal near Marple Aqueduct
+2025-09-02 17:03:39,913 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:39,915 - INFO - AI summary generated
+2025-09-02 17:03:40,713 - INFO - Published: Inquest opening after body found by canal near Marple Aqueduct
+2025-09-02 17:03:40,922 - INFO - Marked processed: Inquest opening after body found by canal near Marple Aqueduct
+2025-09-02 17:03:43,189 - INFO - Inserted article: The Magnet voted 'best mild pub' by Stockport ale enthusiasts
+2025-09-02 17:03:52,202 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 17:03:52,203 - INFO - AI summary generated
+2025-09-02 17:03:53,040 - INFO - Published: The Magnet voted 'best mild pub' by Stockport ale enthusiasts
+2025-09-02 17:03:53,226 - INFO - Marked processed: The Magnet voted 'best mild pub' by Stockport ale enthusiasts
+2025-09-02 17:03:55,236 - INFO - Aggregation run completed
+2025-09-02 17:03:55,236 - INFO - Job "ViaductEcho.run_aggregation (trigger: cron[hour='5-20', minute='0'], next run at: 2025-09-02 18:00:00 BST)" executed successfully
+2025-09-02 18:00:00,042 - INFO - Running job "ViaductEcho.run_aggregation (trigger: cron[hour='5-20', minute='0'], next run at: 2025-09-02 19:00:00 BST)" (scheduled at 2025-09-02 18:00:00+01:00)
+2025-09-02 18:00:00,044 - INFO - Starting aggregation run
+2025-09-02 18:00:00,525 - INFO - BBC: 11 articles found
+2025-09-02 18:00:00,541 - ERROR - Source BBC News error: (psycopg2.OperationalError) SSL connection has been closed unexpectedly
+
+[SQL: SELECT rss_articles.id AS rss_articles_id, rss_articles.original_title AS rss_articles_original_title, rss_articles.original_link AS rss_articles_original_link, rss_articles.original_summary AS rss_articles_original_summary, rss_articles.original_source AS rss_articles_original_source, rss_articles.source_type AS rss_articles_source_type, rss_articles.original_pubdate AS rss_articles_original_pubdate, rss_articles.url_hash AS rss_articles_url_hash, rss_articles.created_at AS rss_articles_created_at, rss_articles.processed AS rss_articles_processed, rss_articles.extracted_content AS rss_articles_extracted_content, rss_articles.ai_summary AS rss_articles_ai_summary, rss_articles.ai_image_url AS rss_articles_ai_image_url, rss_articles.updated_at AS rss_articles_updated_at 
+FROM rss_articles 
+WHERE rss_articles.url_hash = %(url_hash_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'url_hash_1': '3e6cbbf7bc71538e6c2d6991109dd706', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-09-02 18:00:00,766 - INFO - MEN: 10 articles found
+2025-09-02 18:00:00,766 - ERROR - Source Manchester Evening News error: Can't reconnect until invalid transaction is rolled back.  Please rollback() fully before proceeding (Background on this error at: https://sqlalche.me/e/20/8s2b)
+2025-09-02 18:00:03,125 - INFO - Nub News: 15 articles found
+2025-09-02 18:00:03,128 - ERROR - Source Stockport Nub News error: Can't reconnect until invalid transaction is rolled back.  Please rollback() fully before proceeding (Background on this error at: https://sqlalche.me/e/20/8s2b)
+2025-09-02 18:00:03,128 - INFO - Aggregation run completed
+2025-09-02 18:00:03,128 - INFO - Job "ViaductEcho.run_aggregation (trigger: cron[hour='5-20', minute='0'], next run at: 2025-09-02 19:00:00 BST)" executed successfully

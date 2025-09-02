@@ -1,0 +1,15 @@
+2025-09-02 18:49:36,342 - INFO - Session started - logging to logs/session_20250902_184936.log
+2025-09-02 18:49:36,379 - INFO - Database connection established
+2025-09-02 18:49:37,082 - INFO - Database connection established
+2025-09-02 18:49:38,795 - INFO - Updated content for: Music award in memory of Manchester Arena victim Eilidh MacLeod
+2025-09-02 18:49:41,709 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 18:49:41,715 - INFO - AI summary generated
+2025-09-02 18:49:42,055 - INFO - Updated AI summary for: Music award in memory of Manchester Arena victim Eilidh MacLeod
+2025-09-02 18:49:43,930 - INFO - Updated content for: Woman killed by falling tree branch
+2025-09-02 18:49:45,950 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 18:49:45,967 - INFO - AI summary generated
+2025-09-02 18:49:46,285 - INFO - Updated AI summary for: Woman killed by falling tree branch
+2025-09-02 18:49:48,713 - INFO - Updated content for: Eighty arrests in anti-social behaviour crackdown
+2025-09-02 18:49:50,921 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-02 18:49:50,923 - INFO - AI summary generated
+2025-09-02 18:49:51,211 - INFO - Updated AI summary for: Eighty arrests in anti-social behaviour crackdown
