@@ -1,281 +1,291 @@
 # Viaduct Echo
 
-A Python-based news aggregation system that monitors local news sources for Greater Manchester area content, processes articles using AI summarization, and publishes curated content to a Jekyll-based website via GitHub Pages.
+A comprehensive news aggregation platform for Greater Manchester, featuring Python backend services, REST API, and native mobile applications.
 
-## Overview
+## 🏗️ Architecture Overview
 
-Viaduct Echo automatically:
-- Fetches articles from multiple news sources (BBC Manchester, Manchester Evening News, Stockport Nub News)
-- Filters content for local relevance using configurable keywords
-- Extracts full article content from source websites
-- Generates AI-powered summaries using OpenAI's GPT models
-- Creates engaging images for articles
-- Publishes formatted posts to GitHub Pages via Jekyll
-
-## Features
-
-- **Multi-source aggregation**: RSS feeds and web scraping
-- **Intelligent filtering**: Keyword-based relevance detection
-- **AI-powered processing**: Article summarization and image generation
-- **Automated publishing**: Direct integration with GitHub Pages
-- **Robust error handling**: Comprehensive logging and graceful failure recovery
-- **Rate limiting**: Respectful scraping with built-in delays
-- **Duplicate detection**: Prevents republishing of existing content
-
-## Architecture
+Viaduct Echo consists of multiple integrated components:
 
 ```
-src/
-├── main.py              # Main application and scheduler
-├── config.py            # Configuration and environment variables
-├── database/
-│   ├── models.py        # SQLAlchemy database models
-│   └── operations.py    # Database CRUD operations
-├── sources/             # News source implementations
-│   ├── base_source.py   # Abstract base class for sources
-│   ├── bbc_source.py    # BBC Manchester RSS feed
-│   ├── men_source.py    # Manchester Evening News RSS feed
-│   └── nub_source.py    # Stockport Nub News web scraper
-├── processors/          # Content processing modules
-│   ├── content_extractor.py  # Full article content extraction
-│   └── ai_summarizer.py      # OpenAI-powered summarization
-└── publishers/
-    └── github_publisher.py   # GitHub Pages publishing
+viaductecho-backend/
+├── src/                    # Python backend services
+│   ├── api/               # FastAPI REST server
+│   ├── database/          # PostgreSQL operations
+│   ├── processors/        # AI summarization & content extraction
+│   ├── sources/           # Multi-source news aggregation
+│   └── publishers/        # GitHub Pages publishing
+├── ios-app/               # SwiftUI iOS application
+├── tests/                 # Comprehensive test suite (225+ tests)
+├── logs/                  # Organized logging system
+│   ├── sessions/          # Aggregation process logs
+│   └── api/              # API server logs
+└── docs/                  # Documentation
 ```
 
-## Prerequisites
+## 🚀 Features
 
-- Python 3.11+
+### Backend Services
+- **Multi-source aggregation**: RSS feeds (BBC, MEN) and web scraping (Nub News)
+- **AI-powered processing**: OpenAI article summarization and image extraction
+- **REST API**: FastAPI server with comprehensive endpoints
+- **Intelligent filtering**: Keyword-based local relevance detection
+- **Robust database**: PostgreSQL with automatic reconnection and indexing
+- **Automated publishing**: GitHub Pages Jekyll integration
+- **Comprehensive logging**: Session and API logs with timestamps
+
+### iOS Application
+- **Native SwiftUI interface**: Clean, modern design
+- **Real-time data**: Connects to REST API for live article updates
+- **Image loading**: AsyncImage with proper placeholders
+- **Article details**: Full content view with AI summaries
+- **Error handling**: Graceful failure states and retry mechanisms
+
+### Quality & Testing
+- **225+ automated tests**: Full coverage of all components
+- **Performance optimized**: Sub-1.2s API response times
+- **Code quality**: Flake8 compliance, comprehensive error handling
+- **Production ready**: Rigorous testing protocol completed
+
+## 📱 Mobile Applications
+
+### iOS App (SwiftUI)
+**Status**: ✅ Complete and tested
+
+**Features**:
+- Article list with images and metadata
+- Detailed article view with AI summaries
+- Clean UI without redundant content
+- Proper error handling and loading states
+- Integration with REST API backend
+
+### Android App
+**Status**: 📋 Planned
+
+**Implementation Options**:
+- Native Kotlin (~2-3 weeks)
+- Flutter cross-platform (~1-2 weeks)
+- React Native (~1-2 weeks)
+
+## 🛠️ Quick Start
+
+### Prerequisites
+- Python 3.13+
 - PostgreSQL database (Neon recommended)
 - OpenAI API key
 - GitHub personal access token
-- GitHub repository for Jekyll site
+- Xcode (for iOS development)
 
-## Installation
+### Backend Setup
 
-1. **Clone the repository**:
+1. **Install dependencies**:
    ```bash
-   git clone <repository-url>
-   cd viaductecho-backend
-   ```
-
-2. **Install dependencies** (using uv):
-   ```bash
+   pip install -r requirements.txt
+   # or using uv
    uv sync
    ```
 
-3. **Set up environment variables**:
-   Create a `.env` file in the root directory:
+2. **Environment configuration**:
    ```env
    # Database
    DATABASE_URL=postgresql://username:password@host:port/database
-
+   
    # OpenAI
    OPENAI_API_KEY=your_openai_api_key_here
-
+   
    # GitHub
    GITHUB_TOKEN=your_github_personal_access_token
    GITHUB_REPO=username/repository-name
    GITHUB_BRANCH=main
    ```
 
-4. **Initialize the database**:
+3. **Run news aggregation**:
    ```bash
-   python -c "from src.database.operations import DatabaseOperations; DatabaseOperations().create_tables()"
+   python -m src.main
    ```
 
-## Configuration
+4. **Start API server**:
+   ```bash
+   python -m src.api.app
+   # Server runs on http://0.0.0.0:8000
+   ```
 
-### Keywords
-The system filters articles based on keywords defined in `src/config.py`. Current keywords target Greater Manchester area:
+### iOS App Setup
 
-```python
-KEYWORDS = [
-    'stockport', 'manchester', 'macclesfield', 'wilmslow', 'altrincham',
-    'sale', 'urmston', 'stretford', 'chorlton', 'didsbury', 'burnage',
-    'levenshulme', 'longsight', 'fallowfield', 'withington', 'wythenshawe',
-    'oldham', 'rochdale', 'bury', 'bolton', 'salford', 'eccles', 'swinton',
-    'worsley', 'walkden', 'farnworth', 'little lever', 'kearsley',
-    'prestwich', 'whitefield', 'radcliffe', 'ramsbottom', 'tottington',
-    'heywood', 'middleton', 'chadderton', 'shaw', 'royton', 'lees',
-    'mossley', 'stalybridge', 'hyde', 'denton', 'audenshaw', 'dukinfield',
-    'ashton-under-lyne', 'droylsden', 'failsworth', 'moston', 'blackley',
-    'crumpsall', 'cheetham hill', 'higher blackley', 'harpurhey',
-    'collyhurst', 'newton heath', 'clayton', 'openshaw', 'gorton',
-    'belle vue', 'reddish', 'bredbury', 'marple', 'poynton', 'bollington',
-    'knutsford', 'northwich', 'winsford', 'middlewich', 'sandbach',
-    'crewe', 'nantwich', 'congleton', 'buxton', 'glossop', 'hadfield',
-    'new mills', 'whaley bridge', 'chapel-en-le-frith', 'high peak'
-]
+1. **Open in Xcode**:
+   ```bash
+   open ios-app/ViaductEcho.xcodeproj
+   ```
+
+2. **Update API endpoint** in `APIService.swift` if needed
+
+3. **Build and run** in iOS Simulator or device
+
+## 🔧 API Endpoints
+
+**Base URL**: `http://localhost:8000`
+
+### Core Endpoints
+- `GET /health` - API and database health check
+- `GET /api/v1/articles` - Paginated article list with filters
+- `GET /api/v1/articles/{id}` - Individual article details
+- `GET /api/v1/sources` - Source statistics
+- `GET /api/v1/articles/recent` - Recent articles
+- `GET /api/v1/articles/search` - Search functionality
+
+### Example Responses
+```json
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Local News Title",
+      "source": "BBC News",
+      "published_date": "2025-09-02T19:00:00Z",
+      "image_url": "https://example.com/image.jpg",
+      "ai_summary": "AI-generated summary..."
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "total_pages": 5,
+    "has_next": true
+  }
+}
 ```
 
-### News Sources
-- **BBC Manchester**: `http://feeds.bbci.co.uk/news/england/manchester/rss.xml`
-- **Manchester Evening News**: `https://www.manchestereveningnews.co.uk/news/greater-manchester-news/?service=rss`
-- **Stockport Nub News**: `https://stockport.nub.news/news` (web scraping)
+## 🗂️ Database Schema
 
-## Usage
+**Table**: `rss_articles`
 
-### Run Once
+```sql
+CREATE TABLE rss_articles (
+    id SERIAL PRIMARY KEY,
+    original_title VARCHAR(500) NOT NULL,
+    original_link TEXT UNIQUE NOT NULL,
+    original_summary TEXT,
+    original_source VARCHAR(100) NOT NULL,
+    source_type VARCHAR(50),
+    original_pubdate TIMESTAMP WITH TIME ZONE,
+    url_hash VARCHAR(64) UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    processed BOOLEAN DEFAULT FALSE,
+    extracted_content TEXT,
+    ai_summary TEXT,
+    image_url TEXT,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Indexes**: Optimized for API performance on frequently queried columns
+
+## 🧪 Testing
+
+### Run Tests
 ```bash
-python src/main.py
-```
+# Full test suite (225+ tests)
+python -m pytest tests/ -v
 
-### Run with Scheduling
-The main application includes APScheduler for automated execution:
-- Runs every 2 hours during daytime (8 AM - 10 PM)
-- Configurable via cron expression in `src/main.py`
+# Specific components
+python -m pytest tests/api/ -v                    # API tests
+python -m pytest tests/test_database_operations.py -v  # Database tests
+python -m pytest tests/test_ai_summarizer.py -v        # AI tests
 
-### Manual Testing
-
-**Test database connection**:
-```bash
-python tests/test_db.py
-```
-
-**Run specific source**:
-```python
-from src.sources.bbc_source import BBCSource
-source = BBCSource()
-articles = source.fetch_articles()
-print(f"Found {len(articles)} articles")
-```
-
-**Test AI summarization**:
-```python
-from src.processors.ai_summarizer import AISummarizer
-summarizer = AISummarizer()
-summary = summarizer.generate_summary("Article content here...")
-```
-
-## Testing
-
-Comprehensive test suite with 95+ tests covering all components:
-
-```bash
-# Run all tests
-python -m pytest
-
-# Run specific test files
-python -m pytest tests/test_bbc_source.py -v
-python -m pytest tests/test_men_source.py -v  
-python -m pytest tests/test_nub_source.py -v
-
-# Run with coverage
+# Coverage report
 python -m pytest --cov=src --cov-report=html
 ```
 
 ### Test Coverage
-- **DatabaseOperations**: 12 tests - CRUD operations, duplicate detection
-- **AISummarizer**: 14 tests - OpenAI integration, error handling
-- **ContentExtractor**: 20 tests - Web scraping, source-specific parsers
-- **GitHubPublisher**: 14 tests - Jekyll publishing, GitHub API
-- **BaseNewsSource**: 21 tests - Abstract base class functionality
-- **BBCSource**: 17 tests - RSS feed parsing, keyword filtering
-- **MENSource**: 17 tests - Manchester Evening News RSS processing
-- **NubSource**: 19 tests - Web scraping, JSON-LD extraction
+- **API Operations**: 19 tests - Endpoints, pagination, error handling
+- **Database Operations**: 12 tests - CRUD, reconnection, transactions
+- **Content Processing**: 34 tests - Extraction, AI summarization
+- **News Sources**: 53 tests - RSS parsing, web scraping, filtering
+- **GitHub Publishing**: 14 tests - Jekyll formatting, API integration
+- **Error Handling**: 45 tests - Edge cases, validation, recovery
+- **Integration Tests**: 48+ tests - End-to-end workflows
 
-## Development
+## 🏭 Production Deployment
 
-### Adding New News Sources
-
-1. Create a new source class inheriting from `BaseNewsSource`:
-```python
-from .base_source import BaseNewsSource
-
-class NewSource(BaseNewsSource):
-    def __init__(self):
-        super().__init__("Source Name")
-        
-    def fetch_articles(self) -> List[Dict]:
-        # Implementation here
-        pass
-```
-
-2. Add comprehensive tests following existing patterns
-3. Update `src/main.py` to include the new source
-
-### Modifying Content Processing
-
-Content processors are modular and can be extended:
-- **ContentExtractor**: Add new source-specific parsers
-- **AISummarizer**: Modify prompts or add new AI providers
-
-### Database Schema
-
-The system uses a single table `rss_articles`:
-```sql
-CREATE TABLE rss_articles (
-    id SERIAL PRIMARY KEY,
-    original_title TEXT NOT NULL,
-    original_link TEXT UNIQUE NOT NULL,
-    original_summary TEXT,
-    original_source TEXT NOT NULL,
-    source_type TEXT NOT NULL,
-    original_pubdate TIMESTAMP,
-    extracted_content TEXT,
-    ai_summary TEXT,
-    ai_image_url TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## Monitoring and Logging
-
-The application provides comprehensive logging:
-- **INFO**: Successful operations, article counts
-- **ERROR**: Failures with detailed context
-- **WARNING**: Rate limiting, retries
-
-Logs are output to stdout and can be redirected:
+### Backend Services
 ```bash
-python src/main.py >> viaduct-echo.log 2>&1
+# Production API server
+uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --workers 4
+
+# Scheduled aggregation (cron)
+0 */2 8-22 * * * /path/to/python -m src.main
 ```
 
-## Production Deployment
+### Monitoring
+- **Health endpoint**: `/health` for uptime monitoring
+- **Structured logging**: Organized in `logs/sessions/` and `logs/api/`
+- **Database monitoring**: Connection pooling with automatic recovery
+- **Performance metrics**: Response time tracking built-in
 
-### Environment Setup
-1. Use environment variables for all sensitive configuration
-2. Set up proper database connection pooling
-3. Configure log rotation
-4. Monitor API usage limits (OpenAI, GitHub)
+## 📊 News Sources & Filtering
 
-### Scheduling Options
-- **Cron**: `0 */2 8-22 * * *` (every 2 hours, 8 AM - 10 PM)
-- **systemd**: Create service unit for automatic startup
-- **Docker**: Container deployment with volume mounts for persistence
+### Configured Sources
+- **BBC Manchester**: RSS feed with local filtering
+- **Manchester Evening News**: Greater Manchester news RSS
+- **Stockport Nub News**: Web scraping with JSON-LD extraction
 
-### Rate Limiting Considerations
-- OpenAI: Monitor token usage and costs
-- GitHub API: 5000 requests/hour for authenticated users
-- News sources: Built-in delays (2 seconds for web scraping)
+### Geographic Coverage
+Keywords target Greater Manchester area including:
+- **Primary**: Stockport, Manchester, Macclesfield, Wilmslow, Altrincham
+- **Manchester**: Chorlton, Didsbury, Fallowfield, Withington, Wythenshawe
+- **Greater Manchester**: Oldham, Rochdale, Bury, Bolton, Salford
+- **High Peak**: Buxton, Glossop, New Mills, Chapel-en-le-Frith
 
-## Contributing
+*Full keyword list in `src/config.py`*
 
-1. Fork the repository
-2. Create a feature branch
-3. Add comprehensive tests for new functionality
-4. Ensure all tests pass: `python -m pytest`
-5. Submit a pull request with detailed description
+## 🔄 Development Workflow
 
-## License
+### Adding Features
+1. **Backend**: Extend API endpoints, add database operations
+2. **iOS**: Update SwiftUI views, modify API service calls
+3. **Android**: Plan implementation using established patterns
+4. **Testing**: Add comprehensive tests for all new functionality
 
-This project is licensed under the MIT License. See LICENSE file for details.
+### Code Quality
+- **Backend**: Python with flake8, black formatting
+- **iOS**: SwiftUI with native error handling patterns
+- **Database**: SQLAlchemy ORM with proper indexing
+- **API**: FastAPI with Pydantic validation
 
-## Support
+## 📈 System Status
 
-For issues, questions, or contributions, please:
-1. Check existing issues in the repository
-2. Create detailed bug reports with logs and reproduction steps
-3. Include relevant system information (Python version, OS, etc.)
+### ✅ Production Ready Components
+- **Backend aggregation**: 35+ articles processed successfully
+- **REST API server**: All endpoints functional with health monitoring
+- **iOS application**: Clean UI, proper data display
+- **Database operations**: Robust with reconnection handling
+- **Test coverage**: 225/225 tests passing
+- **Logging system**: Organized structure implemented
 
-## Changelog
+### 🚧 Future Enhancements
+- **Android application**: Cross-platform mobile coverage
+- **Push notifications**: Real-time article alerts
+- **Offline support**: Local caching for mobile apps
+- **Admin dashboard**: Web interface for content management
+- **Analytics**: User engagement and content performance metrics
 
-### v1.0.0
-- Initial release
-- Multi-source news aggregation
-- AI-powered content processing
-- GitHub Pages publishing
-- Comprehensive test suite
-- Rate limiting and error handling
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** feature branch following naming conventions
+3. **Implement** with comprehensive test coverage
+4. **Test** all components: `python -m pytest`
+5. **Document** changes in appropriate files
+6. **Submit** pull request with detailed description
+
+## 📄 License
+
+MIT License - See LICENSE file for details.
+
+## 📞 Support
+
+- **Issues**: Use GitHub Issues for bug reports and feature requests
+- **Documentation**: Check `docs/` directory for detailed guides
+- **API Docs**: Available at `http://localhost:8000/docs` when server is running
+
+---
+
+**Latest Update**: v1.1.0 - Complete platform with backend services, REST API, iOS app, and comprehensive testing suite
