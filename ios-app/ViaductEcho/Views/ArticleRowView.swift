@@ -39,17 +39,17 @@ struct ArticleRowView: View {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(height: 120)
+                        .frame(maxWidth: .infinity, maxHeight: 160)
                         .clipped()
                         .cornerRadius(8)
                 } placeholder: {
                     Rectangle()
                         .fill(Color.gray.opacity(0.2))
-                        .frame(height: 120)
+                        .frame(maxWidth: .infinity, maxHeight: 160)
                         .cornerRadius(8)
                         .overlay(
-                            Image(systemName: "photo")
-                                .foregroundColor(.gray)
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
                         )
                 }
             }

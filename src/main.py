@@ -1,5 +1,7 @@
 import logging
+import os
 import time
+from datetime import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
@@ -11,7 +13,29 @@ from .sources.bbc_source import BBCSource
 from .sources.men_source import MENSource
 from .sources.nub_source import NubSource
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+def setup_logging():
+    """Setup logging with timestamped file output"""
+    # Create logs directory if it doesn't exist
+    os.makedirs("logs", exist_ok=True)
+    
+    # Generate timestamped filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"logs/session_{timestamp}.log"
+    
+    # Configure logging to write to both file and console
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler(log_filename),
+            logging.StreamHandler()
+        ]
+    )
+    
+    logging.info(f"Session started - logging to {log_filename}")
+
+setup_logging()
 
 
 class ViaductEcho:

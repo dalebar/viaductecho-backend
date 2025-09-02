@@ -145,16 +145,6 @@ struct ArticleDetailView: View {
                                 .fontWeight(.medium)
                         }
                         .font(.caption)
-                        
-                        if article.processed {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
-                                Text("Fully Processed")
-                                    .fontWeight(.medium)
-                            }
-                            .font(.caption)
-                        }
                     }
                     .padding()
                     .background(Color.gray.opacity(0.1))
