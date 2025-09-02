@@ -24,7 +24,7 @@ class ArticleSummary(ArticleBase):
 
     id: int = Field(..., description="Article ID")
     created_at: datetime = Field(..., description="Date added to system")
-    ai_image_url: Optional[str] = Field(None, description="AI-generated image URL")
+    image_url: Optional[str] = Field(None, description="Article image URL")
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -42,7 +42,7 @@ class ArticleDetail(ArticleBase):
     processed: bool = Field(..., description="Whether article has been processed")
     extracted_content: Optional[str] = Field(None, description="Extracted article content")
     ai_summary: Optional[str] = Field(None, description="AI-generated summary")
-    ai_image_url: Optional[str] = Field(None, description="AI-generated image URL")
+    image_url: Optional[str] = Field(None, description="Article image URL")
 
     model_config = ConfigDict(from_attributes=True)
 

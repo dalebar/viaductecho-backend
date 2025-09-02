@@ -95,14 +95,14 @@ class TestArticleSchemas:
             "source_type": "RSS News",
             "published_date": datetime(2024, 1, 15, 10, 30, 0),
             "created_at": datetime(2024, 1, 15, 10, 35, 0),
-            "ai_image_url": "https://example.com/image.jpg",
+            "image_url": "https://example.com/image.jpg",
         }
 
         article = ArticleSummary(**data)
 
         assert article.id == 1
         assert article.created_at == datetime(2024, 1, 15, 10, 35, 0)
-        assert article.ai_image_url == "https://example.com/image.jpg"
+        assert article.image_url == "https://example.com/image.jpg"
 
     def test_article_detail_valid(self):
         """Test valid ArticleDetail creation"""
@@ -119,7 +119,7 @@ class TestArticleSchemas:
             "processed": True,
             "extracted_content": "Full content",
             "ai_summary": "AI summary",
-            "ai_image_url": "https://example.com/image.jpg",
+            "image_url": "https://example.com/image.jpg",
         }
 
         article = ArticleDetail(**data)
@@ -416,7 +416,7 @@ class TestSchemaIntegration:
             "processed": True,
             "extracted_content": "Full article content here",
             "ai_summary": "AI-generated summary",
-            "ai_image_url": "https://example.com/image.jpg",
+            "image_url": "https://example.com/image.jpg",
         }
 
         # Test ArticleDetail creation
@@ -438,7 +438,7 @@ class TestSchemaIntegration:
                 "source_type",
                 "published_date",
                 "created_at",
-                "ai_image_url",
+                "image_url",
             ]
         }
         summary = ArticleSummary(**summary_data)

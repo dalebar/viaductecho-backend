@@ -28,3 +28,38 @@ CLAUDE.md
 
 # Logs
 logs/
+
+# iOS / Xcode
+ios-app/ViaductEcho.xcodeproj/project.xcworkspace/
+ios-app/ViaductEcho.xcodeproj/xcuserdata/
+ios-app/build/
+ios-app/DerivedData/
+ios-app/*.xcworkspace/xcuserdata/
+ios-app/.DS_Store
+ios-app/*/.DS_Store
+ios-app/*/*/.DS_Store
+ios-app/*/*/*/.DS_Store
+
+# Swift Package Manager
+ios-app/.swiftpm/
+ios-app/Package.resolved
+
+# CocoaPods (if used)
+ios-app/Pods/
+ios-app/Podfile.lock
+
+# Carthage (if used)
+ios-app/Carthage/Build/
+
+# Xcode user settings
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+*.xcscmblueprint
+
+# iOS App Store / TestFlight
+ios-app/*.ipa
+ios-app/*.dSYM.zip
+ios-app/*.dSYM

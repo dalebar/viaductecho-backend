@@ -34,7 +34,7 @@ struct ArticleRowView: View {
                     .multilineTextAlignment(.leading)
             }
             
-            if let imageUrl = article.aiImageUrl, !imageUrl.isEmpty {
+            if let imageUrl = article.imageUrl, !imageUrl.isEmpty {
                 AsyncImage(url: URL(string: imageUrl)) { image in
                     image
                         .resizable()
@@ -69,7 +69,7 @@ struct ArticleRowView: View {
             sourceType: "rss",
             publishedDate: Date().addingTimeInterval(-3600),
             createdAt: Date(),
-            aiImageUrl: nil
+            imageUrl: nil
         )
     )
     .padding()

@@ -52,8 +52,19 @@ class ViaductEcho:
             article = self.db.insert_article(article_data)
 
             content_data = self.content_extractor.extract_content(article.original_link, article.original_source)
+            
+            # Store extracted content and image URL in database
+            self.db.update_article_content(
+                article.original_link, 
+                content_data["content"], 
+                content_data.get("image_url")
+            )
 
             summary = self.ai_summarizer.summarize(content_data["content"])
+            
+            # Store AI summary in database
+            if summary:
+                self.db.update_article_ai_summary(article.original_link, summary)
 
             success = self.github_publisher.publish_article(article_data, summary, content_data["image_url"])
 

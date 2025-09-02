@@ -81,6 +81,46 @@ class DatabaseOperations:
             self.logger.info(f"Inserted article: {article.original_title}")
             return article
 
+    def update_article_content(self, article_link: str, extracted_content: str, image_url: str = None):
+        """Update article with extracted content and image URL"""
+        self._reconnect_if_needed()
+        url_hash = hashlib.md5(article_link.encode()).hexdigest()
+        try:
+            article = self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            if article:
+                article.extracted_content = extracted_content
+                if image_url:
+                    article.image_url = image_url
+                self.session.commit()
+                self.logger.info(f"Updated content for: {article.original_title}")
+        except (OperationalError, InvalidRequestError):
+            self._reconnect_if_needed()
+            article = self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            if article:
+                article.extracted_content = extracted_content
+                if image_url:
+                    article.image_url = image_url
+                self.session.commit()
+                self.logger.info(f"Updated content for: {article.original_title}")
+
+    def update_article_ai_summary(self, article_link: str, ai_summary: str):
+        """Update article with AI-generated summary"""
+        self._reconnect_if_needed()
+        url_hash = hashlib.md5(article_link.encode()).hexdigest()
+        try:
+            article = self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            if article:
+                article.ai_summary = ai_summary
+                self.session.commit()
+                self.logger.info(f"Updated AI summary for: {article.original_title}")
+        except (OperationalError, InvalidRequestError):
+            self._reconnect_if_needed()
+            article = self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            if article:
+                article.ai_summary = ai_summary
+                self.session.commit()
+                self.logger.info(f"Updated AI summary for: {article.original_title}")
+
     def mark_processed(self, article_link: str):
         """Mark article as processed"""
         self._reconnect_if_needed()

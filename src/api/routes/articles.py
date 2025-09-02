@@ -77,7 +77,7 @@ async def get_articles(
                 source_type=article.source_type,
                 published_date=article.original_pubdate,
                 created_at=article.created_at,
-                ai_image_url=article.ai_image_url,
+                image_url=article.image_url,
             )
             for article in articles
         ]
@@ -123,7 +123,7 @@ async def get_recent_articles(
                 source_type=article.source_type,
                 published_date=article.original_pubdate,
                 created_at=article.created_at,
-                ai_image_url=article.ai_image_url,
+                image_url=article.image_url,
             )
             for article in articles
         ]
@@ -167,7 +167,7 @@ async def search_articles(
                 source_type=article.source_type,
                 published_date=article.original_pubdate,
                 created_at=article.created_at,
-                ai_image_url=article.ai_image_url,
+                image_url=article.image_url,
             )
             for article in articles
         ]
@@ -218,7 +218,7 @@ async def get_article(article_id: int, db: APIOperations = Depends(get_db)):
             processed=article.processed,
             extracted_content=article.extracted_content,
             ai_summary=article.ai_summary,
-            ai_image_url=article.ai_image_url,
+            image_url=article.image_url,
         )
 
     except HTTPException:

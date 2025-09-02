@@ -62,7 +62,7 @@ def sample_article():
         processed=True,
         extracted_content="Full article content here",
         ai_summary="AI generated summary",
-        ai_image_url="https://example.com/image.jpg",
+        image_url="https://example.com/image.jpg",
         updated_at=datetime(2024, 1, 15, 10, 40, 0),
     )
 
@@ -85,7 +85,7 @@ def sample_articles():
             processed=True,
             extracted_content=f"Full article {i} content here",
             ai_summary=f"AI generated summary {i}",
-            ai_image_url=f"https://example.com/image{i}.jpg",
+            image_url=f"https://example.com/image{i}.jpg",
             updated_at=datetime(2024, 1, 15 + i, 10, 40, 0),
         )
         articles.append(article)
@@ -111,7 +111,7 @@ def sample_recent_articles():
             processed=True,
             extracted_content=f"Recent content {i + 1}",
             ai_summary=f"Recent AI summary {i + 1}",
-            ai_image_url=f"https://example.com/recent{i + 1}.jpg",
+            image_url=f"https://example.com/recent{i + 1}.jpg",
             updated_at=now - timedelta(hours=i),
         )
         articles.append(article)

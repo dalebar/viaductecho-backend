@@ -99,7 +99,7 @@ async def get_articles_by_source(
                 source_type=article.source_type,
                 published_date=article.original_pubdate,
                 created_at=article.created_at,
-                ai_image_url=article.ai_image_url,
+                image_url=article.image_url,
             )
             for article in articles
         ]

@@ -9,7 +9,7 @@ struct Article: Identifiable, Codable {
     let sourceType: String
     let publishedDate: Date
     let createdAt: Date
-    let aiImageUrl: String?
+    let imageUrl: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -20,7 +20,7 @@ struct Article: Identifiable, Codable {
         case sourceType = "source_type"
         case publishedDate = "published_date"
         case createdAt = "created_at"
-        case aiImageUrl = "ai_image_url"
+        case imageUrl = "image_url"
     }
 }
 
@@ -37,7 +37,7 @@ struct ArticleDetail: Identifiable, Codable {
     let processed: Bool
     let extractedContent: String?
     let aiSummary: String?
-    let aiImageUrl: String?
+    let imageUrl: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -52,7 +52,7 @@ struct ArticleDetail: Identifiable, Codable {
         case processed
         case extractedContent = "extracted_content"
         case aiSummary = "ai_summary"
-        case aiImageUrl = "ai_image_url"
+        case imageUrl = "image_url"
     }
 }
 

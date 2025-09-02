@@ -20,7 +20,7 @@ class RSSArticle(Base):
     processed = Column(Boolean, default=False)
     extracted_content = Column(Text)
     ai_summary = Column(Text)
-    ai_image_url = Column(Text)
+    image_url = Column(Text)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     # Database indexes for API performance
@@ -47,7 +47,7 @@ class RSSArticle(Base):
             "processed": self.processed,
             "extracted_content": self.extracted_content,
             "ai_summary": self.ai_summary,
-            "ai_image_url": self.ai_image_url,
+            "image_url": self.image_url,
         }
 
     def to_summary_dict(self) -> Dict[str, Any]:
@@ -61,5 +61,5 @@ class RSSArticle(Base):
             "source_type": self.source_type,
             "published_date": self.original_pubdate.isoformat() if self.original_pubdate else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "ai_image_url": self.ai_image_url,
+            "image_url": self.image_url,
         }

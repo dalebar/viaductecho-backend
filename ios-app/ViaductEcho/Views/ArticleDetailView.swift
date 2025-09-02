@@ -60,7 +60,7 @@ struct ArticleDetailView: View {
                             .multilineTextAlignment(.leading)
                     }
                     
-                    if let imageUrl = article.aiImageUrl, !imageUrl.isEmpty {
+                    if let imageUrl = article.imageUrl, !imageUrl.isEmpty {
                         AsyncImage(url: URL(string: imageUrl)) { image in
                             image
                                 .resizable()
