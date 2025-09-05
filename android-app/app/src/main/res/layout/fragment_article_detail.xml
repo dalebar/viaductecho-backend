@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.articles.ArticleDetailFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Article Image -->
+            <ImageView
+                android:id="@+id/image_view_article"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/article_detail_image_height"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/cd_article_image"
+                tools:src="@drawable/placeholder_article" />
+
+            <!-- Article Content Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_medium">
+
+                <!-- Article Title -->
+                <TextView
+                    android:id="@+id/text_view_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:textColor="@color/text_primary"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="@dimen/spacing_md"
+                    tools:text="Local Council Announces Major Investment in Parks and Green Spaces" />
+
+                <!-- Source and Date Info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/spacing_lg">
+
+                    <TextView
+                        android:id="@+id/text_view_source"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ViaductEcho.Label"
+                        android:textColor="@color/md_theme_light_primary"
+                        android:background="@color/source_label_background"
+                        android:paddingHorizontal="@dimen/spacing_sm"
+                        android:paddingVertical="@dimen/spacing_xs"
+                        tools:text="Source: BBC News" />
+
+                    <TextView
+                        android:id="@+id/text_view_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:textAppearance="@style/TextAppearance.ViaductEcho.Caption"
+                        android:textColor="@color/text_secondary"
+                        tools:text="Published Mar 15, 2024 • 14:30" />
+
+                </LinearLayout>
+
+                <!-- AI Summary Container -->
+                <LinearLayout
+                    android:id="@+id/ai_summary_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/ai_summary_background"
+                    android:padding="@dimen/padding_medium"
+                    android:layout_marginBottom="@dimen/spacing_lg"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_sm">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_medium"
+                            android:layout_height="@dimen/icon_size_medium"
+                            android:src="@drawable/ic_sparkles"
+                            android:contentDescription="@string/ai_summary_title"
+                            app:tint="@color/md_theme_light_secondary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:text="@string/ai_summary_title"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:textColor="@color/md_theme_light_secondary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_view_ai_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.ViaductEcho.Body"
+                        android:lineSpacingExtra="2dp"
+                        tools:text="The local council has announced a £2.5 million investment to improve parks and green spaces across the borough. This initiative will focus on creating new recreational facilities and improving existing infrastructure to benefit residents and promote environmental sustainability." />
+
+                </LinearLayout>
+
+                <!-- Article Content -->
+                <TextView
+                    android:id="@+id/text_view_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.ViaductEcho.Body"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="@dimen/spacing_xl"
+                    tools:text="Stockport Council announced today that they will be investing £2.5 million in improving local parks and green spaces across the borough. The investment will focus on upgrading playground equipment, creating new walking paths, and establishing community gardens.\n\nCouncillor Jane Smith said: 'This investment represents our commitment to improving quality of life for all residents. Green spaces are essential for both physical and mental wellbeing.'\n\nThe project will begin in April and is expected to be completed by the end of the year." />
+
+                <!-- Read Full Article Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_read_full_article"
+                    style="@style/Widget.ViaductEcho.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/read_full_article"
+                    android:drawableStart="@drawable/ic_external_link"
+                    android:drawablePadding="@dimen/spacing_sm"
+                    android:contentDescription="@string/cd_external_link" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/loading_indicator_size"
+        android:layout_height="@dimen/loading_indicator_size"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

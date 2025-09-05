@@ -10,6 +10,8 @@ import com.viaductecho.android.data.models.Article
 import com.viaductecho.android.databinding.ItemArticleBinding
 import com.viaductecho.android.utils.DateUtils
 import com.viaductecho.android.utils.loadImage
+import com.viaductecho.android.utils.AccessibilityUtils.setupArticleAccessibility
+import com.viaductecho.android.utils.AccessibilityUtils.setupImageAccessibility
 
 class ArticleListAdapter(
     private val onArticleClick: (Article) -> Unit
@@ -51,9 +53,22 @@ class ArticleListAdapter(
                     error = R.drawable.error_image
                 )
                 
-                // Set content description for accessibility
-                imageViewArticle.contentDescription = 
-                    root.context.getString(R.string.cd_article_image)
+                // Set up comprehensive accessibility
+                root.setupArticleAccessibility(
+                    title = article.title,
+                    source = article.source,
+                    publishedDate = DateUtils.formatRelativeTime(article.publishedDate),
+                    hasImage = !article.imageUrl.isNullOrBlank()
+                )
+                
+                imageViewArticle.setupImageAccessibility(
+                    description = if (!article.imageUrl.isNullOrBlank()) {
+                        root.context.getString(R.string.cd_article_image)
+                    } else {
+                        "No image available"
+                    },
+                    isDecorative = article.imageUrl.isNullOrBlank()
+                )
                 
                 // Handle click events
                 root.setOnClickListener {
