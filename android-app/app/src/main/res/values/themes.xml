@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- Material Design 3 Light Theme -->
+    <style name="Theme.ViaductEcho" parent="Theme.Material3.Light">
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        
+        <!-- Tertiary colors -->
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        
+        <!-- Surface colors -->
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        
+        <!-- Outline colors -->
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
+        
+        <!-- Status bar and navigation bar -->
+        <item name="android:statusBarColor">@color/md_theme_light_surface</item>
+        <item name="android:navigationBarColor">@color/md_theme_light_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    </style>
+    
+    <!-- Article Card Style -->
+    <style name="Theme.ViaductEcho.ArticleCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/article_card_background</item>
+        <item name="android:layout_margin">@dimen/card_margin</item>
+        <item name="contentPadding">@dimen/card_padding</item>
+    </style>
+    
+    <!-- Text Styles -->
+    <style name="TextAppearance.ViaductEcho.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextAppearance.ViaductEcho.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="TextAppearance.ViaductEcho.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+    
+    <style name="TextAppearance.ViaductEcho.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    
+    <style name="TextAppearance.ViaductEcho.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">@color/text_tertiary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!-- Button Styles -->
+    <style name="Widget.ViaductEcho.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:paddingStart">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/button_padding_horizontal</item>
+    </style>
+    
+    <style name="Widget.ViaductEcho.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:paddingStart">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/button_padding_horizontal</item>
+    </style>
+    
+    <style name="Widget.ViaductEcho.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:paddingStart">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/button_padding_horizontal</item>
+    </style>
+    
+    <!-- AI Summary Container Style -->
+    <style name="Widget.ViaductEcho.AISummaryContainer">
+        <item name="android:background">@color/ai_summary_background</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+        <item name="android:layout_margin">@dimen/margin_medium</item>
+    </style>
+    
+    <!-- Source Label Style -->
+    <style name="Widget.ViaductEcho.SourceLabel">
+        <item name="android:background">@color/source_label_background</item>
+        <item name="android:padding">@dimen/padding_small</item>
+        <item name="android:textAppearance">@style/TextAppearance.ViaductEcho.Label</item>
+        <item name="android:textColor">@color/md_theme_light_primary</item>
+    </style>
+    
+    <!-- Loading Indicator Style -->
+    <style name="Widget.ViaductEcho.LoadingIndicator" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="android:layout_width">@dimen/loading_indicator_size</item>
+        <item name="android:layout_height">@dimen/loading_indicator_size</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+    
+    <!-- Toolbar Style -->
+    <style name="Widget.ViaductEcho.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.ViaductEcho.Headline</item>
+        <item name="android:elevation">@dimen/app_bar_elevation</item>
+    </style>
+</resources>
