@@ -48,7 +48,7 @@ object ImageLoadingUtils {
             .apply(requestOptions)
             .apply(transformation)
             .transition(DrawableTransitionOptions.withCrossFade(300))
-            .listener(object : RequestListener<Drawable> {
+            .addListener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
