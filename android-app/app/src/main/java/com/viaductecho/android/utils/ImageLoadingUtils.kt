@@ -9,9 +9,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.target.DrawableImageViewTarget
+import com.bumptech.glide.request.transition.Transition
 import com.viaductecho.android.R
 
 /**
@@ -43,34 +43,29 @@ object ImageLoadingUtils {
             RequestOptions().transform(CenterCrop())
         }
         
-        Glide.with(context)
+        val request = Glide.with(context)
             .load(url)
             .apply(requestOptions)
             .apply(transformation)
             .transition(DrawableTransitionOptions.withCrossFade(300))
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    onError?.invoke(e)
-                    return false
+            
+        // Add listener only if callbacks are provided
+        if (onSuccess != null || onError != null) {
+            // Use simpler callback approach to avoid interface issues
+            request.into(object : DrawableImageViewTarget(this) {
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    super.onResourceReady(resource, transition)
+                    onSuccess?.invoke()
                 }
                 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    onSuccess?.invoke()
-                    return false
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    onError?.invoke(null)
                 }
             })
-            .into(this)
+        } else {
+            request.into(this)
+        }
     }
     
     /**
