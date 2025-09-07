@@ -48,26 +48,26 @@ object ImageLoadingUtils {
             .apply(requestOptions)
             .apply(transformation)
             .transition(DrawableTransitionOptions.withCrossFade(300))
-            .addListener(object : RequestListener<Drawable> {
+            .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
-                    target: Target<Drawable>,
+                    target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
                     onError?.invoke(e)
-                    return false // Let Glide handle the error drawable
+                    return false
                 }
                 
                 override fun onResourceReady(
-                    resource: Drawable,
+                    resource: Drawable?,
                     model: Any?,
-                    target: Target<Drawable>,
+                    target: Target<Drawable>?,
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
                     onSuccess?.invoke()
-                    return false // Let Glide handle the drawable
+                    return false
                 }
             })
             .into(this)
