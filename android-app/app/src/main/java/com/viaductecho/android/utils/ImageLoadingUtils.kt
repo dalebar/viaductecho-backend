@@ -52,7 +52,7 @@ object ImageLoadingUtils {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
-                    target: Target<Drawable>?,
+                    target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
                     onError?.invoke(e)
@@ -60,9 +60,9 @@ object ImageLoadingUtils {
                 }
                 
                 override fun onResourceReady(
-                    resource: Drawable?,
+                    resource: Drawable,
                     model: Any?,
-                    target: Target<Drawable>?,
+                    target: Target<Drawable>,
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
