@@ -58,7 +58,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             viewModel.loadArticle(articleId)
         } else {
             showError("Invalid article ID")
-    }
+        }
     
     private fun setupUI() {
         binding.apply {
