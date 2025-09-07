@@ -83,6 +83,9 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     
+    <!-- Base Widget Style -->
+    <style name="Widget.ViaductEcho" parent="android:Widget" />
+    
     <!-- Button Styles -->
     <style name="Widget.ViaductEcho.Button" parent="Widget.Material3.Button">
         <item name="android:minHeight">@dimen/button_height</item>
