@@ -51,14 +51,13 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         setupUI()
         setupObservers()
         
-        // Load article data
-        args.article?.let { article ->
-            currentArticle = article
-            displayArticle(article)
-        } ?: run {
-            // If no article passed, fetch by ID
-            viewModel.loadArticle(args.articleId)
-        }
+        // Always fetch full article details to get AI summary and extracted content
+        // The article from the list doesn't include AI summaries
+        val articleId = args.article?.id ?: args.articleId
+        if (articleId > 0) {
+            viewModel.loadArticle(articleId)
+        } else {
+            showError("Invalid article ID")
     }
     
     private fun setupUI() {
@@ -120,6 +119,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             if (!article.aiSummary.isNullOrBlank()) {
                 aiSummaryContainer.visibility = View.VISIBLE
                 textViewAiSummary.text = article.aiSummary
+                textViewAiSummary.alpha = 1.0f // Reset opacity for real content
             } else {
                 // Show a placeholder message for missing AI summaries
                 aiSummaryContainer.visibility = View.VISIBLE
