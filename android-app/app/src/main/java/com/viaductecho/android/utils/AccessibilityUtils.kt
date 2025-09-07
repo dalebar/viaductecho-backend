@@ -184,8 +184,10 @@ object AccessibilityUtils {
             ) {
                 super.onInitializeAccessibilityNodeInfo(host, info)
                 info.roleDescription = "List"
-                info.collectionInfo = AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(
-                    itemCount, 1, false, AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_NONE
+                info.setCollectionInfo(
+                    AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(
+                        itemCount, 1, false, AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_NONE
+                    )
                 )
             }
         })
