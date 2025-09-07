@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     
     <!-- Material Design 3 Light Theme -->
-    <style name="Theme.ViaductEcho" parent="Theme.Material3.Light">
+    <style name="Theme.ViaductEcho" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary colors -->
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
