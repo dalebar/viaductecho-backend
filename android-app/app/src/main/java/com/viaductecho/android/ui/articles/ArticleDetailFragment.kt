@@ -117,14 +117,14 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             } ?: ""
             
             // Display AI Summary if available
-            android.util.Log.d("ArticleDetail", "AI Summary: '${article.aiSummary}' (null: ${article.aiSummary == null}, blank: ${article.aiSummary.isNullOrBlank()})")
             if (!article.aiSummary.isNullOrBlank()) {
                 aiSummaryContainer.visibility = View.VISIBLE
                 textViewAiSummary.text = article.aiSummary
-                android.util.Log.d("ArticleDetail", "Showing AI summary container")
             } else {
-                aiSummaryContainer.visibility = View.GONE
-                android.util.Log.d("ArticleDetail", "Hiding AI summary container - no summary available")
+                // Show a placeholder message for missing AI summaries
+                aiSummaryContainer.visibility = View.VISIBLE
+                textViewAiSummary.text = getString(R.string.ai_summary_not_available)
+                textViewAiSummary.alpha = 0.7f // Make it slightly faded to indicate it's placeholder text
             }
             
             // Display extracted content if available
