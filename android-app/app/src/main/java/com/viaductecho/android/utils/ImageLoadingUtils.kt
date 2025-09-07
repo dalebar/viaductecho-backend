@@ -114,15 +114,3 @@ object ImageLoadingUtils {
     }
 }
 
-/**
- * Extension function for backward compatibility
- */
-fun ImageView.loadImage(
-    url: String?,
-    placeholder: Int = R.drawable.placeholder_article,
-    error: Int = R.drawable.error_image
-) {
-    ImageLoadingUtils.run {
-        loadImageEnhanced(url, placeholder, error)
-    }
-}
