@@ -45,12 +45,12 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        
+
         setupUI()
         setupObservers()
-        
+
         // Always fetch full article details to get AI summary and extracted content
         // The article from the list doesn't include AI summaries
         val articleId = args.article?.id ?: args.articleId
@@ -59,7 +59,8 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         } else {
             showError("Invalid article ID")
         }
-    
+    }
+
     private fun setupUI() {
         binding.apply {
             // Setup scroll behavior
