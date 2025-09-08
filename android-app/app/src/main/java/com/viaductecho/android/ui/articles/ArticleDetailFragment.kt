@@ -128,19 +128,8 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
                 textViewAiSummary.alpha = 0.7f // Make it slightly faded to indicate it's placeholder text
             }
             
-            // Display extracted content if available
-            if (!article.extractedContent.isNullOrBlank()) {
-                textViewContent.text = article.extractedContent
-                textViewContent.visibility = View.VISIBLE
-            } else {
-                // Fallback to summary if no extracted content
-                if (!article.summary.isBlank() && article.summary != article.title) {
-                    textViewContent.text = article.summary
-                    textViewContent.visibility = View.VISIBLE
-                } else {
-                    textViewContent.visibility = View.GONE
-                }
-            }
+            // Hide the original content - only show AI summary
+            textViewContent.visibility = View.GONE
             
             // Setup accessibility
             imageViewArticle.contentDescription = 
