@@ -20,7 +20,7 @@ import com.viaductecho.android.data.models.Article
 import com.viaductecho.android.databinding.FragmentArticleDetailBinding
 import com.viaductecho.android.utils.DateUtils
 import com.viaductecho.android.utils.Resource
-import com.viaductecho.android.utils.loadImage
+import com.viaductecho.android.utils.ImageLoadingUtils.loadImageEnhanced
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,7 +101,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
     private fun displayArticle(article: Article) {
         binding.apply {
             // Load article image
-            imageViewArticle.loadImage(
+            imageViewArticle.loadImageEnhanced(
                 url = article.imageUrl,
                 placeholder = R.drawable.placeholder_article,
                 error = R.drawable.error_image

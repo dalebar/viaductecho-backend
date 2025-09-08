@@ -9,7 +9,7 @@ import com.viaductecho.android.R
 import com.viaductecho.android.data.models.Article
 import com.viaductecho.android.databinding.ItemArticleBinding
 import com.viaductecho.android.utils.DateUtils
-import com.viaductecho.android.utils.loadImage
+import com.viaductecho.android.utils.ImageLoadingUtils.loadImageEnhanced
 import com.viaductecho.android.utils.AccessibilityUtils.setupArticleAccessibility
 import com.viaductecho.android.utils.AccessibilityUtils.setupImageAccessibility
 
@@ -47,7 +47,7 @@ class ArticleListAdapter(
                 textViewDate.text = DateUtils.formatRelativeTime(article.publishedDate)
                 
                 // Load article image
-                imageViewArticle.loadImage(
+                imageViewArticle.loadImageEnhanced(
                     url = article.imageUrl,
                     placeholder = R.drawable.placeholder_article,
                     error = R.drawable.error_image
