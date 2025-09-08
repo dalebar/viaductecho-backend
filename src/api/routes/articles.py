@@ -8,8 +8,12 @@ try:
 except ImportError:
     from database.api_operations import APIOperations
 
-from ..schemas.articles import (ArticleDetail, ArticleSummary,
-                                PaginatedArticles, PaginationInfo)
+from ..schemas.articles import (
+    ArticleDetail,
+    ArticleSummary,
+    PaginatedArticles,
+    PaginationInfo,
+)
 from ..schemas.common import ErrorResponse
 
 router = APIRouter()
