@@ -17,18 +17,25 @@ class GitHubPublisher:
         self.token = Config.GITHUB_TOKEN
         self.repo = Config.GITHUB_REPO
         self.branch = Config.GITHUB_BRANCH
-        self.headers = {"Authorization": f"token {self.token}", "Accept": "application/vnd.github.v3+json"}
+        self.headers = {
+            "Authorization": f"token {self.token}",
+            "Accept": "application/vnd.github.v3+json",
+        }
 
     def publish_article(self, article_data: dict, summary: str, image_url: str) -> bool:
         """Publish article to GitHub Pages"""
         try:
-            jekyll_content = self._create_jekyll_content(article_data, summary, image_url)
+            jekyll_content = self._create_jekyll_content(
+                article_data, summary, image_url
+            )
 
             slug = self._create_slug(article_data["original_title"])
             date_str = datetime.now().strftime("%Y-%m-%d")
             filename = f"{date_str}-{slug}.md"
 
-            encoded_content = base64.b64encode(jekyll_content.encode("utf-8")).decode("utf-8")
+            encoded_content = base64.b64encode(jekyll_content.encode("utf-8")).decode(
+                "utf-8"
+            )
 
             url = f"https://api.github.com/repos/{self.repo}/contents/_posts/{filename}"
             data = {
@@ -43,14 +50,18 @@ class GitHubPublisher:
                 logging.info(f"Published: {article_data['original_title']}")
                 return True
             else:
-                logging.error(f"GitHub publish failed: {response.status_code} - {response.text}")
+                logging.error(
+                    f"GitHub publish failed: {response.status_code} - {response.text}"
+                )
                 return False
 
         except Exception as e:
             logging.error(f"Publishing error: {e}")
             return False
 
-    def _create_jekyll_content(self, article: dict, summary: str, image_url: str) -> str:
+    def _create_jekyll_content(
+        self, article: dict, summary: str, image_url: str
+    ) -> str:
         """Create Jekyll markdown content"""
         content = f"""---
 layout: post

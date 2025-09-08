@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Spacing System -->
+    
+    <!-- Spacing -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_xxl">48dp</dimen>
+    
+    <!-- Margins -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_extra_large">32dp</dimen>
+    
+    <!-- Padding -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_extra_large">32dp</dimen>
+    
+    <!-- Card Dimensions -->
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_margin_vertical">8dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    
+    <!-- Article List Item -->
+    <dimen name="article_item_image_height">180dp</dimen>
+    <dimen name="article_item_min_height">240dp</dimen>
+    <dimen name="article_item_title_text_size">16sp</dimen>
+    <dimen name="article_item_source_text_size">12sp</dimen>
+    <dimen name="article_item_date_text_size">11sp</dimen>
+    
+    <!-- Article Detail -->
+    <dimen name="article_detail_image_height">200dp</dimen>
+    <dimen name="article_detail_title_text_size">24sp</dimen>
+    <dimen name="article_detail_body_text_size">16sp</dimen>
+    <dimen name="article_detail_meta_text_size">14sp</dimen>
+    
+    <!-- Button Dimensions -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_corner_radius">24dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+    
+    <!-- Icon Sizes -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="icon_size_large">32dp</dimen>
+    <dimen name="icon_size_extra_large">48dp</dimen>
+    
+    <!-- Touch Target Sizes (Accessibility) -->
+    <dimen name="touch_target_size">48dp</dimen>
+    <dimen name="touch_target_size_small">40dp</dimen>
+    
+    <!-- Loading States -->
+    <dimen name="loading_indicator_size">40dp</dimen>
+    <dimen name="progress_bar_height">4dp</dimen>
+    
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+    
+    <!-- Text Line Height -->
+    <dimen name="line_height_small">16sp</dimen>
+    <dimen name="line_height_medium">20sp</dimen>
+    <dimen name="line_height_large">24sp</dimen>
+    <dimen name="line_height_extra_large">32sp</dimen>
+    
+    <!-- App Bar -->
+    <dimen name="app_bar_height">56dp</dimen>
+    <dimen name="app_bar_elevation">4dp</dimen>
+    
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    
+    <!-- Bottom Navigation -->
+    <dimen name="bottom_nav_height">56dp</dimen>
+    
+    <!-- Image Placeholders -->
+    <dimen name="placeholder_image_height">120dp</dimen>
+    <dimen name="error_image_size">64dp</dimen>
+</resources>

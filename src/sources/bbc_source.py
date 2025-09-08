@@ -31,7 +31,9 @@ class BBCSource(BaseNewsSource):
                     "original_source": self.source_name,
                     "source_type": "RSS News",
                     "original_pubdate": (
-                        datetime(*entry.published_parsed[:6]) if hasattr(entry, "published_parsed") else None
+                        datetime(*entry.published_parsed[:6])
+                        if hasattr(entry, "published_parsed")
+                        else None
                     ),
                 }
                 articles.append(article)

@@ -1,25 +1,135 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pytest_cache/
 *.pyc
 *.pyo
 *.pyd
 .Python
 *.so
+
+# Virtual environments
 venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing and coverage
 .coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.cache
+nosetests.xml
+
+# Development tools
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pre-commit-config.yaml.swp
 
 # local 
 reference/
 instructions.md
 
-# uv
-.venv
+# uv package manager
 .python-version
-pyproject.toml
 uv.lock
 
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.whl
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
 #claude
+.claude/
 CLAUDE.md
 
 .DS_Store
+
+# Environment variables
 .env
+.env.*
+!.env.example
+
+# Logs - organized structure
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# iOS / Xcode
+ios-app/ViaductEcho.xcodeproj/project.xcworkspace/
+ios-app/ViaductEcho.xcodeproj/xcuserdata/
+ios-app/build/
+ios-app/DerivedData/
+ios-app/*.xcworkspace/xcuserdata/
+ios-app/.DS_Store
+ios-app/*/.DS_Store
+ios-app/*/*/.DS_Store
+ios-app/*/*/*/.DS_Store
+
+# Swift Package Manager
+ios-app/.swiftpm/
+ios-app/Package.resolved
+
+# CocoaPods (if used)
+ios-app/Pods/
+ios-app/Podfile.lock
+
+# Carthage (if used)
+ios-app/Carthage/Build/
+
+# Xcode user settings
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+*.xcscmblueprint
+
+# iOS App Store / TestFlight
+ios-app/*.ipa
+ios-app/*.dSYM.zip
+ios-app/*.dSYM
+
+# Android
+android-app/build/
+android-app/app/build/
+android-app/.gradle/
+android-app/local.properties
+android-app/*.iml
+android-app/.idea/
+android-app/captures/
+android-app/.externalNativeBuild/
+android-app/.cxx/
+
+# Docker
+.dockerignore
+docker-compose.override.yml

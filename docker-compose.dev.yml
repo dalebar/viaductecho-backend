@@ -1,0 +1,57 @@
+version: '3.8'
+
+# Development override for docker-compose.yml
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # Development database with exposed port and test data
+  postgres:
+    environment:
+      POSTGRES_DB: viaduct_echo_dev
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+    ports:
+      - "5433:5432"  # Different port for dev to avoid conflicts
+
+  # API service with development configuration
+  api:
+    build:
+      context: .
+      target: dependencies  # Use dependencies stage for faster builds
+    environment:
+      DATABASE_URL: postgresql://dev_user:dev_password@postgres:5432/viaduct_echo_dev
+      DEBUG: "true"
+      RELOAD: "true"
+    volumes:
+      - ./src:/app/src  # Mount source code for live reloading
+      - ./.env.dev:/app/.env:ro
+    command: ["python", "-m", "uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ports:
+      - "8001:8000"  # Different port for dev API
+
+  # Aggregator with development configuration
+  aggregator:
+    build:
+      context: .
+      target: dependencies
+    environment:
+      DATABASE_URL: postgresql://dev_user:dev_password@postgres:5432/viaduct_echo_dev
+      DEBUG: "true"
+    volumes:
+      - ./src:/app/src  # Mount source code for live reloading
+      - ./.env.dev:/app/.env:ro
+    # Don't run automatically in dev mode
+    profiles: ["aggregator"]
+
+  # Development tools container
+  dev-tools:
+    build:
+      context: .
+      target: dependencies
+    environment:
+      DATABASE_URL: postgresql://dev_user:dev_password@postgres:5432/viaduct_echo_dev
+    volumes:
+      - ./:/app
+      - ./.env.dev:/app/.env:ro
+    profiles: ["tools"]
+    command: ["tail", "-f", "/dev/null"]  # Keep container running for exec commands

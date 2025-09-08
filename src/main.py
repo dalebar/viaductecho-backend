@@ -1,5 +1,7 @@
 import logging
+import os
 import time
+from datetime import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
@@ -11,7 +13,27 @@ from .sources.bbc_source import BBCSource
 from .sources.men_source import MENSource
 from .sources.nub_source import NubSource
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+def setup_logging():
+    """Setup logging with timestamped file output"""
+    # Create organized logs directory structure
+    os.makedirs("logs/sessions", exist_ok=True)
+
+    # Generate timestamped filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"logs/sessions/session_{timestamp}.log"
+
+    # Configure logging to write to both file and console
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[logging.FileHandler(log_filename), logging.StreamHandler()],
+    )
+
+    logging.info(f"Session started - logging to {log_filename}")
+
+
+setup_logging()
 
 
 class ViaductEcho:
@@ -27,11 +49,26 @@ class ViaductEcho:
         try:
             article = self.db.insert_article(article_data)
 
-            content_data = self.content_extractor.extract_content(article.original_link, article.original_source)
+            content_data = self.content_extractor.extract_content(
+                article.original_link, article.original_source
+            )
+
+            # Store extracted content and image URL in database
+            self.db.update_article_content(
+                article.original_link,
+                content_data["content"],
+                content_data.get("image_url"),
+            )
 
             summary = self.ai_summarizer.summarize(content_data["content"])
 
-            success = self.github_publisher.publish_article(article_data, summary, content_data["image_url"])
+            # Store AI summary in database
+            if summary:
+                self.db.update_article_ai_summary(article.original_link, summary)
+
+            success = self.github_publisher.publish_article(
+                article_data, summary, content_data["image_url"]
+            )
 
             if success:
                 self.db.mark_processed(article.original_link)

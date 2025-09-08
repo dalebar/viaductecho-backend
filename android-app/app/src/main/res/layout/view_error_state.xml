@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding_extra_large">
+
+    <ImageView
+        android:id="@+id/image_view_error_icon"
+        android:layout_width="@dimen/error_image_size"
+        android:layout_height="@dimen/error_image_size"
+        android:src="@drawable/error_image"
+        android:contentDescription="@string/error_unknown"
+        android:alpha="0.6"
+        android:tint="?attr/colorError" />
+
+    <TextView
+        android:id="@+id/text_view_error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:text="@string/error_unknown"
+        android:textAppearance="@style/TextAppearance.ViaductEcho.Body"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:maxLines="3"
+        tools:text="Something went wrong" />
+
+    <TextView
+        android:id="@+id/text_view_error_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:text="@string/error_network"
+        android:textAppearance="@style/TextAppearance.ViaductEcho.Caption"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:alpha="0.7"
+        tools:text="Check your internet connection and try again" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_retry"
+        style="@style/Widget.ViaductEcho.Button.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_lg"
+        android:text="@string/retry"
+        android:minWidth="120dp" />
+
+</LinearLayout>

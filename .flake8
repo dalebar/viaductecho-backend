@@ -1,0 +1,36 @@
+[flake8]
+max-line-length = 88
+extend-exclude = 
+    .venv,
+    __pycache__,
+    .pytest_cache,
+    .git,
+    build,
+    dist,
+    *.egg-info,
+    migrations,
+    .tox,
+    .coverage
+
+# Ignore specific error codes
+ignore = 
+    E203,
+    W503,
+    E501,
+    C901
+
+# Per-file ignores
+per-file-ignores =
+    __init__.py:F401
+    **/test_*.py:F401,F811
+    src/database/backfill_ai_summaries.py:E402
+    src/database/check_ai_summary_status.py:E402
+    tests/test_nub_source.py:E402
+    tests/test_bbc_source.py:E402
+    tests/test_men_source.py:E402
+
+# Enable specific warnings
+select = E,W,F,C
+
+# Maximum cyclomatic complexity
+max-complexity = 10
