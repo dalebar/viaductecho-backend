@@ -8,10 +8,10 @@ import sys
 from unittest.mock import Mock, patch
 from datetime import datetime
 
+from database.api_operations import APIOperations
+
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
-
-from database.api_operations import APIOperations
 
 
 class TestAPIOperations:

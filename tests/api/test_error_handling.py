@@ -303,12 +303,3 @@ class TestCORSHandling:
 
         # Check for CORS headers
         assert "access-control-allow-origin" in response.headers
-
-    def test_cors_credentials_allowed(self, client):
-        """Test that CORS allows credentials"""
-        response = client.get(
-            "/api/v1/articles", headers={"Origin": "https://example.com"}
-        )
-
-        # Check for credentials header
-        # Note: Actual header presence depends on the request and CORS configuration

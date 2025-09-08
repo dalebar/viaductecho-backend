@@ -4,14 +4,15 @@ Test script for database connection and table creation
 """
 import os
 import sys
+
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 # Add src to path so we can import our modules from the parent directory
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
 
-from database.models import Base, RSSArticle
+from database.models import Base, RSSArticle  # noqa: E402
 
 
 def test_database_connection():

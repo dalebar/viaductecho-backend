@@ -414,17 +414,17 @@ class TestBBCSource:
         mock_feed.entries = [mock_entry]
         mock_feedparser.return_value = mock_feed
 
-        source = BBCSource()
-
         with patch("logging.info") as mock_log_info:
-            articles = source.fetch_articles()
+            source = BBCSource()
+            _ = source.fetch_articles()
             mock_log_info.assert_called_once_with("BBC: 1 articles found")
 
         # Test error logging
         mock_feedparser.side_effect = Exception("Test error")
 
         with patch("logging.error") as mock_log_error:
-            articles = source.fetch_articles()
+            source = BBCSource()
+            _ = source.fetch_articles()
             mock_log_error.assert_called_once_with("BBC fetch error: Test error")
 
 

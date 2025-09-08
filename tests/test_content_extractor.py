@@ -10,11 +10,10 @@ from unittest.mock import Mock, patch
 import requests
 import pytest
 
-
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
 
-from processors.content_extractor import ContentExtractor
+from processors.content_extractor import ContentExtractor # noqa
 
 
 class TestContentExtractor:
@@ -418,10 +417,7 @@ class TestContentExtractor:
                 mock_response.content = b"<html></html>"
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
-
-                result = extractor.extract_content(
-                    "https://www.bbc.com/news/test", "BBC"
-                )
+                extractor.extract_content("https://www.bbc.com/news/some-article", "BBC News")
                 mock_bbc.assert_called_once()
 
     def test_url_routing_men(self, extractor):
@@ -439,10 +435,7 @@ class TestContentExtractor:
                 mock_response.content = b"<html></html>"
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
-
-                result = extractor.extract_content(
-                    "https://www.manchestereveningnews.co.uk/test", "MEN"
-                )
+                extractor.extract_content("https://www.manchestereveningnews.co.uk/news/some-article", "MEN")
                 mock_men.assert_called_once()
 
     def test_url_routing_nub(self, extractor):
@@ -460,10 +453,7 @@ class TestContentExtractor:
                 mock_response.content = b"<html></html>"
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
-
-                result = extractor.extract_content(
-                    "https://stockport.nub.news/test", "Nub"
-                )
+                extractor.extract_content("https://stockport.nub.news/news/some-article", "Nub News")
                 mock_nub.assert_called_once()
 
     def test_url_routing_generic(self, extractor):
@@ -484,10 +474,7 @@ class TestContentExtractor:
                 mock_response.content = b"<html></html>"
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
-
-                result = extractor.extract_content(
-                    "https://unknown-site.com/test", "Unknown"
-                )
+                extractor.extract_content("https://example.com/news/some-article", "Generic Source")
                 mock_generic.assert_called_once()
 
 

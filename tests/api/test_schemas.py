@@ -6,12 +6,8 @@ import os
 import sys
 from datetime import datetime
 
-
 import pytest
 from pydantic import ValidationError
-
-# Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 from api.schemas.articles import (
     ArticleBase,
@@ -25,6 +21,9 @@ from api.schemas.articles import (
 )
 from api.schemas.common import ErrorResponse, HealthResponse, MessageResponse
 from api.schemas.sources import SourceStats, SourcesResponse
+
+# Add src to path so we can import our modules
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 
 class TestArticleSchemas:

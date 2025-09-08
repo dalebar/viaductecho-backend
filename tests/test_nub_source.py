@@ -12,8 +12,8 @@ from unittest.mock import Mock, patch
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from sources.nub_source import NubSource
-from sources.base_source import BaseNewsSource
+from sources.nub_source import NubSource  # noqa: E402
+from sources.base_source import BaseNewsSource  # noqa: E402
 
 
 def create_mock_nub_article(headline, url, date_published):
@@ -473,8 +473,9 @@ class TestNubSource:
         mock_response = create_mock_response(articles_data)
         mock_get.return_value = mock_response
 
+        # Trigger the request
         source = NubSource()
-        articles = source.fetch_articles()
+        _ = source.fetch_articles()
 
         # Verify requests.get was called with correct parameters
         mock_get.assert_called_once_with(
@@ -498,17 +499,17 @@ class TestNubSource:
         mock_response = create_mock_response(articles_data)
         mock_get.return_value = mock_response
 
-        source = NubSource()
-
         with patch("logging.info") as mock_log_info:
-            articles = source.fetch_articles()
+            source = NubSource()
+            _ = source.fetch_articles()
             mock_log_info.assert_called_once_with("Nub News: 1 articles found")
 
         # Test error logging
         mock_get.side_effect = Exception("Network error")
 
         with patch("logging.error") as mock_log_error:
-            articles = source.fetch_articles()
+            source = NubSource()
+            _ = source.fetch_articles()
             mock_log_error.assert_called_once_with(
                 "Nub News fetch error: Network error"
             )

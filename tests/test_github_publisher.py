@@ -14,7 +14,7 @@ import pytest
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from publishers.github_publisher import GitHubPublisher
+from publishers.github_publisher import GitHubPublisher  # noqa: E402
 
 
 class TestGitHubPublisher:
