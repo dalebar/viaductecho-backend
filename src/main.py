@@ -119,7 +119,7 @@ if __name__ == "__main__":
     echo = ViaductEcho()
 
     # For testing, run once
-    echo.run_once()
+    # echo.run_once()
 
     # For production, start scheduler
-    # echo.start_scheduler()
+    echo.start_scheduler()
