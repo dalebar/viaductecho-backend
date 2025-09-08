@@ -47,7 +47,12 @@ class APIOperations(DatabaseOperations):
         total_count = query.count()
 
         # Apply ordering and pagination
-        articles = query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
+        articles = (
+            query.order_by(desc(RSSArticle.created_at))
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
 
         return articles, total_count
 
@@ -78,7 +83,9 @@ class APIOperations(DatabaseOperations):
             .all()
         )
 
-    def search_articles(self, query: str, page: int = 1, per_page: int = 20) -> Tuple[List[RSSArticle], int]:
+    def search_articles(
+        self, query: str, page: int = 1, per_page: int = 20
+    ) -> Tuple[List[RSSArticle], int]:
         """
         Search articles by title, summary, or content
 
@@ -114,11 +121,18 @@ class APIOperations(DatabaseOperations):
 
         total_count = base_query.count()
 
-        articles = base_query.order_by(desc(RSSArticle.created_at)).offset(offset).limit(per_page).all()
+        articles = (
+            base_query.order_by(desc(RSSArticle.created_at))
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
 
         return articles, total_count
 
-    def get_articles_by_source(self, source: str, page: int = 1, per_page: int = 20) -> Tuple[List[RSSArticle], int]:
+    def get_articles_by_source(
+        self, source: str, page: int = 1, per_page: int = 20
+    ) -> Tuple[List[RSSArticle], int]:
         """
         Get articles from a specific source
 
@@ -130,7 +144,9 @@ class APIOperations(DatabaseOperations):
         Returns:
             Tuple of (articles, total_count)
         """
-        return self.get_articles_paginated(page=page, per_page=per_page, source=source, processed_only=True)
+        return self.get_articles_paginated(
+            page=page, per_page=per_page, source=source, processed_only=True
+        )
 
     def get_article_by_id(self, article_id: int) -> Optional[RSSArticle]:
         """
@@ -187,7 +203,11 @@ class APIOperations(DatabaseOperations):
                         "name": result.original_source,
                         "article_count": result.article_count,
                         "processed_count": result.processed_count,
-                        "latest_article": (result.latest_article.isoformat() if result.latest_article else None),
+                        "latest_article": (
+                            result.latest_article.isoformat()
+                            if result.latest_article
+                            else None
+                        ),
                     }
                 )
 

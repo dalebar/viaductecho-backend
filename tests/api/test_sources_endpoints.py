@@ -18,7 +18,9 @@ class TestSourcesEndpoints:
     """Test suite for Sources API endpoints"""
 
     @patch("api.routes.sources.get_db")
-    def test_get_sources_success(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    def test_get_sources_success(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test successful sources retrieval"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -65,7 +67,9 @@ class TestSourcesEndpoints:
         """Test sources retrieval with database error"""
         # Setup mock to raise exception
         mock_get_db.return_value = mock_api_operations
-        mock_api_operations.get_sources_with_stats.side_effect = Exception("Database connection failed")
+        mock_api_operations.get_sources_with_stats.side_effect = Exception(
+            "Database connection failed"
+        )
 
         # Make request
         response = client.get("/api/v1/sources")
@@ -78,13 +82,21 @@ class TestSourcesEndpoints:
 
     @patch("api.routes.sources.get_db")
     def test_get_articles_by_source_success(
-        self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles
+        self,
+        mock_get_db,
+        client,
+        mock_api_operations,
+        sample_sources_stats,
+        sample_articles,
     ):
         """Test successful articles by source retrieval"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
         mock_api_operations.get_sources_with_stats.return_value = sample_sources_stats
-        mock_api_operations.get_articles_by_source.return_value = (sample_articles[:3], 15)
+        mock_api_operations.get_articles_by_source.return_value = (
+            sample_articles[:3],
+            15,
+        )
 
         # Make request
         response = client.get("/api/v1/sources/BBC News/articles?page=1&per_page=3")
@@ -101,10 +113,14 @@ class TestSourcesEndpoints:
         assert data["pagination"]["per_page"] == 3
 
         # Verify correct parameters were passed
-        mock_api_operations.get_articles_by_source.assert_called_once_with(source="BBC News", page=1, per_page=3)
+        mock_api_operations.get_articles_by_source.assert_called_once_with(
+            source="BBC News", page=1, per_page=3
+        )
 
     @patch("api.routes.sources.get_db")
-    def test_get_articles_by_source_not_found(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    def test_get_articles_by_source_not_found(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test articles by source when source doesn't exist"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -120,7 +136,9 @@ class TestSourcesEndpoints:
         assert "Source 'Nonexistent Source' not found" in data["error"]
 
     @patch("api.routes.sources.get_db")
-    def test_get_articles_by_source_empty_results(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    def test_get_articles_by_source_empty_results(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test articles by source with no articles"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -139,7 +157,9 @@ class TestSourcesEndpoints:
         assert data["pagination"]["total_pages"] == 0
 
     @patch("api.routes.sources.get_db")
-    def test_get_articles_by_source_validation(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    def test_get_articles_by_source_validation(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test articles by source parameter validation"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -166,7 +186,9 @@ class TestSourcesEndpoints:
         # Setup mock
         mock_get_db.return_value = mock_api_operations
         mock_api_operations.get_sources_with_stats.return_value = sample_sources_stats
-        mock_api_operations.get_articles_by_source.side_effect = Exception("Database query failed")
+        mock_api_operations.get_articles_by_source.side_effect = Exception(
+            "Database query failed"
+        )
 
         # Make request
         response = client.get("/api/v1/sources/BBC News/articles")
@@ -209,7 +231,9 @@ class TestSourcesEndpoints:
         )
 
     @patch("api.routes.sources.get_db")
-    def test_sources_response_format(self, mock_get_db, client, mock_api_operations, sample_sources_stats):
+    def test_sources_response_format(
+        self, mock_get_db, client, mock_api_operations, sample_sources_stats
+    ):
         """Test sources response format matches schema"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
@@ -242,13 +266,21 @@ class TestSourcesEndpoints:
 
     @patch("api.routes.sources.get_db")
     def test_articles_by_source_pagination(
-        self, mock_get_db, client, mock_api_operations, sample_sources_stats, sample_articles
+        self,
+        mock_get_db,
+        client,
+        mock_api_operations,
+        sample_sources_stats,
+        sample_articles,
     ):
         """Test pagination for articles by source"""
         # Setup mock
         mock_get_db.return_value = mock_api_operations
         mock_api_operations.get_sources_with_stats.return_value = sample_sources_stats
-        mock_api_operations.get_articles_by_source.return_value = (sample_articles[:2], 23)
+        mock_api_operations.get_articles_by_source.return_value = (
+            sample_articles[:2],
+            23,
+        )
 
         # Make request
         response = client.get("/api/v1/sources/BBC News/articles?page=2&per_page=10")

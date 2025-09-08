@@ -25,7 +25,9 @@ def create_mock_response(articles_data, status_code=200):
     """Helper function to create mock HTTP response"""
     mock_response = Mock()
     mock_response.status_code = status_code
-    mock_response.raise_for_status.return_value = None if status_code < 400 else Exception(f"HTTP {status_code}")
+    mock_response.raise_for_status.return_value = (
+        None if status_code < 400 else Exception(f"HTTP {status_code}")
+    )
 
     # Create mock HTML content with JSON-LD script tag
     json_content = json.dumps(articles_data)
@@ -99,25 +101,52 @@ class TestNubSource:
             assert len(articles) == 3
 
             # Check first article
-            assert articles[0]["original_title"] == "Stockport town centre gets new public art installation"
-            assert articles[0]["original_link"] == "https://stockport.nub.news/news/stockport-art-installation"
-            assert articles[0]["original_summary"] == "Stockport town centre gets new public art installation"
+            assert (
+                articles[0]["original_title"]
+                == "Stockport town centre gets new public art installation"
+            )
+            assert (
+                articles[0]["original_link"]
+                == "https://stockport.nub.news/news/stockport-art-installation"
+            )
+            assert (
+                articles[0]["original_summary"]
+                == "Stockport town centre gets new public art installation"
+            )
             assert articles[0]["original_source"] == "Stockport Nub News"
             assert articles[0]["source_type"] == "Web scraping"
             assert articles[0]["original_pubdate"] == datetime(2024, 3, 15, 10, 30, 0)
 
             # Check second article
-            assert articles[1]["original_title"] == "Local community group organizes charity event"
-            assert articles[1]["original_link"] == "https://stockport.nub.news/news/charity-event"
-            assert articles[1]["original_summary"] == "Local community group organizes charity event"
+            assert (
+                articles[1]["original_title"]
+                == "Local community group organizes charity event"
+            )
+            assert (
+                articles[1]["original_link"]
+                == "https://stockport.nub.news/news/charity-event"
+            )
+            assert (
+                articles[1]["original_summary"]
+                == "Local community group organizes charity event"
+            )
             assert articles[1]["original_source"] == "Stockport Nub News"
             assert articles[1]["source_type"] == "Web scraping"
             assert articles[1]["original_pubdate"] == datetime(2024, 3, 15, 14, 45, 0)
 
             # Check third article
-            assert articles[2]["original_title"] == "New bus route connects Stockport neighborhoods"
-            assert articles[2]["original_link"] == "https://stockport.nub.news/news/bus-route"
-            assert articles[2]["original_summary"] == "New bus route connects Stockport neighborhoods"
+            assert (
+                articles[2]["original_title"]
+                == "New bus route connects Stockport neighborhoods"
+            )
+            assert (
+                articles[2]["original_link"]
+                == "https://stockport.nub.news/news/bus-route"
+            )
+            assert (
+                articles[2]["original_summary"]
+                == "New bus route connects Stockport neighborhoods"
+            )
             assert articles[2]["original_source"] == "Stockport Nub News"
             assert articles[2]["source_type"] == "Web scraping"
             assert articles[2]["original_pubdate"] == datetime(2024, 3, 15, 16, 20, 0)
@@ -239,14 +268,20 @@ class TestNubSource:
     def test_fetch_articles_malformed_date(self, mock_get, mock_sleep):
         """Test handling of articles with malformed dates"""
         articles_data = [
-            create_mock_nub_article("Valid article", "https://stockport.nub.news/news/valid", "2024-03-15 10:30:00"),
+            create_mock_nub_article(
+                "Valid article",
+                "https://stockport.nub.news/news/valid",
+                "2024-03-15 10:30:00",
+            ),
             {
                 "headline": "Article with bad date",
                 "url": "https://stockport.nub.news/news/bad-date",
                 "datePublished": "invalid-date-format",
             },
             create_mock_nub_article(
-                "Another valid article", "https://stockport.nub.news/news/valid2", "2024-03-15 14:45:00"
+                "Another valid article",
+                "https://stockport.nub.news/news/valid2",
+                "2024-03-15 14:45:00",
             ),
         ]
 
@@ -255,7 +290,10 @@ class TestNubSource:
 
         source = NubSource()
 
-        with patch("logging.error") as mock_log_error, patch("logging.info") as mock_log_info:
+        with (
+            patch("logging.error") as mock_log_error,
+            patch("logging.info") as mock_log_info,
+        ):
             articles = source.fetch_articles()
 
             # Should return only the 2 valid articles
@@ -276,7 +314,9 @@ class TestNubSource:
         """Test handling of articles with missing required fields"""
         articles_data = [
             create_mock_nub_article(
-                "Complete article", "https://stockport.nub.news/news/complete", "2024-03-15 10:30:00"
+                "Complete article",
+                "https://stockport.nub.news/news/complete",
+                "2024-03-15 10:30:00",
             ),
             {
                 "headline": "Missing URL",
@@ -289,7 +329,9 @@ class TestNubSource:
                 # Missing 'headline' field
             },
             create_mock_nub_article(
-                "Another complete article", "https://stockport.nub.news/news/complete2", "2024-03-15 13:30:00"
+                "Another complete article",
+                "https://stockport.nub.news/news/complete2",
+                "2024-03-15 13:30:00",
             ),
         ]
 
@@ -298,7 +340,10 @@ class TestNubSource:
 
         source = NubSource()
 
-        with patch("logging.error") as mock_log_error, patch("logging.info") as mock_log_info:
+        with (
+            patch("logging.error") as mock_log_error,
+            patch("logging.info") as mock_log_info,
+        ):
             articles = source.fetch_articles()
 
             # Should return only the 2 complete articles
@@ -319,7 +364,9 @@ class TestNubSource:
         # Create JSON with control characters that need to be cleaned
         articles_data = [
             create_mock_nub_article(
-                "Article with clean data", "https://stockport.nub.news/news/clean", "2024-03-15 10:30:00"
+                "Article with clean data",
+                "https://stockport.nub.news/news/clean",
+                "2024-03-15 10:30:00",
             )
         ]
 
@@ -375,9 +422,18 @@ class TestNubSource:
         article = articles[0]
 
         # Check all expected fields are present and correct
-        assert article["original_title"] == "Stockport community center opens new facilities"
-        assert article["original_link"] == "https://stockport.nub.news/news/community-center-facilities"
-        assert article["original_summary"] == "Stockport community center opens new facilities"  # Same as title for Nub
+        assert (
+            article["original_title"]
+            == "Stockport community center opens new facilities"
+        )
+        assert (
+            article["original_link"]
+            == "https://stockport.nub.news/news/community-center-facilities"
+        )
+        assert (
+            article["original_summary"]
+            == "Stockport community center opens new facilities"
+        )  # Same as title for Nub
         assert article["original_source"] == "Stockport Nub News"
         assert article["source_type"] == "Web scraping"
         assert article["original_pubdate"] == datetime(2024, 3, 15, 10, 30, 0)
@@ -407,7 +463,11 @@ class TestNubSource:
     def test_requests_called_with_correct_parameters(self, mock_get, mock_sleep):
         """Test that requests.get is called with correct parameters"""
         articles_data = [
-            create_mock_nub_article("Test article", "https://stockport.nub.news/news/test", "2024-03-15 10:30:00")
+            create_mock_nub_article(
+                "Test article",
+                "https://stockport.nub.news/news/test",
+                "2024-03-15 10:30:00",
+            )
         ]
 
         mock_response = create_mock_response(articles_data)
@@ -418,7 +478,8 @@ class TestNubSource:
 
         # Verify requests.get was called with correct parameters
         mock_get.assert_called_once_with(
-            "https://stockport.nub.news/news", headers={"User-Agent": "Mozilla/5.0 (compatible; ViaductBot/1.0)"}
+            "https://stockport.nub.news/news",
+            headers={"User-Agent": "Mozilla/5.0 (compatible; ViaductBot/1.0)"},
         )
 
     @patch("sources.nub_source.time.sleep")
@@ -427,7 +488,11 @@ class TestNubSource:
         """Test that logging works correctly for both success and error cases"""
         # Test successful logging
         articles_data = [
-            create_mock_nub_article("Test article", "https://stockport.nub.news/news/test", "2024-03-15 10:30:00")
+            create_mock_nub_article(
+                "Test article",
+                "https://stockport.nub.news/news/test",
+                "2024-03-15 10:30:00",
+            )
         ]
 
         mock_response = create_mock_response(articles_data)
@@ -444,7 +509,9 @@ class TestNubSource:
 
         with patch("logging.error") as mock_log_error:
             articles = source.fetch_articles()
-            mock_log_error.assert_called_once_with("Nub News fetch error: Network error")
+            mock_log_error.assert_called_once_with(
+                "Nub News fetch error: Network error"
+            )
 
 
 class TestNubSourceIntegration:
@@ -511,7 +578,9 @@ class TestNubSourceIntegration:
             for article in articles:
                 assert article["original_source"] == "Stockport Nub News"
                 assert article["source_type"] == "Web scraping"
-                assert article["original_summary"] == article["original_title"]  # Nub uses title as summary
+                assert (
+                    article["original_summary"] == article["original_title"]
+                )  # Nub uses title as summary
 
             # Verify logging and sleep behavior
             mock_log_info.assert_called_once_with("Nub News: 5 articles found")
@@ -557,7 +626,10 @@ class TestNubSourceIntegration:
                 "2024-03-15 10:00:00",
             ),
             # Article with missing headline
-            {"url": "https://stockport.nub.news/news/missing-headline", "datePublished": "2024-03-15 11:00:00"},
+            {
+                "url": "https://stockport.nub.news/news/missing-headline",
+                "datePublished": "2024-03-15 11:00:00",
+            },
             # Article with invalid date
             {
                 "headline": "Article with bad date",
@@ -566,13 +638,17 @@ class TestNubSourceIntegration:
             },
             # Another valid article
             create_mock_nub_article(
-                "Another valid Stockport update", "https://stockport.nub.news/news/valid-update", "2024-03-15 12:00:00"
+                "Another valid Stockport update",
+                "https://stockport.nub.news/news/valid-update",
+                "2024-03-15 12:00:00",
             ),
             # Article with missing URL
             {"headline": "Missing URL article", "datePublished": "2024-03-15 13:00:00"},
             # Final valid article
             create_mock_nub_article(
-                "Final valid news item", "https://stockport.nub.news/news/final-valid", "2024-03-15 14:00:00"
+                "Final valid news item",
+                "https://stockport.nub.news/news/final-valid",
+                "2024-03-15 14:00:00",
             ),
         ]
 
@@ -581,7 +657,10 @@ class TestNubSourceIntegration:
 
         source = NubSource()
 
-        with patch("logging.error") as mock_log_error, patch("logging.info") as mock_log_info:
+        with (
+            patch("logging.error") as mock_log_error,
+            patch("logging.info") as mock_log_info,
+        ):
             articles = source.fetch_articles()
 
             # Should return only the 3 valid articles
@@ -604,7 +683,9 @@ class TestNubSourceIntegration:
         """Test that rate limiting (sleep) is properly implemented"""
         articles_data = [
             create_mock_nub_article(
-                "Test rate limiting", "https://stockport.nub.news/news/rate-limit-test", "2024-03-15 10:30:00"
+                "Test rate limiting",
+                "https://stockport.nub.news/news/rate-limit-test",
+                "2024-03-15 10:30:00",
             )
         ]
 

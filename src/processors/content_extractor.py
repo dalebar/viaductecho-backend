@@ -10,7 +10,9 @@ from bs4 import BeautifulSoup
 
 class ContentExtractor:
     def __init__(self):
-        self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        }
 
     def extract_content(self, url: str, source: str) -> Dict:
         """Extract content based on source"""

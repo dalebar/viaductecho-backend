@@ -74,7 +74,9 @@ class TestHealthEndpoint:
     def test_health_check_exception(self, mock_api_operations_class, client):
         """Test health check with exception"""
         # Setup mock to raise exception
-        mock_api_operations_class.side_effect = Exception("Failed to initialize database operations")
+        mock_api_operations_class.side_effect = Exception(
+            "Failed to initialize database operations"
+        )
 
         # Make request
         response = client.get("/health")
@@ -173,7 +175,9 @@ class TestDatabaseErrorHandling:
     def test_database_connection_error(self, client, mock_api_operations):
         """Test database connection error handling"""
         # Setup mock to raise database connection error
-        mock_api_operations.get_articles_paginated.side_effect = Exception("Connection to database failed")
+        mock_api_operations.get_articles_paginated.side_effect = Exception(
+            "Connection to database failed"
+        )
 
         # Make request
         response = client.get("/api/v1/articles")
@@ -188,7 +192,9 @@ class TestDatabaseErrorHandling:
     def test_database_timeout_error(self, client, mock_api_operations):
         """Test database timeout error handling"""
         # Setup mock to raise timeout error
-        mock_api_operations.search_articles.side_effect = Exception("Query timeout exceeded")
+        mock_api_operations.search_articles.side_effect = Exception(
+            "Query timeout exceeded"
+        )
 
         # Make request
         response = client.get("/api/v1/articles/search?query=test")
@@ -204,7 +210,12 @@ class TestDatabaseErrorHandling:
         """Test source not found error handling"""
         # Setup mock
         mock_api_operations.get_sources_with_stats.return_value = [
-            {"name": "BBC News", "article_count": 10, "processed_count": 8, "latest_article": "2024-01-20T15:30:00"}
+            {
+                "name": "BBC News",
+                "article_count": 10,
+                "processed_count": 8,
+                "latest_article": "2024-01-20T15:30:00",
+            }
         ]
 
         # Make request for non-existent source
@@ -261,7 +272,10 @@ class TestParameterValidation:
         mock_api_operations.get_article_by_id.return_value = None
         response = client.get("/api/v1/articles/-1")
         # This might pass validation but return 404 from the endpoint
-        assert response.status_code in [status.HTTP_404_NOT_FOUND, status.HTTP_422_UNPROCESSABLE_ENTITY]
+        assert response.status_code in [
+            status.HTTP_404_NOT_FOUND,
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+        ]
 
 
 class TestCORSHandling:
@@ -283,14 +297,18 @@ class TestCORSHandling:
 
     def test_cors_headers_present(self, client):
         """Test that CORS headers are present in responses"""
-        response = client.get("/api/v1/sources", headers={"Origin": "https://example.com"})
+        response = client.get(
+            "/api/v1/sources", headers={"Origin": "https://example.com"}
+        )
 
         # Check for CORS headers
         assert "access-control-allow-origin" in response.headers
 
     def test_cors_credentials_allowed(self, client):
         """Test that CORS allows credentials"""
-        response = client.get("/api/v1/articles", headers={"Origin": "https://example.com"})
+        response = client.get(
+            "/api/v1/articles", headers={"Origin": "https://example.com"}
+        )
 
         # Check for credentials header
         # Note: Actual header presence depends on the request and CORS configuration

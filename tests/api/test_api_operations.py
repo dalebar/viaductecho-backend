@@ -52,7 +52,9 @@ class TestAPIOperations:
         assert articles[0].original_title == "Test Article 1"
 
     @patch("database.api_operations.DatabaseOperations.__init__")
-    def test_get_articles_paginated_with_source_filter(self, mock_init, sample_articles):
+    def test_get_articles_paginated_with_source_filter(
+        self, mock_init, sample_articles
+    ):
         """Test paginated articles with source filter"""
         mock_init.return_value = None
 
@@ -69,7 +71,9 @@ class TestAPIOperations:
         mock_query.all.return_value = [sample_articles[0], sample_articles[3]]
         api_ops.session.query.return_value = mock_query
 
-        articles, total_count = api_ops.get_articles_paginated(page=1, per_page=20, source="Test Source 1")
+        articles, total_count = api_ops.get_articles_paginated(
+            page=1, per_page=20, source="Test Source 1"
+        )
 
         assert len(articles) == 2
         assert total_count == 8
@@ -209,7 +213,9 @@ class TestAPIOperations:
         mock_query.all.return_value = sample_articles[:3]
         api_ops.session.query.return_value = mock_query
 
-        articles, total_count = api_ops.get_articles_by_source("Test Source", page=1, per_page=3)
+        articles, total_count = api_ops.get_articles_by_source(
+            "Test Source", page=1, per_page=3
+        )
 
         assert len(articles) == 3
         assert total_count == 10
@@ -287,7 +293,9 @@ class TestAPIOperations:
             mock_result.original_source = source["name"]
             mock_result.article_count = source["article_count"]
             mock_result.processed_count = source["processed_count"]
-            mock_result.latest_article = datetime.fromisoformat(source["latest_article"])
+            mock_result.latest_article = datetime.fromisoformat(
+                source["latest_article"]
+            )
             mock_results.append(mock_result)
 
         mock_query = Mock()
@@ -410,7 +418,9 @@ class TestAPIOperations:
         api_ops.logger = Mock()
 
         # Mock database failure
-        api_ops.get_article_count = Mock(side_effect=Exception("Database connection failed"))
+        api_ops.get_article_count = Mock(
+            side_effect=Exception("Database connection failed")
+        )
 
         health = api_ops.health_check()
 

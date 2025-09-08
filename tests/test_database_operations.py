@@ -60,7 +60,9 @@ class TestDatabaseOperations:
         """Test successful article insertion"""
         # Clean up any existing test data
         existing = (
-            db_ops.session.query(RSSArticle).filter_by(original_link=sample_article_data["original_link"]).first()
+            db_ops.session.query(RSSArticle)
+            .filter_by(original_link=sample_article_data["original_link"])
+            .first()
         )
         if existing:
             db_ops.session.delete(existing)
@@ -121,7 +123,9 @@ class TestDatabaseOperations:
         # Verify article is marked as processed
         import hashlib
 
-        url_hash = hashlib.md5(sample_article_data["original_link"].encode()).hexdigest()
+        url_hash = hashlib.md5(
+            sample_article_data["original_link"].encode()
+        ).hexdigest()
         article = db_ops.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
 
         assert article is not None
@@ -157,7 +161,11 @@ class TestDatabaseOperations:
         }
 
         # Clean up any existing test data
-        existing = db_ops.session.query(RSSArticle).filter_by(original_link=duplicate_data["original_link"]).first()
+        existing = (
+            db_ops.session.query(RSSArticle)
+            .filter_by(original_link=duplicate_data["original_link"])
+            .first()
+        )
         if existing:
             db_ops.session.delete(existing)
             db_ops.session.commit()
@@ -195,7 +203,9 @@ class TestDatabaseOperations:
             import hashlib
 
             url_hash = hashlib.md5(url.encode()).hexdigest()
-            article = db_ops.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            article = (
+                db_ops.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            )
             if article:
                 db_ops.session.delete(article)
 
@@ -225,7 +235,11 @@ class TestDatabaseOperationsIntegration:
 
         try:
             # Clean up any existing data
-            existing = db_ops.session.query(RSSArticle).filter_by(original_link=article_data["original_link"]).first()
+            existing = (
+                db_ops.session.query(RSSArticle)
+                .filter_by(original_link=article_data["original_link"])
+                .first()
+            )
             if existing:
                 db_ops.session.delete(existing)
                 db_ops.session.commit()
@@ -244,7 +258,9 @@ class TestDatabaseOperationsIntegration:
             import hashlib
 
             url_hash = hashlib.md5(article_data["original_link"].encode()).hexdigest()
-            stored_article = db_ops.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            stored_article = (
+                db_ops.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
+            )
             assert stored_article.processed is False
 
             # 5. Mark as processed

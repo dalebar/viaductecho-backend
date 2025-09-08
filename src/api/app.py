@@ -15,29 +15,28 @@ except ImportError:
 from .routes import articles, sources
 from .schemas.common import ErrorResponse
 
+
 def setup_api_logging():
     """Setup API logging with timestamped file output"""
     # Create organized logs directory structure
     os.makedirs("logs/api", exist_ok=True)
-    
+
     # Generate timestamped filename
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_filename = f"logs/api/api_{timestamp}.log"
-    
+
     # Configure logging to write to both file and console
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.FileHandler(log_filename),
-            logging.StreamHandler()
-        ],
-        force=True  # Override any existing configuration
+        handlers=[logging.FileHandler(log_filename), logging.StreamHandler()],
+        force=True,  # Override any existing configuration
     )
-    
+
     logger = logging.getLogger(__name__)
     logger.info(f"API session started - logging to {log_filename}")
     return log_filename
+
 
 # Set up API logging
 api_log_file = setup_api_logging()
@@ -54,9 +53,13 @@ async def lifespan(app: FastAPI):
         db = APIOperations()
         health = db.health_check()
         if health["status"] == "healthy":
-            logger.info(f"Database connected - {health['total_articles']} articles available")
+            logger.info(
+                f"Database connected - {health['total_articles']} articles available"
+            )
         else:
-            logger.error(f"Database connection failed: {health.get('error', 'Unknown error')}")
+            logger.error(
+                f"Database connection failed: {health.get('error', 'Unknown error')}"
+            )
         db.close()
     except Exception as e:
         logger.error(f"Startup database check failed: {e}")
@@ -91,7 +94,9 @@ app.add_middleware(
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     """Global exception handler for unhandled errors"""
-    logger.error(f"Unhandled error in {request.method} {request.url}: {str(exc)}", exc_info=True)
+    logger.error(
+        f"Unhandled error in {request.method} {request.url}: {str(exc)}", exc_info=True
+    )
 
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -132,7 +137,9 @@ async def health_check():
         db.close()
 
         status_code = (
-            status.HTTP_200_OK if health_status["status"] == "healthy" else status.HTTP_503_SERVICE_UNAVAILABLE
+            status.HTTP_200_OK
+            if health_status["status"] == "healthy"
+            else status.HTTP_503_SERVICE_UNAVAILABLE
         )
 
         return JSONResponse(status_code=status_code, content=health_status)
@@ -191,7 +198,9 @@ async def log_requests(request: Request, call_next):
     process_time = (datetime.now() - start_time).total_seconds()
 
     # Log the request
-    logger.info(f"{request.method} {request.url} - {response.status_code} - {process_time:.3f}s")
+    logger.info(
+        f"{request.method} {request.url} - {response.status_code} - {process_time:.3f}s"
+    )
 
     return response
 
@@ -225,7 +234,7 @@ if __name__ == "__main__":
                 },
                 "access": {
                     "formatter": "access",
-                    "class": "logging.FileHandler", 
+                    "class": "logging.FileHandler",
                     "filename": api_log_file,
                 },
                 "console": {
@@ -236,29 +245,26 @@ if __name__ == "__main__":
             },
             "loggers": {
                 "uvicorn": {
-                    "handlers": ["default", "console"], 
+                    "handlers": ["default", "console"],
                     "level": "INFO",
-                    "propagate": False
+                    "propagate": False,
                 },
                 "uvicorn.error": {
                     "handlers": ["default", "console"],
-                    "level": "INFO", 
-                    "propagate": False
+                    "level": "INFO",
+                    "propagate": False,
                 },
                 "uvicorn.access": {
                     "handlers": ["access", "console"],
                     "level": "INFO",
-                    "propagate": False
+                    "propagate": False,
                 },
                 "fastapi": {
                     "handlers": ["default", "console"],
                     "level": "INFO",
-                    "propagate": False
+                    "propagate": False,
                 },
             },
-            "root": {
-                "level": "INFO",
-                "handlers": ["default", "console"]
-            }
-        }
+            "root": {"level": "INFO", "handlers": ["default", "console"]},
+        },
     )

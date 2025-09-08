@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.ViaductEcho.ArticleCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/card_margin"
+    android:layout_marginVertical="@dimen/card_margin_vertical"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/article_card_background"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Article Image -->
+        <ImageView
+            android:id="@+id/image_view_article"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/article_item_image_height"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/cd_article_image"
+            tools:src="@drawable/placeholder_article" />
+
+        <!-- Article Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <!-- Article Title -->
+            <TextView
+                android:id="@+id/text_view_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.ViaductEcho.Title"
+                android:textColor="@color/text_primary"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                tools:text="Local Council Announces New Investment in Parks and Green Spaces" />
+
+            <!-- Source and Date Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Source Label -->
+                <TextView
+                    android:id="@+id/text_view_source"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.ViaductEcho.Label"
+                    android:textColor="@color/md_theme_light_primary"
+                    android:textSize="@dimen/article_item_source_text_size"
+                    android:background="@color/source_label_background"
+                    android:paddingHorizontal="@dimen/spacing_sm"
+                    android:paddingVertical="@dimen/spacing_xs"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="BBC News" />
+
+                <!-- Published Date -->
+                <TextView
+                    android:id="@+id/text_view_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_sm"
+                    android:textAppearance="@style/TextAppearance.ViaductEcho.Caption"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="@dimen/article_item_date_text_size"
+                    tools:text="2h ago" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

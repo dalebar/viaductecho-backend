@@ -21,7 +21,9 @@ class RSSArticle(Base):
     extracted_content = Column(Text)
     ai_summary = Column(Text)
     image_url = Column(Text)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    updated_at = Column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     # Database indexes for API performance
     __table_args__ = (
@@ -41,7 +43,9 @@ class RSSArticle(Base):
             "summary": self.original_summary,
             "source": self.original_source,
             "source_type": self.source_type,
-            "published_date": self.original_pubdate.isoformat() if self.original_pubdate else None,
+            "published_date": (
+                self.original_pubdate.isoformat() if self.original_pubdate else None
+            ),
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "processed": self.processed,
@@ -59,7 +63,9 @@ class RSSArticle(Base):
             "summary": self.original_summary,
             "source": self.original_source,
             "source_type": self.source_type,
-            "published_date": self.original_pubdate.isoformat() if self.original_pubdate else None,
+            "published_date": (
+                self.original_pubdate.isoformat() if self.original_pubdate else None
+            ),
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "image_url": self.image_url,
         }

@@ -72,7 +72,7 @@ class TestAISummarizer:
 
         with patch("openai.OpenAI") as mock_openai:
             summarizer = AISummarizer()
-            
+
             # Verify OpenAI client was created
             mock_openai.assert_called_once_with(api_key="test-api-key-123")
 
@@ -206,7 +206,9 @@ class TestAISummarizer:
         with patch("openai.OpenAI") as mock_openai:
             mock_client = Mock()
             # Create a proper mock exception with required arguments
-            rate_limit_error = Exception("Rate limit exceeded - simulated RateLimitError")
+            rate_limit_error = Exception(
+                "Rate limit exceeded - simulated RateLimitError"
+            )
             mock_client.chat.completions.create.side_effect = rate_limit_error
             mock_openai.return_value = mock_client
 
@@ -316,7 +318,10 @@ class TestAISummarizerIntegration:
             mock_info.assert_called_once_with("AI summary generated")
 
         # Test error logging
-        with patch("openai.OpenAI") as mock_openai, patch("logging.error") as mock_error:
+        with (
+            patch("openai.OpenAI") as mock_openai,
+            patch("logging.error") as mock_error,
+        ):
 
             mock_client = Mock()
             mock_client.chat.completions.create.side_effect = Exception("Test error")

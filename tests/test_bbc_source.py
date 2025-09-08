@@ -50,7 +50,9 @@ class TestBBCSource:
 
         assert isinstance(source, BaseNewsSource)
         assert source.source_name == "BBC News"
-        assert source.feed_url == "http://feeds.bbci.co.uk/news/england/manchester/rss.xml"
+        assert (
+            source.feed_url == "http://feeds.bbci.co.uk/news/england/manchester/rss.xml"
+        )
 
     def test_inherits_from_base_news_source(self):
         """Test that BBCSource properly inherits from BaseNewsSource"""
@@ -102,17 +104,31 @@ class TestBBCSource:
             assert len(articles) == 2
 
             # Check first article
-            assert articles[0]["original_title"] == "Stockport Council announces new initiative"
-            assert articles[0]["original_link"] == "https://www.bbc.com/news/stockport-initiative"
-            assert articles[0]["original_summary"] == "Local government launches community program"
+            assert (
+                articles[0]["original_title"]
+                == "Stockport Council announces new initiative"
+            )
+            assert (
+                articles[0]["original_link"]
+                == "https://www.bbc.com/news/stockport-initiative"
+            )
+            assert (
+                articles[0]["original_summary"]
+                == "Local government launches community program"
+            )
             assert articles[0]["original_source"] == "BBC News"
             assert articles[0]["source_type"] == "RSS News"
             assert articles[0]["original_pubdate"] == datetime(2024, 3, 15, 10, 30, 0)
 
             # Check second article
             assert articles[1]["original_title"] == "Manchester United transfer news"
-            assert articles[1]["original_link"] == "https://www.bbc.com/sport/manchester-united"
-            assert articles[1]["original_summary"] == "Football club considers new signing"
+            assert (
+                articles[1]["original_link"]
+                == "https://www.bbc.com/sport/manchester-united"
+            )
+            assert (
+                articles[1]["original_summary"] == "Football club considers new signing"
+            )
             assert articles[1]["original_source"] == "BBC News"
             assert articles[1]["source_type"] == "RSS News"
             assert articles[1]["original_pubdate"] == datetime(2024, 3, 15, 14, 45, 0)
@@ -269,15 +285,24 @@ class TestBBCSource:
             ),
             # Should match on summary
             create_mock_rss_entry(
-                "Local government news", "https://bbc.com/2", "Manchester City Council meeting", (2024, 1, 2, 11, 0, 0)
+                "Local government news",
+                "https://bbc.com/2",
+                "Manchester City Council meeting",
+                (2024, 1, 2, 11, 0, 0),
             ),
             # Should not match
             create_mock_rss_entry(
-                "London weather forecast", "https://bbc.com/3", "Capital city conditions", (2024, 1, 3, 12, 0, 0)
+                "London weather forecast",
+                "https://bbc.com/3",
+                "Capital city conditions",
+                (2024, 1, 3, 12, 0, 0),
             ),
             # Should match on partial word
             create_mock_rss_entry(
-                "Greater Manchester transport", "https://bbc.com/4", "Regional travel updates", (2024, 1, 4, 13, 0, 0)
+                "Greater Manchester transport",
+                "https://bbc.com/4",
+                "Regional travel updates",
+                (2024, 1, 4, 13, 0, 0),
             ),
         ]
 
@@ -299,7 +324,9 @@ class TestBBCSource:
 
     @patch("sources.bbc_source.Config")
     @patch("sources.bbc_source.feedparser.parse")
-    def test_fetch_articles_case_insensitive_filtering(self, mock_feedparser, mock_config):
+    def test_fetch_articles_case_insensitive_filtering(
+        self, mock_feedparser, mock_config
+    ):
         """Test that keyword filtering is case insensitive"""
         mock_config.KEYWORDS = ["stockport"]  # lowercase
 
@@ -377,7 +404,10 @@ class TestBBCSource:
 
         # Test successful logging
         mock_entry = create_mock_rss_entry(
-            "Stockport news item", "https://bbc.com/news", "Test summary", (2024, 1, 1, 10, 0, 0)
+            "Stockport news item",
+            "https://bbc.com/news",
+            "Test summary",
+            (2024, 1, 1, 10, 0, 0),
         )
 
         mock_feed = Mock()
@@ -405,18 +435,39 @@ class TestBBCSourceIntegration:
     @patch("sources.bbc_source.feedparser.parse")
     def test_complete_workflow(self, mock_feedparser, mock_config):
         """Test complete article fetching and filtering workflow"""
-        mock_config.KEYWORDS = ["stockport", "manchester", "macclesfield", "buxton", "high peak"]
+        mock_config.KEYWORDS = [
+            "stockport",
+            "manchester",
+            "macclesfield",
+            "buxton",
+            "high peak",
+        ]
 
         # Create a realistic set of RSS entries
         entries = []
 
         # Local news that should be included
         local_entries = [
-            ("Stockport Market renovation begins", "Construction work starts on historic market"),
-            ("Manchester Airport expansion approved", "Runway development gets green light"),
-            ("Macclesfield festival cancelled", "Annual event postponed due to weather"),
-            ("High Peak hiking trails closed", "Safety concerns prompt temporary closure"),
-            ("Buxton Opera House reopens", "Venue welcomes back audiences after refurbishment"),
+            (
+                "Stockport Market renovation begins",
+                "Construction work starts on historic market",
+            ),
+            (
+                "Manchester Airport expansion approved",
+                "Runway development gets green light",
+            ),
+            (
+                "Macclesfield festival cancelled",
+                "Annual event postponed due to weather",
+            ),
+            (
+                "High Peak hiking trails closed",
+                "Safety concerns prompt temporary closure",
+            ),
+            (
+                "Buxton Opera House reopens",
+                "Venue welcomes back audiences after refurbishment",
+            ),
         ]
 
         # Non-local news that should be excluded
@@ -429,14 +480,20 @@ class TestBBCSourceIntegration:
         # Add local entries
         for i, (title, summary) in enumerate(local_entries):
             entry = create_mock_rss_entry(
-                title, f"https://www.bbc.com/news/local-{i}", summary, (2024, 3, i + 1, 10 + i, 0, 0)
+                title,
+                f"https://www.bbc.com/news/local-{i}",
+                summary,
+                (2024, 3, i + 1, 10 + i, 0, 0),
             )
             entries.append(entry)
 
         # Add non-local entries
         for i, (title, summary) in enumerate(non_local_entries):
             entry = create_mock_rss_entry(
-                title, f"https://www.bbc.com/news/national-{i}", summary, (2024, 3, 10 + i, 10 + i, 0, 0)
+                title,
+                f"https://www.bbc.com/news/national-{i}",
+                summary,
+                (2024, 3, 10 + i, 10 + i, 0, 0),
             )
             entries.append(entry)
 
@@ -525,8 +582,14 @@ class TestBBCSourceIntegration:
         article = articles[0]
 
         # Should extract the core fields correctly
-        assert article["original_title"] == "Manchester United prepare for Champions League"
-        assert article["original_link"] == "https://www.bbc.com/sport/football/manchester-united-12345"
+        assert (
+            article["original_title"]
+            == "Manchester United prepare for Champions League"
+        )
+        assert (
+            article["original_link"]
+            == "https://www.bbc.com/sport/football/manchester-united-12345"
+        )
         assert "competition with new signings" in article["original_summary"]
         assert article["original_source"] == "BBC News"
         assert article["source_type"] == "RSS News"

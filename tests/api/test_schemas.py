@@ -153,17 +153,38 @@ class TestArticleSchemas:
         """Test PaginationInfo validation"""
         # Invalid page (too low)
         with pytest.raises(ValidationError) as exc_info:
-            PaginationInfo(page=0, per_page=20, total_items=100, total_pages=5, has_next=True, has_prev=False)
+            PaginationInfo(
+                page=0,
+                per_page=20,
+                total_items=100,
+                total_pages=5,
+                has_next=True,
+                has_prev=False,
+            )
         assert "page" in str(exc_info.value)
 
         # Invalid per_page (too high)
         with pytest.raises(ValidationError) as exc_info:
-            PaginationInfo(page=1, per_page=101, total_items=100, total_pages=5, has_next=True, has_prev=False)
+            PaginationInfo(
+                page=1,
+                per_page=101,
+                total_items=100,
+                total_pages=5,
+                has_next=True,
+                has_prev=False,
+            )
         assert "per_page" in str(exc_info.value)
 
         # Invalid total_items (negative)
         with pytest.raises(ValidationError) as exc_info:
-            PaginationInfo(page=1, per_page=20, total_items=-1, total_pages=0, has_next=False, has_prev=False)
+            PaginationInfo(
+                page=1,
+                per_page=20,
+                total_items=-1,
+                total_pages=0,
+                has_next=False,
+                has_prev=False,
+            )
         assert "total_items" in str(exc_info.value)
 
     def test_paginated_articles_valid(self):
@@ -229,7 +250,9 @@ class TestArticleSchemas:
     def test_article_list_params_validation(self):
         """Test ArticleListParams validation"""
         # Valid params
-        params = ArticleListParams(page=1, per_page=50, source="Test Source", processed_only=False)
+        params = ArticleListParams(
+            page=1, per_page=50, source="Test Source", processed_only=False
+        )
         assert params.page == 1
         assert params.per_page == 50
         assert params.source == "Test Source"
@@ -446,7 +469,14 @@ class TestSchemaIntegration:
         assert summary.title == "Complete Test Article"
 
         # Test in paginated response
-        pagination = PaginationInfo(page=1, per_page=20, total_items=1, total_pages=1, has_next=False, has_prev=False)
+        pagination = PaginationInfo(
+            page=1,
+            per_page=20,
+            total_items=1,
+            total_pages=1,
+            has_next=False,
+            has_prev=False,
+        )
         paginated = PaginatedArticles(articles=[summary], pagination=pagination)
 
         assert len(paginated.articles) == 1
