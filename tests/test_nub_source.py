@@ -3,17 +3,17 @@
 Comprehensive test suite for NubSource class
 """
 
+import json
 import os
 import sys
-import json
 from datetime import datetime
 from unittest.mock import Mock, patch
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from sources.nub_source import NubSource  # noqa: E402
 from sources.base_source import BaseNewsSource  # noqa: E402
+from sources.nub_source import NubSource  # noqa: E402
 
 
 def create_mock_nub_article(headline, url, date_published):

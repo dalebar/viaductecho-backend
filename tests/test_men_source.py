@@ -11,8 +11,8 @@ from unittest.mock import Mock, patch
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from sources.men_source import MENSource
 from sources.base_source import BaseNewsSource
+from sources.men_source import MENSource
 
 
 def create_mock_rss_entry(title, link, summary=None, published_parsed=None):

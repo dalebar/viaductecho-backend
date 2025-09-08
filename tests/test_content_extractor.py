@@ -3,12 +3,13 @@
 Comprehensive test suite for ContentExtractor class
 """
 
+import json
 import os
 import sys
-import json
 from unittest.mock import Mock, patch
-import requests
+
 import pytest
+import requests
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa

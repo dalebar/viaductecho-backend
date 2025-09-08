@@ -7,7 +7,7 @@ except ImportError:
 
 from ..schemas.articles import ArticleSummary, PaginatedArticles
 from ..schemas.common import ErrorResponse
-from ..schemas.sources import SourceStats, SourcesResponse
+from ..schemas.sources import SourcesResponse, SourceStats
 from .articles import create_pagination_info
 
 router = APIRouter()

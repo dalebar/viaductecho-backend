@@ -6,7 +6,6 @@ import os
 import sys
 from unittest.mock import Mock, patch
 
-
 from fastapi import status
 
 # Add src to path so we can import our modules

@@ -2,10 +2,10 @@ import hashlib
 import logging
 
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from .models import RSSArticle, Base
+from .models import Base, RSSArticle
 
 try:
     from ..config import Config

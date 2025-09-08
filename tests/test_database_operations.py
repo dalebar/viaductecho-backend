@@ -6,15 +6,16 @@ Comprehensive test suite for DatabaseOperations class
 import os
 import sys
 from datetime import datetime, timezone
-import pytest
 from unittest.mock import patch
+
+import pytest
 from sqlalchemy.exc import SQLAlchemyError
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
 
-from database.operations import DatabaseOperations  # noqa
 from database.models import RSSArticle  # noqa
+from database.operations import DatabaseOperations  # noqa
 
 
 class TestDatabaseOperations:

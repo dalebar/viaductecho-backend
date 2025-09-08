@@ -4,9 +4,8 @@ Comprehensive test suite for APIOperations class
 """
 import os
 import sys
-
-from unittest.mock import Mock, patch
 from datetime import datetime
+from unittest.mock import Mock, patch
 
 from database.api_operations import APIOperations
 

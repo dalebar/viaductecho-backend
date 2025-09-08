@@ -3,13 +3,14 @@
 Comprehensive test suite for GitHubPublisher class
 """
 
+import base64
 import os
 import sys
-import base64
 from datetime import datetime
 from unittest.mock import Mock, patch
-import requests
+
 import pytest
+import requests
 
 # Add src to path so we can import our modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))

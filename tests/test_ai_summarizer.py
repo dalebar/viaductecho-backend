@@ -5,7 +5,8 @@ Comprehensive test suite for AISummarizer class
 
 import os
 import sys
-from unittest.mock import Mock, patch, ANY
+from unittest.mock import ANY, Mock, patch
+
 import openai
 import pytest
 

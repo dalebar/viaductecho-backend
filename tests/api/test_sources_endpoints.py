@@ -4,9 +4,7 @@ Comprehensive test suite for Sources API endpoints
 """
 import os
 import sys
-
 from unittest.mock import patch
-
 
 from fastapi import status
 

@@ -6,7 +6,8 @@ Comprehensive test suite for BaseNewsSource class
 import os
 import sys
 from abc import ABC
-from typing import List, Dict
+from typing import Dict, List
+
 import pytest
 
 # Add src to path so we can import our modules
