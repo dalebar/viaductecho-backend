@@ -464,6 +464,10 @@ All contributions must pass:
 - **Performance Optimization**: Caching strategies and database query optimization
 - **Multi-language Support**: Internationalization framework
 
+## 🙏 Acknowledgments
+
+This project's enterprise-grade development tooling and comprehensive automation was implemented with assistance from [Claude Code](https://claude.ai/code), Anthropic's AI-powered development assistant.
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
