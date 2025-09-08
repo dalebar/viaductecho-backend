@@ -17,7 +17,10 @@ class TestArticlesEndpoints:
     def test_get_articles_success(self, client, mock_api_operations, sample_articles):
         """Test successful articles retrieval"""
         # Setup mock
-        mock_api_operations.get_articles_paginated.return_value = (sample_articles[:2], 10)
+        mock_api_operations.get_articles_paginated.return_value = (
+            sample_articles[:2],
+            10,
+        )
 
         # Make request
         response = client.get("/api/v1/articles?page=1&per_page=2")
@@ -42,10 +45,15 @@ class TestArticlesEndpoints:
         assert article["link"] == "https://example.com/test-article-1"
         assert article["source"] == "Test Source 2"  # i=1: 1%3+1=2
 
-    def test_get_articles_with_source_filter(self, client, mock_api_operations, sample_articles):
+    def test_get_articles_with_source_filter(
+        self, client, mock_api_operations, sample_articles
+    ):
         """Test articles retrieval with source filter"""
         # Setup mock
-        mock_api_operations.get_articles_paginated.return_value = (sample_articles[:1], 5)
+        mock_api_operations.get_articles_paginated.return_value = (
+            sample_articles[:1],
+            5,
+        )
 
         # Make request
         response = client.get("/api/v1/articles?source=Test Source 1")
@@ -80,7 +88,9 @@ class TestArticlesEndpoints:
     def test_get_articles_database_error(self, client, mock_api_operations):
         """Test articles endpoint with database error"""
         # Setup mock to raise exception
-        mock_api_operations.get_articles_paginated.side_effect = Exception("Database connection failed")
+        mock_api_operations.get_articles_paginated.side_effect = Exception(
+            "Database connection failed"
+        )
 
         # Make request
         response = client.get("/api/v1/articles")
@@ -91,7 +101,9 @@ class TestArticlesEndpoints:
         assert "error" in data
         assert "Failed to retrieve articles" in data["error"]
 
-    def test_get_article_by_id_success(self, client, mock_api_operations, sample_article):
+    def test_get_article_by_id_success(
+        self, client, mock_api_operations, sample_article
+    ):
         """Test successful single article retrieval"""
         # Setup mock
         mock_api_operations.get_article_by_id.return_value = sample_article
@@ -140,7 +152,9 @@ class TestArticlesEndpoints:
         assert "error" in data
         assert "Failed to retrieve article" in data["error"]
 
-    def test_get_recent_articles_success(self, client, mock_api_operations, sample_recent_articles):
+    def test_get_recent_articles_success(
+        self, client, mock_api_operations, sample_recent_articles
+    ):
         """Test successful recent articles retrieval"""
         # Setup mock
         mock_api_operations.get_recent_articles.return_value = sample_recent_articles
@@ -158,7 +172,9 @@ class TestArticlesEndpoints:
         assert data[2]["title"] == "Recent Article 3"
 
         # Verify correct parameters were passed
-        mock_api_operations.get_recent_articles.assert_called_once_with(hours=12, limit=10)
+        mock_api_operations.get_recent_articles.assert_called_once_with(
+            hours=12, limit=10
+        )
 
     def test_get_recent_articles_defaults(self, client, mock_api_operations):
         """Test recent articles with default parameters"""
@@ -172,7 +188,9 @@ class TestArticlesEndpoints:
         assert response.status_code == status.HTTP_200_OK
 
         # Verify default parameters were used
-        mock_api_operations.get_recent_articles.assert_called_once_with(hours=24, limit=50)
+        mock_api_operations.get_recent_articles.assert_called_once_with(
+            hours=24, limit=50
+        )
 
     def test_get_recent_articles_validation(self, client, mock_api_operations):
         """Test recent articles parameter validation"""
@@ -190,7 +208,9 @@ class TestArticlesEndpoints:
         response = client.get("/api/v1/articles/recent?hours=168&limit=100")
         assert response.status_code == status.HTTP_200_OK
 
-    def test_search_articles_success(self, client, mock_api_operations, sample_articles):
+    def test_search_articles_success(
+        self, client, mock_api_operations, sample_articles
+    ):
         """Test successful article search"""
         # Setup mock
         mock_api_operations.search_articles.return_value = (sample_articles[:2], 5)
@@ -208,7 +228,9 @@ class TestArticlesEndpoints:
         assert data["pagination"]["total_items"] == 5
 
         # Verify correct parameters were passed
-        mock_api_operations.search_articles.assert_called_once_with(query="test", page=1, per_page=2)
+        mock_api_operations.search_articles.assert_called_once_with(
+            query="test", page=1, per_page=2
+        )
 
     def test_search_articles_empty_query(self, client, mock_api_operations):
         """Test search with empty query"""
@@ -239,7 +261,9 @@ class TestArticlesEndpoints:
     def test_search_articles_database_error(self, client, mock_api_operations):
         """Test search with database error"""
         # Setup mock to raise exception
-        mock_api_operations.search_articles.side_effect = Exception("Search index error")
+        mock_api_operations.search_articles.side_effect = Exception(
+            "Search index error"
+        )
 
         # Make request
         response = client.get("/api/v1/articles/search?query=test")
@@ -250,10 +274,15 @@ class TestArticlesEndpoints:
         assert "error" in data
         assert "Search failed" in data["error"]
 
-    def test_pagination_info_calculation(self, client, mock_api_operations, sample_articles):
+    def test_pagination_info_calculation(
+        self, client, mock_api_operations, sample_articles
+    ):
         """Test pagination information calculation"""
         # Setup mock - 47 total items, page 3, 10 per page
-        mock_api_operations.get_articles_paginated.return_value = (sample_articles[:3], 47)
+        mock_api_operations.get_articles_paginated.return_value = (
+            sample_articles[:3],
+            47,
+        )
 
         # Make request
         response = client.get("/api/v1/articles?page=3&per_page=10")

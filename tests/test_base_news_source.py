@@ -34,7 +34,12 @@ class TestBaseNewsSource:
 
         class ConcreteNewsSource(BaseNewsSource):
             def fetch_articles(self) -> List[Dict]:
-                return [{"original_title": "Test Article", "original_summary": "Test summary"}]
+                return [
+                    {
+                        "original_title": "Test Article",
+                        "original_summary": "Test summary",
+                    }
+                ]
 
         source = ConcreteNewsSource("Concrete Test Source")
         assert source.source_name == "Concrete Test Source"
@@ -69,10 +74,22 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Stockport Council Meeting", "original_summary": "Local government news"},
-            {"original_title": "Manchester United News", "original_summary": "Football update"},
-            {"original_title": "Weather Update", "original_summary": "Rain expected in Stockport"},
-            {"original_title": "London News", "original_summary": "Capital city updates"},
+            {
+                "original_title": "Stockport Council Meeting",
+                "original_summary": "Local government news",
+            },
+            {
+                "original_title": "Manchester United News",
+                "original_summary": "Football update",
+            },
+            {
+                "original_title": "Weather Update",
+                "original_summary": "Rain expected in Stockport",
+            },
+            {
+                "original_title": "London News",
+                "original_summary": "Capital city updates",
+            },
         ]
 
         keywords = ["stockport", "manchester"]
@@ -93,8 +110,14 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "STOCKPORT NEWS", "original_summary": "Capital case title"},
-            {"original_title": "local news", "original_summary": "News about MACCLESFIELD"},
+            {
+                "original_title": "STOCKPORT NEWS",
+                "original_summary": "Capital case title",
+            },
+            {
+                "original_title": "local news",
+                "original_summary": "News about MACCLESFIELD",
+            },
             {"original_title": "Mixed Case", "original_summary": "Story about Buxton"},
         ]
 
@@ -113,10 +136,22 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Local Council News", "original_summary": "Meeting in Stockport today"},
-            {"original_title": "Stockport Events", "original_summary": "Various local activities"},
-            {"original_title": "National News", "original_summary": "Nothing local here"},
-            {"original_title": "Weather", "original_summary": "Macclesfield will see rain"},
+            {
+                "original_title": "Local Council News",
+                "original_summary": "Meeting in Stockport today",
+            },
+            {
+                "original_title": "Stockport Events",
+                "original_summary": "Various local activities",
+            },
+            {
+                "original_title": "National News",
+                "original_summary": "Nothing local here",
+            },
+            {
+                "original_title": "Weather",
+                "original_summary": "Macclesfield will see rain",
+            },
         ]
 
         keywords = ["stockport", "macclesfield"]
@@ -168,7 +203,10 @@ class TestBaseNewsSource:
 
         articles = [
             {"original_title": "London News", "original_summary": "Capital updates"},
-            {"original_title": "Birmingham News", "original_summary": "Midlands update"},
+            {
+                "original_title": "Birmingham News",
+                "original_summary": "Midlands update",
+            },
         ]
 
         keywords = ["stockport", "manchester"]
@@ -228,9 +266,18 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Greater Manchester News", "original_summary": "Regional update"},
-            {"original_title": "Stockport-based Company", "original_summary": "Business news"},
-            {"original_title": "Local News", "original_summary": "About New Macclesfield development"},
+            {
+                "original_title": "Greater Manchester News",
+                "original_summary": "Regional update",
+            },
+            {
+                "original_title": "Stockport-based Company",
+                "original_summary": "Business news",
+            },
+            {
+                "original_title": "Local News",
+                "original_summary": "About New Macclesfield development",
+            },
         ]
 
         keywords = ["manchester", "stockport", "macclesfield"]
@@ -249,9 +296,18 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Stockport's New Initiative", "original_summary": "Local program"},
-            {"original_title": "Manchester United F.C.", "original_summary": "Football club news"},
-            {"original_title": "High Peak & District", "original_summary": "Regional coverage"},
+            {
+                "original_title": "Stockport's New Initiative",
+                "original_summary": "Local program",
+            },
+            {
+                "original_title": "Manchester United F.C.",
+                "original_summary": "Football club news",
+            },
+            {
+                "original_title": "High Peak & District",
+                "original_summary": "Regional coverage",
+            },
         ]
 
         keywords = ["stockport", "manchester", "high peak"]
@@ -269,8 +325,14 @@ class TestBaseNewsSource:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Stockport café opens", "original_summary": "New business"},
-            {"original_title": "Manchester événement", "original_summary": "Cultural event"},
+            {
+                "original_title": "Stockport café opens",
+                "original_summary": "New business",
+            },
+            {
+                "original_title": "Manchester événement",
+                "original_summary": "Cultural event",
+            },
             {"original_title": "Regular news", "original_summary": "Nothing special"},
         ]
 
@@ -319,9 +381,19 @@ class TestBaseNewsSource:
         articles = []
         for i in range(1000):
             if i % 10 == 0:  # Every 10th article contains keyword
-                articles.append({"original_title": f"Article {i} about Stockport", "original_summary": f"Content {i}"})
+                articles.append(
+                    {
+                        "original_title": f"Article {i} about Stockport",
+                        "original_summary": f"Content {i}",
+                    }
+                )
             else:
-                articles.append({"original_title": f"Article {i}", "original_summary": f"Content {i} without keywords"})
+                articles.append(
+                    {
+                        "original_title": f"Article {i}",
+                        "original_summary": f"Content {i} without keywords",
+                    }
+                )
 
         keywords = ["stockport"]
         filtered = source.filter_articles(articles, keywords)
@@ -340,10 +412,22 @@ class TestBaseNewsSourceIntegration:
             def __init__(self, source_name: str):
                 super().__init__(source_name)
                 self.mock_data = [
-                    {"original_title": "Stockport Market Reopens", "original_summary": "Local shopping venue"},
-                    {"original_title": "Manchester Airport Expansion", "original_summary": "Travel news"},
-                    {"original_title": "London Stock Exchange", "original_summary": "Financial news"},
-                    {"original_title": "Weather Update", "original_summary": "Macclesfield expects snow"},
+                    {
+                        "original_title": "Stockport Market Reopens",
+                        "original_summary": "Local shopping venue",
+                    },
+                    {
+                        "original_title": "Manchester Airport Expansion",
+                        "original_summary": "Travel news",
+                    },
+                    {
+                        "original_title": "London Stock Exchange",
+                        "original_summary": "Financial news",
+                    },
+                    {
+                        "original_title": "Weather Update",
+                        "original_summary": "Macclesfield expects snow",
+                    },
                 ]
 
             def fetch_articles(self) -> List[Dict]:
@@ -375,10 +459,19 @@ class TestBaseNewsSourceIntegration:
         source = TestSource("Test Source")
 
         articles = [
-            {"original_title": "Stockport Council Budget", "original_summary": "Financial planning"},
-            {"original_title": "Manchester United Match", "original_summary": "Football news"},
+            {
+                "original_title": "Stockport Council Budget",
+                "original_summary": "Financial planning",
+            },
+            {
+                "original_title": "Manchester United Match",
+                "original_summary": "Football news",
+            },
             {"original_title": "Buxton Festival", "original_summary": "Cultural event"},
-            {"original_title": "London Parliament", "original_summary": "National politics"},
+            {
+                "original_title": "London Parliament",
+                "original_summary": "National politics",
+            },
         ]
 
         # Test with different keyword sets
@@ -403,11 +496,20 @@ class TestBaseNewsSourceIntegration:
                 self.region = region
 
             def get_region_keywords(self) -> List[str]:
-                return ["stockport", "manchester", "macclesfield"] if self.region == "greater_manchester" else []
+                return (
+                    ["stockport", "manchester", "macclesfield"]
+                    if self.region == "greater_manchester"
+                    else []
+                )
 
         class SpecificSource(IntermediateSource):
             def fetch_articles(self) -> List[Dict]:
-                mock_articles = [{"original_title": "Stockport News", "original_summary": "Local update"}]
+                mock_articles = [
+                    {
+                        "original_title": "Stockport News",
+                        "original_summary": "Local update",
+                    }
+                ]
                 keywords = self.get_region_keywords()
                 return self.filter_articles(mock_articles, keywords)
 

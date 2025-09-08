@@ -28,7 +28,9 @@ def get_db():
         db.close()
 
 
-def create_pagination_info(page: int, per_page: int, total_items: int) -> PaginationInfo:
+def create_pagination_info(
+    page: int, per_page: int, total_items: int
+) -> PaginationInfo:
     """Create pagination information"""
     total_pages = math.ceil(total_items / per_page) if total_items > 0 else 0
 
@@ -105,7 +107,9 @@ async def get_articles(
     },
 )
 async def get_recent_articles(
-    hours: int = Query(24, ge=1, le=168, description="Hours back to look (max 168 = 1 week)"),
+    hours: int = Query(
+        24, ge=1, le=168, description="Hours back to look (max 168 = 1 week)"
+    ),
     limit: int = Query(50, ge=1, le=100, description="Maximum articles to return"),
     db: APIOperations = Depends(get_db),
 ):
@@ -147,14 +151,18 @@ async def get_recent_articles(
     },
 )
 async def search_articles(
-    query: str = Query(..., min_length=2, description="Search query (minimum 2 characters)"),
+    query: str = Query(
+        ..., min_length=2, description="Search query (minimum 2 characters)"
+    ),
     page: int = Query(1, ge=1, description="Page number"),
     per_page: int = Query(20, ge=1, le=100, description="Items per page"),
     db: APIOperations = Depends(get_db),
 ):
     """Search articles"""
     try:
-        articles, total_count = db.search_articles(query=query, page=page, per_page=per_page)
+        articles, total_count = db.search_articles(
+            query=query, page=page, per_page=per_page
+        )
 
         # Convert to response models
         article_summaries = [

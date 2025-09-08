@@ -4,11 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.viaductecho.android.R
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -43,20 +39,7 @@ fun Context.isNetworkAvailable(): Boolean {
     }
 }
 
-// Load images with Glide
-fun ImageView.loadImage(
-    url: String?,
-    placeholder: Int = R.drawable.placeholder_article,
-    error: Int = R.drawable.error_image
-) {
-    Glide.with(context)
-        .load(url)
-        .placeholder(placeholder)
-        .error(error)
-        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-        .centerCrop()
-        .into(this)
-}
+// Image loading is handled by ImageLoadingUtils.kt
 
 // Date formatting utilities
 object DateUtils {

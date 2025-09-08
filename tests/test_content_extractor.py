@@ -70,7 +70,10 @@ class TestContentExtractor:
     def sample_men_html_array(self):
         """Fixture providing sample MEN HTML with JSON-LD array"""
         json_data = [
-            {"articleBody": "Article body from JSON-LD array.", "headline": "First Article"},
+            {
+                "articleBody": "Article body from JSON-LD array.",
+                "headline": "First Article",
+            },
             {"articleBody": "Second article body", "headline": "Second Article"},
         ]
         return f"""
@@ -133,15 +136,21 @@ class TestContentExtractor:
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_bbc_content_success(self, mock_get, mock_sleep, extractor, mock_response, sample_bbc_html):
+    def test_extract_bbc_content_success(
+        self, mock_get, mock_sleep, extractor, mock_response, sample_bbc_html
+    ):
         """Test successful BBC content extraction"""
         mock_response.content = sample_bbc_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://www.bbc.com/news/test-article", "BBC News")
+        result = extractor.extract_content(
+            "https://www.bbc.com/news/test-article", "BBC News"
+        )
 
         # Verify HTTP request
-        mock_get.assert_called_once_with("https://www.bbc.com/news/test-article", headers=extractor.headers)
+        mock_get.assert_called_once_with(
+            "https://www.bbc.com/news/test-article", headers=extractor.headers
+        )
         mock_response.raise_for_status.assert_called_once()
         mock_sleep.assert_called_once_with(1)
 
@@ -154,26 +163,36 @@ class TestContentExtractor:
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_men_content_success(self, mock_get, mock_sleep, extractor, mock_response, sample_men_html):
+    def test_extract_men_content_success(
+        self, mock_get, mock_sleep, extractor, mock_response, sample_men_html
+    ):
         """Test successful MEN content extraction"""
         mock_response.content = sample_men_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://www.manchestereveningnews.co.uk/news/test", "MEN")
+        result = extractor.extract_content(
+            "https://www.manchestereveningnews.co.uk/news/test", "MEN"
+        )
 
         # Verify extracted content
-        expected_content = "This is the article body from JSON-LD.\nSecond line with HTML tags."
+        expected_content = (
+            "This is the article body from JSON-LD.\nSecond line with HTML tags."
+        )
         assert result["content"] == expected_content
         assert result["image_url"] == "https://example.com/men-image.jpg"
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_men_content_array(self, mock_get, mock_sleep, extractor, mock_response, sample_men_html_array):
+    def test_extract_men_content_array(
+        self, mock_get, mock_sleep, extractor, mock_response, sample_men_html_array
+    ):
         """Test MEN content extraction with JSON-LD array"""
         mock_response.content = sample_men_html_array.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://www.manchestereveningnews.co.uk/news/array-test", "MEN")
+        result = extractor.extract_content(
+            "https://www.manchestereveningnews.co.uk/news/array-test", "MEN"
+        )
 
         # Should extract from first item in array
         assert result["content"] == "Article body from JSON-LD array."
@@ -181,26 +200,36 @@ class TestContentExtractor:
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_nub_content_success(self, mock_get, mock_sleep, extractor, mock_response, sample_nub_html):
+    def test_extract_nub_content_success(
+        self, mock_get, mock_sleep, extractor, mock_response, sample_nub_html
+    ):
         """Test successful Nub News content extraction"""
         mock_response.content = sample_nub_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://stockport.nub.news/news/test", "Nub News")
+        result = extractor.extract_content(
+            "https://stockport.nub.news/news/test", "Nub News"
+        )
 
         # Verify extracted content (BeautifulSoup strips extra whitespace)
-        expected_content = "Nub News article content goes here.\nMultiple paragraphs of local news."
+        expected_content = (
+            "Nub News article content goes here.\nMultiple paragraphs of local news."
+        )
         assert result["content"] == expected_content
         assert result["image_url"] == "https://example.com/nub-image.jpg"
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_generic_content_success(self, mock_get, mock_sleep, extractor, mock_response, sample_generic_html):
+    def test_extract_generic_content_success(
+        self, mock_get, mock_sleep, extractor, mock_response, sample_generic_html
+    ):
         """Test successful generic content extraction"""
         mock_response.content = sample_generic_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://example.com/news/test", "Generic Source")
+        result = extractor.extract_content(
+            "https://example.com/news/test", "Generic Source"
+        )
 
         # Verify extracted content (should limit to first 5 paragraphs)
         expected_content = "First paragraph of generic content.\n\nSecond paragraph with more information.\n\nThird paragraph continues the story.\n\nFourth paragraph adds details.\n\nFifth paragraph wraps up."
@@ -214,7 +243,9 @@ class TestContentExtractor:
         mock_get.side_effect = requests.exceptions.HTTPError("404 Not Found")
 
         with patch("logging.error") as mock_logging:
-            result = extractor.extract_content("https://example.com/not-found", "Test Source")
+            result = extractor.extract_content(
+                "https://example.com/not-found", "Test Source"
+            )
 
             # Should return empty content on error
             assert result == {"content": "", "image_url": ""}
@@ -234,7 +265,9 @@ class TestContentExtractor:
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection failed")
 
         with patch("logging.error") as mock_logging:
-            result = extractor.extract_content("https://unreachable.example.com/test", "Test Source")
+            result = extractor.extract_content(
+                "https://unreachable.example.com/test", "Test Source"
+            )
 
             assert result == {"content": "", "image_url": ""}
             mock_logging.assert_called_once()
@@ -246,14 +279,18 @@ class TestContentExtractor:
         mock_get.side_effect = requests.exceptions.Timeout("Request timed out")
 
         with patch("logging.error") as mock_logging:
-            result = extractor.extract_content("https://slow.example.com/test", "Test Source")
+            result = extractor.extract_content(
+                "https://slow.example.com/test", "Test Source"
+            )
 
             assert result == {"content": "", "image_url": ""}
             mock_logging.assert_called_once()
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_men_content_invalid_json(self, mock_get, mock_sleep, extractor, mock_response):
+    def test_extract_men_content_invalid_json(
+        self, mock_get, mock_sleep, extractor, mock_response
+    ):
         """Test MEN content extraction with invalid JSON-LD"""
         invalid_html = """
         <html>
@@ -266,7 +303,9 @@ class TestContentExtractor:
         mock_response.content = invalid_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://www.manchestereveningnews.co.uk/news/invalid", "MEN")
+        result = extractor.extract_content(
+            "https://www.manchestereveningnews.co.uk/news/invalid", "MEN"
+        )
 
         # Should fallback to empty content when JSON is invalid
         assert result["content"] == ""
@@ -274,7 +313,9 @@ class TestContentExtractor:
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_men_content_no_json_ld(self, mock_get, mock_sleep, extractor, mock_response):
+    def test_extract_men_content_no_json_ld(
+        self, mock_get, mock_sleep, extractor, mock_response
+    ):
         """Test MEN content extraction without JSON-LD script"""
         no_json_html = """
         <html>
@@ -287,14 +328,18 @@ class TestContentExtractor:
         mock_response.content = no_json_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://www.manchestereveningnews.co.uk/news/no-json", "MEN")
+        result = extractor.extract_content(
+            "https://www.manchestereveningnews.co.uk/news/no-json", "MEN"
+        )
 
         assert result["content"] == ""
         assert result["image_url"] == "https://example.com/image.jpg"
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_content_no_og_image(self, mock_get, mock_sleep, extractor, mock_response):
+    def test_extract_content_no_og_image(
+        self, mock_get, mock_sleep, extractor, mock_response
+    ):
         """Test content extraction without og:image meta tag"""
         no_image_html = """
         <html>
@@ -313,7 +358,9 @@ class TestContentExtractor:
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_nub_content_missing_elements(self, mock_get, mock_sleep, extractor, mock_response):
+    def test_extract_nub_content_missing_elements(
+        self, mock_get, mock_sleep, extractor, mock_response
+    ):
         """Test Nub content extraction with missing elements"""
         minimal_html = """
         <html>
@@ -326,14 +373,18 @@ class TestContentExtractor:
         mock_response.content = minimal_html.encode("utf-8")
         mock_get.return_value = mock_response
 
-        result = extractor.extract_content("https://stockport.nub.news/minimal", "Nub News")
+        result = extractor.extract_content(
+            "https://stockport.nub.news/minimal", "Nub News"
+        )
 
         assert result["content"] == ""  # No prose div found
         assert result["image_url"] == ""  # No image div found
 
     @patch("processors.content_extractor.time.sleep")
     @patch("processors.content_extractor.requests.get")
-    def test_extract_bbc_content_no_paragraphs(self, mock_get, mock_sleep, extractor, mock_response):
+    def test_extract_bbc_content_no_paragraphs(
+        self, mock_get, mock_sleep, extractor, mock_response
+    ):
         """Test BBC content extraction with text blocks but no paragraphs"""
         no_p_html = """
         <html>
@@ -368,7 +419,9 @@ class TestContentExtractor:
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
 
-                result = extractor.extract_content("https://www.bbc.com/news/test", "BBC")
+                result = extractor.extract_content(
+                    "https://www.bbc.com/news/test", "BBC"
+                )
                 mock_bbc.assert_called_once()
 
     def test_url_routing_men(self, extractor):
@@ -387,7 +440,9 @@ class TestContentExtractor:
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
 
-                result = extractor.extract_content("https://www.manchestereveningnews.co.uk/test", "MEN")
+                result = extractor.extract_content(
+                    "https://www.manchestereveningnews.co.uk/test", "MEN"
+                )
                 mock_men.assert_called_once()
 
     def test_url_routing_nub(self, extractor):
@@ -406,13 +461,18 @@ class TestContentExtractor:
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
 
-                result = extractor.extract_content("https://stockport.nub.news/test", "Nub")
+                result = extractor.extract_content(
+                    "https://stockport.nub.news/test", "Nub"
+                )
                 mock_nub.assert_called_once()
 
     def test_url_routing_generic(self, extractor):
         """Test URL routing logic for generic sites"""
         with patch.object(extractor, "_extract_generic_content") as mock_generic:
-            mock_generic.return_value = {"content": "Generic content", "image_url": "generic.jpg"}
+            mock_generic.return_value = {
+                "content": "Generic content",
+                "image_url": "generic.jpg",
+            }
 
             with (
                 patch("processors.content_extractor.requests.get") as mock_get,
@@ -425,7 +485,9 @@ class TestContentExtractor:
                 mock_response.raise_for_status.return_value = None
                 mock_get.return_value = mock_response
 
-                result = extractor.extract_content("https://unknown-site.com/test", "Unknown")
+                result = extractor.extract_content(
+                    "https://unknown-site.com/test", "Unknown"
+                )
                 mock_generic.assert_called_once()
 
 

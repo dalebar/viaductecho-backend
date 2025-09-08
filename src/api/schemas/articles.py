@@ -11,8 +11,12 @@ class ArticleBase(BaseModel):
     link: str = Field(..., description="Original article URL")
     summary: Optional[str] = Field(None, description="Article summary")
     source: str = Field(..., description="Source name")
-    source_type: Optional[str] = Field(None, description="Type of source (RSS, Web scraping)")
-    published_date: Optional[datetime] = Field(None, description="Original publication date")
+    source_type: Optional[str] = Field(
+        None, description="Type of source (RSS, Web scraping)"
+    )
+    published_date: Optional[datetime] = Field(
+        None, description="Original publication date"
+    )
 
     @field_serializer("published_date")
     def serialize_published_date(self, value: Optional[datetime]) -> Optional[str]:
@@ -40,7 +44,9 @@ class ArticleDetail(ArticleBase):
     created_at: datetime = Field(..., description="Date added to system")
     updated_at: Optional[datetime] = Field(None, description="Last updated date")
     processed: bool = Field(..., description="Whether article has been processed")
-    extracted_content: Optional[str] = Field(None, description="Extracted article content")
+    extracted_content: Optional[str] = Field(
+        None, description="Extracted article content"
+    )
     ai_summary: Optional[str] = Field(None, description="AI-generated summary")
     image_url: Optional[str] = Field(None, description="Article image URL")
 

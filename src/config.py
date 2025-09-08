@@ -20,7 +20,9 @@ class Config:
     # API configuration
     API_TITLE = os.getenv("API_TITLE", "Viaduct Echo API")
     API_VERSION = os.getenv("API_VERSION", "1.0.0")
-    API_DESCRIPTION = os.getenv("API_DESCRIPTION", "REST API for the Viaduct Echo news aggregation system")
+    API_DESCRIPTION = os.getenv(
+        "API_DESCRIPTION", "REST API for the Viaduct Echo news aggregation system"
+    )
 
     # CORS configuration
     CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*").split(",")

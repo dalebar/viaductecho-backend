@@ -168,7 +168,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         } catch (e: Exception) {
             Snackbar.make(
                 binding.root,
-                getString(R.string.error_loading_image),
+                getString(R.string.error_opening_link),
                 Snackbar.LENGTH_SHORT
             ).show()
         }

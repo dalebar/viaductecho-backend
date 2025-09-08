@@ -48,7 +48,10 @@ class TestMENSource:
 
         assert isinstance(source, BaseNewsSource)
         assert source.source_name == "Manchester Evening News"
-        assert source.feed_url == "https://www.manchestereveningnews.co.uk/news/greater-manchester-news/?service=rss"
+        assert (
+            source.feed_url
+            == "https://www.manchestereveningnews.co.uk/news/greater-manchester-news/?service=rss"
+        )
 
     def test_inherits_from_base_news_source(self):
         """Test that MENSource properly inherits from BaseNewsSource"""
@@ -100,22 +103,35 @@ class TestMENSource:
             assert len(articles) == 2
 
             # Check first article
-            assert articles[0]["original_title"] == "Stockport town centre to see major redevelopment"
             assert (
-                articles[0]["original_link"] == "https://www.manchestereveningnews.co.uk/news/stockport-redevelopment"
+                articles[0]["original_title"]
+                == "Stockport town centre to see major redevelopment"
             )
-            assert articles[0]["original_summary"] == "Council approves ambitious regeneration plans"
+            assert (
+                articles[0]["original_link"]
+                == "https://www.manchestereveningnews.co.uk/news/stockport-redevelopment"
+            )
+            assert (
+                articles[0]["original_summary"]
+                == "Council approves ambitious regeneration plans"
+            )
             assert articles[0]["original_source"] == "Manchester Evening News"
             assert articles[0]["source_type"] == "RSS News"
             assert articles[0]["original_pubdate"] == datetime(2024, 3, 15, 10, 30, 0)
 
             # Check second article
-            assert articles[1]["original_title"] == "Manchester United fans react to transfer window"
+            assert (
+                articles[1]["original_title"]
+                == "Manchester United fans react to transfer window"
+            )
             assert (
                 articles[1]["original_link"]
                 == "https://www.manchestereveningnews.co.uk/sport/manchester-united-transfer"
             )
-            assert articles[1]["original_summary"] == "Supporters share views on new signings"
+            assert (
+                articles[1]["original_summary"]
+                == "Supporters share views on new signings"
+            )
             assert articles[1]["original_source"] == "Manchester Evening News"
             assert articles[1]["source_type"] == "RSS News"
             assert articles[1]["original_pubdate"] == datetime(2024, 3, 15, 14, 45, 0)
@@ -227,7 +243,9 @@ class TestMENSource:
             articles = source.fetch_articles()
 
             assert articles == []
-            mock_log_error.assert_called_once_with("MEN fetch error: RSS feed unavailable")
+            mock_log_error.assert_called_once_with(
+                "MEN fetch error: RSS feed unavailable"
+            )
 
     @patch("sources.men_source.Config")
     @patch("sources.men_source.feedparser.parse")
@@ -311,7 +329,9 @@ class TestMENSource:
 
     @patch("sources.men_source.Config")
     @patch("sources.men_source.feedparser.parse")
-    def test_fetch_articles_case_insensitive_filtering(self, mock_feedparser, mock_config):
+    def test_fetch_articles_case_insensitive_filtering(
+        self, mock_feedparser, mock_config
+    ):
         """Test that keyword filtering is case insensitive"""
         mock_config.KEYWORDS = ["manchester"]  # lowercase
 
@@ -358,8 +378,14 @@ class TestMENSource:
 
         # Check all expected fields are present and correct
         assert article["original_title"] == "Macclesfield Forest trail reopens"
-        assert article["original_link"] == "https://www.manchestereveningnews.co.uk/news/macclesfield-forest"
-        assert article["original_summary"] == "Popular walking route restored after maintenance"
+        assert (
+            article["original_link"]
+            == "https://www.manchestereveningnews.co.uk/news/macclesfield-forest"
+        )
+        assert (
+            article["original_summary"]
+            == "Popular walking route restored after maintenance"
+        )
         assert article["original_source"] == "Manchester Evening News"
         assert article["source_type"] == "RSS News"
         assert article["original_pubdate"] == datetime(2024, 3, 15, 10, 30, 0)
@@ -410,7 +436,9 @@ class TestMENSource:
 
         with patch("logging.error") as mock_log_error:
             articles = source.fetch_articles()
-            mock_log_error.assert_called_once_with("MEN fetch error: Connection timeout")
+            mock_log_error.assert_called_once_with(
+                "MEN fetch error: Connection timeout"
+            )
 
 
 class TestMENSourceIntegration:
@@ -420,23 +448,44 @@ class TestMENSourceIntegration:
     @patch("sources.men_source.feedparser.parse")
     def test_complete_workflow(self, mock_feedparser, mock_config):
         """Test complete article fetching and filtering workflow"""
-        mock_config.KEYWORDS = ["stockport", "manchester", "macclesfield", "buxton", "high peak"]
+        mock_config.KEYWORDS = [
+            "stockport",
+            "manchester",
+            "macclesfield",
+            "buxton",
+            "high peak",
+        ]
 
         # Create a realistic set of RSS entries
         entries = []
 
         # Local news that should be included
         local_entries = [
-            ("Stockport Grammar School celebrates achievements", "Students excel in national competitions"),
-            ("Manchester Airport welcomes new airline", "International route expansion continues"),
-            ("Macclesfield Silk Museum exhibition opens", "Local history showcased in new display"),
+            (
+                "Stockport Grammar School celebrates achievements",
+                "Students excel in national competitions",
+            ),
+            (
+                "Manchester Airport welcomes new airline",
+                "International route expansion continues",
+            ),
+            (
+                "Macclesfield Silk Museum exhibition opens",
+                "Local history showcased in new display",
+            ),
             ("High Peak walking festival announced", "Annual outdoor event returns"),
-            ("Buxton Opera House hosts charity gala", "Local performers raise funds for community"),
+            (
+                "Buxton Opera House hosts charity gala",
+                "Local performers raise funds for community",
+            ),
         ]
 
         # Non-local news that should be excluded
         non_local_entries = [
-            ("Leeds United transfer speculation", "Championship club considers new signings"),
+            (
+                "Leeds United transfer speculation",
+                "Championship club considers new signings",
+            ),
             ("Sheffield transport updates", "City tram system improvements"),
             ("Liverpool FC European campaign", "Champions League preparation begins"),
         ]
@@ -546,7 +595,10 @@ class TestMENSourceIntegration:
         article = articles[0]
 
         # Should extract the core fields correctly
-        assert article["original_title"] == "Stockport County FC prepare for new season with ambitious signings"
+        assert (
+            article["original_title"]
+            == "Stockport County FC prepare for new season with ambitious signings"
+        )
         assert (
             article["original_link"]
             == "https://www.manchestereveningnews.co.uk/sport/football/stockport-county-fc-transfers-2024"

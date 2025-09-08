@@ -111,12 +111,15 @@ class TestGitHubPublisher:
         publisher = GitHubPublisher()
 
         # Test very long title (should be truncated to 100 chars)
-        long_title = (
-            "This is a very long article title that should be truncated because it exceeds the hundred character limit for slugs"
-        )
+        long_title = "This is a very long article title that should be truncated because it exceeds the hundred character limit for slugs"
         slug = publisher._create_slug(long_title)
         assert len(slug) <= 100
-        assert slug == "this-is-a-very-long-article-title-that-should-be-truncated-because-it-exceeds-the-hundred-character-"[:100]
+        assert (
+            slug
+            == "this-is-a-very-long-article-title-that-should-be-truncated-because-it-exceeds-the-hundred-character-"[
+                :100
+            ]
+        )
 
     @patch("publishers.github_publisher.Config")
     def test_create_slug_edge_cases(self, mock_config):
@@ -140,7 +143,9 @@ class TestGitHubPublisher:
         assert slug == ""
 
     @patch("publishers.github_publisher.Config")
-    def test_create_jekyll_content(self, mock_config, sample_article_data, sample_summary, sample_image_url):
+    def test_create_jekyll_content(
+        self, mock_config, sample_article_data, sample_summary, sample_image_url
+    ):
         """Test Jekyll content generation"""
         mock_config.GITHUB_TOKEN = "test_token"
         mock_config.GITHUB_REPO = "owner/repo"
@@ -148,7 +153,9 @@ class TestGitHubPublisher:
 
         publisher = GitHubPublisher()
 
-        content = publisher._create_jekyll_content(sample_article_data, sample_summary, sample_image_url)
+        content = publisher._create_jekyll_content(
+            sample_article_data, sample_summary, sample_image_url
+        )
 
         # Verify Jekyll front matter
         assert content.startswith("---\n")
@@ -193,7 +200,9 @@ class TestGitHubPublisher:
         publisher = GitHubPublisher()
 
         with patch("logging.info") as mock_log_info:
-            result = publisher.publish_article(sample_article_data, sample_summary, sample_image_url)
+            result = publisher.publish_article(
+                sample_article_data, sample_summary, sample_image_url
+            )
 
             # Verify result
             assert result is True
@@ -212,7 +221,10 @@ class TestGitHubPublisher:
 
             # Check payload
             payload = kwargs["json"]
-            assert payload["message"] == f"Auto-post: {sample_article_data['original_title']}"
+            assert (
+                payload["message"]
+                == f"Auto-post: {sample_article_data['original_title']}"
+            )
             assert payload["branch"] == "main"
             assert "content" in payload
 
@@ -222,7 +234,9 @@ class TestGitHubPublisher:
             assert "layout: post" in decoded_content
 
             # Verify logging
-            mock_log_info.assert_called_once_with(f"Published: {sample_article_data['original_title']}")
+            mock_log_info.assert_called_once_with(
+                f"Published: {sample_article_data['original_title']}"
+            )
 
     @patch("publishers.github_publisher.datetime")
     @patch("publishers.github_publisher.requests.put")
@@ -251,7 +265,9 @@ class TestGitHubPublisher:
         publisher = GitHubPublisher()
 
         with patch("logging.error") as mock_log_error:
-            result = publisher.publish_article(sample_article_data, sample_summary, sample_image_url)
+            result = publisher.publish_article(
+                sample_article_data, sample_summary, sample_image_url
+            )
 
             # Verify result
             assert result is False
@@ -265,7 +281,12 @@ class TestGitHubPublisher:
     @patch("publishers.github_publisher.requests.put")
     @patch("publishers.github_publisher.Config")
     def test_publish_article_exception(
-        self, mock_config, mock_put, sample_article_data, sample_summary, sample_image_url
+        self,
+        mock_config,
+        mock_put,
+        sample_article_data,
+        sample_summary,
+        sample_image_url,
     ):
         """Test article publishing with exception handling"""
         # Setup mocks
@@ -278,7 +299,9 @@ class TestGitHubPublisher:
         publisher = GitHubPublisher()
 
         with patch("logging.error") as mock_log_error:
-            result = publisher.publish_article(sample_article_data, sample_summary, sample_image_url)
+            result = publisher.publish_article(
+                sample_article_data, sample_summary, sample_image_url
+            )
 
             # Verify result
             assert result is False
@@ -292,7 +315,13 @@ class TestGitHubPublisher:
     @patch("publishers.github_publisher.requests.put")
     @patch("publishers.github_publisher.Config")
     def test_publish_article_different_status_codes(
-        self, mock_config, mock_put, mock_datetime, sample_article_data, sample_summary, sample_image_url
+        self,
+        mock_config,
+        mock_put,
+        mock_datetime,
+        sample_article_data,
+        sample_summary,
+        sample_image_url,
     ):
         """Test publishing with different HTTP status codes"""
         mock_config.GITHUB_TOKEN = "test_token"
@@ -314,7 +343,9 @@ class TestGitHubPublisher:
             mock_put.return_value = mock_response
 
             with patch("logging.error") as mock_log_error:
-                result = publisher.publish_article(sample_article_data, sample_summary, sample_image_url)
+                result = publisher.publish_article(
+                    sample_article_data, sample_summary, sample_image_url
+                )
 
                 assert result is False
                 mock_log_error.assert_called_once()
@@ -337,11 +368,16 @@ class TestGitHubPublisher:
                 mock_response.status_code = 201
                 mock_put.return_value = mock_response
 
-                publisher.publish_article(sample_article_data, "test summary", "test.jpg")
+                publisher.publish_article(
+                    sample_article_data, "test summary", "test.jpg"
+                )
 
                 # Check the filename in the URL
                 call_args = mock_put.call_args[0][0]
-                assert "2024-12-25-stockport-council-announces-new-park-investment.md" in call_args
+                assert (
+                    "2024-12-25-stockport-council-announces-new-park-investment.md"
+                    in call_args
+                )
 
     @patch("publishers.github_publisher.Config")
     def test_base64_encoding(self, mock_config, sample_article_data):
@@ -449,7 +485,9 @@ class TestGitHubPublisherIntegration:
 
             with patch("logging.info") as mock_log_info:
                 result = publisher.publish_article(
-                    article_data, "Integration test summary", "https://example.com/integration-test.jpg"
+                    article_data,
+                    "Integration test summary",
+                    "https://example.com/integration-test.jpg",
                 )
 
                 # Verify end-to-end success
@@ -496,7 +534,9 @@ class TestGitHubPublisherIntegration:
                 mock_put.side_effect = error
 
                 with patch("logging.error") as mock_log_error:
-                    result = publisher.publish_article(article_data, "Error test", "error.jpg")
+                    result = publisher.publish_article(
+                        article_data, "Error test", "error.jpg"
+                    )
 
                     # Should always return False on error
                     assert result is False

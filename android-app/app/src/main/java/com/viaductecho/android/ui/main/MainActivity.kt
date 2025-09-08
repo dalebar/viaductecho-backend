@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun observeViewModel() {
-        // Observe any app-level state changes
-        viewModel.isLoading.observe(this) { isLoading ->
-            // Handle global loading state if needed
+        // Connection status monitoring for potential future use
+        viewModel.connectionStatus.observe(this) { status ->
+            // Could be used for global connection status indicators
         }
     }
     

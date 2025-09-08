@@ -6,29 +6,83 @@ __pycache__/
 *.pyd
 .Python
 *.so
+
+# Virtual environments
 venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing and coverage
 .coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.cache
+nosetests.xml
+
+# Development tools
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pre-commit-config.yaml.swp
 
 # local 
 reference/
 instructions.md
 
-# uv
-.venv
+# uv package manager
 .python-version
-pyproject.toml
 uv.lock
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.whl
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
 
 #claude
 .claude/
 CLAUDE.md
 
 .DS_Store
+
+# Environment variables
 .env
+.env.*
+!.env.example
 
 # Logs - organized structure
-logs/sessions/
-logs/api/
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
 
 # iOS / Xcode
 ios-app/ViaductEcho.xcodeproj/project.xcworkspace/
@@ -64,3 +118,18 @@ ios-app/Carthage/Build/
 ios-app/*.ipa
 ios-app/*.dSYM.zip
 ios-app/*.dSYM
+
+# Android
+android-app/build/
+android-app/app/build/
+android-app/.gradle/
+android-app/local.properties
+android-app/*.iml
+android-app/.idea/
+android-app/captures/
+android-app/.externalNativeBuild/
+android-app/.cxx/
+
+# Docker
+.dockerignore
+docker-compose.override.yml

@@ -28,8 +28,6 @@ class ArticleListFragment : Fragment() {
     private val viewModel: ArticleListViewModel by viewModels()
     private lateinit var articleAdapter: ArticleListAdapter
     
-    private var isLoading = false
-    private var isLastPage = false
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +69,9 @@ class ArticleListFragment : Fragment() {
                     val visibleItemCount = layoutManager.childCount
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    
+                    val isLoading = viewModel.isLoadingMore.value ?: false
+                    val isLastPage = viewModel.isLastPage.value ?: false
                     
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
@@ -132,12 +133,11 @@ class ArticleListFragment : Fragment() {
         }
         
         viewModel.isLoadingMore.observe(viewLifecycleOwner) { isLoadingMore ->
-            this.isLoading = isLoadingMore
             // Show/hide loading more indicator if needed
         }
         
         viewModel.isLastPage.observe(viewLifecycleOwner) { lastPage ->
-            this.isLastPage = lastPage
+            // Update pagination state
         }
     }
     

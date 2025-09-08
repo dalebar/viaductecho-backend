@@ -27,6 +27,7 @@
     <string name="error_unknown">Something went wrong</string>
     <string name="error_article_not_found">Article not found</string>
     <string name="error_loading_image">Failed to load image</string>
+    <string name="error_opening_link">Unable to open link</string>
     
     <!-- Sources -->
     <string name="sources_title">News Sources</string>
