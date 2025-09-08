@@ -137,6 +137,7 @@
                     style="@style/Widget.ViaductEcho.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_xxl"
                     android:text="@string/read_full_article"
                     android:drawableStart="@drawable/ic_external_link"
                     android:drawablePadding="@dimen/spacing_sm"
