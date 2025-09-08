@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 # Add src to path so we can import our modules from the parent directory
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
 
 from database.models import Base, RSSArticle  # noqa: E402
 

@@ -10,9 +10,9 @@ from typing import List, Dict
 import pytest
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
 
-from sources.base_source import BaseNewsSource # noqa
+from sources.base_source import BaseNewsSource  # noqa
 
 
 class TestBaseNewsSource:

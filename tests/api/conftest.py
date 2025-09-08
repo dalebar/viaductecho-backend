@@ -11,12 +11,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src")) # noqa
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "src"))  # noqa
 
-from api.app import app # noqa
-from api.routes.articles import get_db as get_articles_db # noqa
-from api.routes.sources import get_db as get_sources_db # noqa
-from database.models import RSSArticle # noqa
+from api.app import app  # noqa
+from api.routes.articles import get_db as get_articles_db  # noqa
+from api.routes.sources import get_db as get_sources_db  # noqa
+from database.models import RSSArticle  # noqa
 
 
 @pytest.fixture

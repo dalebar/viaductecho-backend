@@ -11,10 +11,10 @@ from unittest.mock import patch
 from sqlalchemy.exc import SQLAlchemyError
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
 
-from database.operations import DatabaseOperations # noqa
-from database.models import RSSArticle # noqa
+from database.operations import DatabaseOperations  # noqa
+from database.models import RSSArticle  # noqa
 
 
 class TestDatabaseOperations:
@@ -172,11 +172,11 @@ class TestDatabaseOperations:
             db_ops.session.commit()
 
         # Insert first article
-        article1 = db_ops.insert_article(duplicate_data) # noqa
+        article1 = db_ops.insert_article(duplicate_data)  # noqa
 
         # Try to insert duplicate (should fail due to unique constraint)
         with pytest.raises(Exception):
-            article2 = db_ops.insert_article(duplicate_data) # noqa
+            article2 = db_ops.insert_article(duplicate_data)  # noqa
 
     def test_close_connection(self, db_ops):
         """Test closing the database connection"""

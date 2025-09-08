@@ -10,9 +10,9 @@ import openai
 import pytest
 
 # Add src to path so we can import our modules
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src")) # noqa
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
 
-from processors.ai_summarizer import AISummarizer # noqa
+from processors.ai_summarizer import AISummarizer  # noqa
 
 
 class TestAISummarizer:
@@ -25,10 +25,10 @@ class TestAISummarizer:
             "Stockport Council announced today that they will be investing £2.5 million in "
             "improving local parks and green spaces across the borough. The investment will "
             "focus on upgrading playground equipment, improving walking paths, and creating "
-            "new community gardens. Council leader Sarah Johnson said: \"This investment "
+            'new community gardens. Council leader Sarah Johnson said: "This investment '
             "represents our commitment to providing high-quality outdoor spaces for our "
             "residents. We know how important parks are for community wellbeing, especially "
-            "after the challenges of recent years.\" The improvements are expected to begin "
+            'after the challenges of recent years." The improvements are expected to begin '
             "in March and will be completed by the end of the year. Local residents have "
             "welcomed the news, with many having campaigned for better facilities for months."
         )
