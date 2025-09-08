@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --dev
-          uv run pip install pytest-cov bandit
+          uv run pip install bandit
 
       - name: Create test environment file
         run: |
@@ -62,7 +62,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          uv run python -m pytest tests/ \
+          uv run python pytest tests \
             --cov=src \
             --cov-report=xml \
             --cov-report=html \
