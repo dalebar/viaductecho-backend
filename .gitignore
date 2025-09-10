@@ -65,10 +65,8 @@ CLAUDE.md
 
 .DS_Store
 
-# Environment variables
+# Local Environment variables
 .env
-.env.*
-!.env.example
 
 # Logs - organized structure
 logs/
