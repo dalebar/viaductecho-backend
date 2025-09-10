@@ -10,6 +10,11 @@ from bs4 import BeautifulSoup
 
 from .base_source import BaseNewsSource
 
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
+
 
 class NubSource(BaseNewsSource):
     def __init__(self):
@@ -19,7 +24,12 @@ class NubSource(BaseNewsSource):
 
     def fetch_articles(self) -> List[Dict]:
         try:
-            response = requests.get(self.base_url, headers=self.headers)
+            if Config.HTTP_TIMEOUT is not None:
+                response = requests.get(
+                    self.base_url, headers=self.headers, timeout=Config.HTTP_TIMEOUT
+                )
+            else:
+                response = requests.get(self.base_url, headers=self.headers)
             response.raise_for_status()
 
             soup = BeautifulSoup(response.content, "html.parser")

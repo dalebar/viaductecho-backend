@@ -1,5 +1,6 @@
 import hashlib
 import logging
+from typing import Callable, TypeVar
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -29,6 +30,16 @@ class DatabaseOperations:
         Base.metadata.create_all(self.engine)
         self.logger.info("Database connection established")
 
+    @staticmethod
+    def _hash_url(url: str) -> str:
+        data = url.encode()
+        try:
+            # Prefer explicit non-security use to satisfy FIPS/Bandit where supported
+            return hashlib.md5(data, usedforsecurity=False).hexdigest()
+        except TypeError:
+            # Fallback for Python/OpenSSL without usedforsecurity argument
+            return hashlib.md5(data).hexdigest()
+
     def _reconnect_if_needed(self):
         """Reconnect to database if connection is lost"""
         try:
@@ -45,26 +56,34 @@ class DatabaseOperations:
                 self.logger.error(f"Database reconnection failed: {reconnect_error}")
                 raise
 
-    def article_exists(self, url: str) -> bool:
-        """Check if article exists by URL hash"""
+    T = TypeVar("T")
+
+    def _run_with_reconnect(self, op: Callable[[], T]) -> T:
+        """Run a DB operation, retrying once after reconnect on connection errors."""
+        from sqlalchemy.exc import InvalidRequestError, OperationalError
+
         self._reconnect_if_needed()
-        url_hash = hashlib.md5(url.encode()).hexdigest()
         try:
-            existing = (
-                self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
-            )
-            return existing is not None
+            return op()
         except (OperationalError, InvalidRequestError):
             self._reconnect_if_needed()
+            return op()
+
+    def article_exists(self, url: str) -> bool:
+        """Check if article exists by URL hash"""
+        url_hash = self._hash_url(url)
+
+        def _op() -> bool:
             existing = (
                 self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
             )
             return existing is not None
 
+        return self._run_with_reconnect(_op)
+
     def insert_article(self, article_data: dict) -> RSSArticle:
         """Insert new article"""
-        self._reconnect_if_needed()
-        url_hash = hashlib.md5(article_data["original_link"].encode()).hexdigest()
+        url_hash = self._hash_url(article_data["original_link"])
 
         article = RSSArticle(
             original_title=article_data["original_title"],
@@ -76,25 +95,21 @@ class DatabaseOperations:
             url_hash=url_hash,
         )
 
-        try:
+        def _op() -> RSSArticle:
             self.session.add(article)
             self.session.commit()
             self.logger.info(f"Inserted article: {article.original_title}")
             return article
-        except (OperationalError, InvalidRequestError):
-            self._reconnect_if_needed()
-            self.session.add(article)
-            self.session.commit()
-            self.logger.info(f"Inserted article: {article.original_title}")
-            return article
+
+        return self._run_with_reconnect(_op)
 
     def update_article_content(
         self, article_link: str, extracted_content: str, image_url: str = None
     ):
         """Update article with extracted content and image URL"""
-        self._reconnect_if_needed()
-        url_hash = hashlib.md5(article_link.encode()).hexdigest()
-        try:
+        url_hash = self._hash_url(article_link)
+
+        def _op() -> None:
             article = (
                 self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
             )
@@ -104,23 +119,15 @@ class DatabaseOperations:
                     article.image_url = image_url
                 self.session.commit()
                 self.logger.info(f"Updated content for: {article.original_title}")
-        except (OperationalError, InvalidRequestError):
-            self._reconnect_if_needed()
-            article = (
-                self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
-            )
-            if article:
-                article.extracted_content = extracted_content
-                if image_url:
-                    article.image_url = image_url
-                self.session.commit()
-                self.logger.info(f"Updated content for: {article.original_title}")
+            return None
+
+        self._run_with_reconnect(_op)
 
     def update_article_ai_summary(self, article_link: str, ai_summary: str):
         """Update article with AI-generated summary"""
-        self._reconnect_if_needed()
-        url_hash = hashlib.md5(article_link.encode()).hexdigest()
-        try:
+        url_hash = self._hash_url(article_link)
+
+        def _op() -> None:
             article = (
                 self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
             )
@@ -128,21 +135,15 @@ class DatabaseOperations:
                 article.ai_summary = ai_summary
                 self.session.commit()
                 self.logger.info(f"Updated AI summary for: {article.original_title}")
-        except (OperationalError, InvalidRequestError):
-            self._reconnect_if_needed()
-            article = (
-                self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
-            )
-            if article:
-                article.ai_summary = ai_summary
-                self.session.commit()
-                self.logger.info(f"Updated AI summary for: {article.original_title}")
+            return None
+
+        self._run_with_reconnect(_op)
 
     def mark_processed(self, article_link: str):
         """Mark article as processed"""
-        self._reconnect_if_needed()
-        url_hash = hashlib.md5(article_link.encode()).hexdigest()
-        try:
+        url_hash = self._hash_url(article_link)
+
+        def _op() -> None:
             article = (
                 self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
             )
@@ -150,15 +151,9 @@ class DatabaseOperations:
                 article.processed = True
                 self.session.commit()
                 self.logger.info(f"Marked processed: {article.original_title}")
-        except (OperationalError, InvalidRequestError):
-            self._reconnect_if_needed()
-            article = (
-                self.session.query(RSSArticle).filter_by(url_hash=url_hash).first()
-            )
-            if article:
-                article.processed = True
-                self.session.commit()
-                self.logger.info(f"Marked processed: {article.original_title}")
+            return None
+
+        self._run_with_reconnect(_op)
 
     def close(self):
         if self.session:

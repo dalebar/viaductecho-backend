@@ -1,9 +1,8 @@
-from datetime import datetime
 from typing import Dict, List
 
 import feedparser
 
-from .base_source import BaseNewsSource
+from .base_source import BaseNewsSource, build_article_from_feed_entry
 
 try:
     from ..config import Config
@@ -24,19 +23,9 @@ class MENSource(BaseNewsSource):
             articles = []
 
             for entry in feed.entries:
-                article = {
-                    "original_title": entry.title,
-                    "original_link": entry.link,
-                    "original_summary": entry.get("summary", ""),
-                    "original_source": self.source_name,
-                    "source_type": "RSS News",
-                    "original_pubdate": (
-                        datetime(*entry.published_parsed[:6])
-                        if hasattr(entry, "published_parsed")
-                        else None
-                    ),
-                }
-                articles.append(article)
+                articles.append(
+                    build_article_from_feed_entry(entry, self.source_name, "RSS News")
+                )
 
             filtered = self.filter_articles(articles, Config.KEYWORDS)
             logging.info(f"MEN: {len(filtered)} articles found")

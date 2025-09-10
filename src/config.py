@@ -36,6 +36,11 @@ class Config:
     RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "100"))
     RATE_LIMIT_WINDOW = int(os.getenv("RATE_LIMIT_WINDOW", "60"))  # seconds
 
+    # HTTP client defaults
+    # Use None to preserve previous no-timeout behavior unless explicitly configured
+    _timeout = os.getenv("HTTP_TIMEOUT", "").strip()
+    HTTP_TIMEOUT = float(_timeout) if _timeout else None
+
     KEYWORDS = [
         "stockport",
         "manchester",

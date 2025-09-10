@@ -8,14 +8,14 @@ struct SourcesView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var cancellables = Set<AnyCancellable>()
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 if let healthStatus = healthStatus {
                     healthStatusView(healthStatus)
                 }
-                
+
                 if isLoading {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -59,26 +59,26 @@ struct SourcesView: View {
             }
         }
     }
-    
+
     private func healthStatusView(_ status: HealthStatus) -> some View {
         VStack(spacing: 8) {
             HStack {
                 Circle()
                     .fill(status.isHealthy ? Color.green : Color.red)
                     .frame(width: 8, height: 8)
-                
+
                 Text(status.isHealthy ? "System Healthy" : "System Issues")
                     .font(.caption)
                     .foregroundColor(status.isHealthy ? .green : .red)
                     .fontWeight(.medium)
-                
+
                 Spacer()
-                
+
                 Text("Last updated: \(status.timestamp, style: .relative)")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
-            
+
             HStack(spacing: 20) {
                 VStack {
                     Text("\(status.totalArticles)")
@@ -89,7 +89,7 @@ struct SourcesView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
+
                 VStack {
                     Text("\(status.recentArticles24h)")
                         .font(.title2)
@@ -99,7 +99,7 @@ struct SourcesView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
+
                 VStack {
                     Image(systemName: status.databaseConnected ? "checkmark.circle.fill" : "xmark.circle.fill")
                         .font(.title2)
@@ -115,14 +115,14 @@ struct SourcesView: View {
         .cornerRadius(8)
         .padding()
     }
-    
+
     private func loadData() {
         isLoading = true
         errorMessage = nil
-        
+
         let sourcesPublisher = apiService.getSources()
         let healthPublisher = apiService.getHealthStatus()
-        
+
         Publishers.Zip(sourcesPublisher, healthPublisher)
             .sink(
                 receiveCompletion: { completion in
@@ -138,15 +138,15 @@ struct SourcesView: View {
             )
             .store(in: &cancellables)
     }
-    
+
     @MainActor
     private func refreshData() async {
         do {
             async let sourcesData = apiService.getSources().async()
             async let healthData = apiService.getHealthStatus().async()
-            
+
             let (newSources, newHealthStatus) = try await (sourcesData, healthData)
-            
+
             sources = newSources
             healthStatus = newHealthStatus
             errorMessage = nil

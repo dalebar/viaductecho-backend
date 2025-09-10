@@ -20,6 +20,8 @@ This guide covers deploying the Viaduct Echo API using Docker and Docker Compose
    GITHUB_TOKEN=your_github_token
    GITHUB_REPO=your_username/your_repo
    GITHUB_BRANCH=main
+   # Optional: HTTP client timeout (seconds). Leave empty for no timeout.
+   HTTP_TIMEOUT=10
    ```
 
 3. **Start development environment**:
@@ -48,6 +50,8 @@ This guide covers deploying the Viaduct Echo API using Docker and Docker Compose
    CORS_ORIGINS="https://yourdomain.com,https://app.yourdomain.com"
    DEFAULT_PAGE_SIZE=20
    MAX_PAGE_SIZE=100
+   # Optional: HTTP client timeout (seconds). Leave empty for no timeout.
+   HTTP_TIMEOUT=10
    ```
 
 2. **Start production environment**:
@@ -214,6 +218,7 @@ docker-compose up -d --scale api=3
 - `GITHUB_TOKEN`: GitHub personal access token
 - `GITHUB_REPO`: GitHub repository (username/repo)
 - `GITHUB_BRANCH`: Target branch (main)
+- `HTTP_TIMEOUT` (optional): Timeout in seconds for outbound HTTP requests (content extraction, GitHub publishing, source fetching). If unset, no timeout is applied.
 
 ## Troubleshooting
 

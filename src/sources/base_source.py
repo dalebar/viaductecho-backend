@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from typing import Dict, List
 
 
@@ -22,3 +23,33 @@ class BaseNewsSource(ABC):
                 filtered.append(article)
 
         return filtered
+
+
+def build_article_from_feed_entry(
+    entry, source_name: str, source_type: str = "RSS News"
+) -> Dict:
+    """Build a standardized article dict from a feedparser entry.
+
+    Keeps identical behavior to existing sources regarding fields and defaults.
+    """
+    # Handle optional summary safely via entry.get("summary", "")
+    summary = None
+    try:
+        summary = entry.get("summary", "")
+    except Exception:
+        summary = ""
+
+    # published_parsed may be absent; mimic prior hasattr check
+    if hasattr(entry, "published_parsed") and entry.published_parsed is not None:
+        pubdate = datetime(*entry.published_parsed[:6])
+    else:
+        pubdate = None
+
+    return {
+        "original_title": entry.title,
+        "original_link": entry.link,
+        "original_summary": summary,
+        "original_source": source_name,
+        "source_type": source_type,
+        "original_pubdate": pubdate,
+    }

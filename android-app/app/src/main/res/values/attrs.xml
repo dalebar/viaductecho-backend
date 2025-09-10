@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <!-- LoadingStateView attributes -->
     <declare-styleable name="LoadingStateView">
         <attr name="loadingMessage" format="string" />
     </declare-styleable>
-    
+
     <!-- ErrorStateView attributes -->
     <declare-styleable name="ErrorStateView">
         <attr name="errorMessage" format="string" />
         <attr name="errorIcon" format="reference" />
     </declare-styleable>
-    
+
 </resources>

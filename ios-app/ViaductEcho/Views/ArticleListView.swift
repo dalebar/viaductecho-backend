@@ -10,9 +10,9 @@ struct ArticleListView: View {
     @State private var errorMessage: String?
     @State private var selectedSource: String?
     @State private var cancellables = Set<AnyCancellable>()
-    
+
     private let perPage = 20
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -40,7 +40,7 @@ struct ArticleListView: View {
                                 ArticleRowView(article: article)
                             }
                         }
-                        
+
                         if currentPage < totalPages {
                             Button(action: loadMoreArticles) {
                                 if isLoading {
@@ -92,12 +92,12 @@ struct ArticleListView: View {
             }
         }
     }
-    
+
     private func loadArticles() {
         isLoading = true
         errorMessage = nil
         currentPage = 1
-        
+
         apiService.getArticles(
             page: currentPage,
             perPage: perPage,
@@ -118,13 +118,13 @@ struct ArticleListView: View {
         )
         .store(in: &cancellables)
     }
-    
+
     private func loadMoreArticles() {
         guard !isLoading, currentPage < totalPages else { return }
-        
+
         isLoading = true
         let nextPage = currentPage + 1
-        
+
         apiService.getArticles(
             page: nextPage,
             perPage: perPage,
@@ -146,11 +146,11 @@ struct ArticleListView: View {
         )
         .store(in: &cancellables)
     }
-    
+
     @MainActor
     private func refreshArticles() async {
         currentPage = 1
-        
+
         do {
             let paginatedArticles = try await apiService.getArticles(
                 page: currentPage,
@@ -159,7 +159,7 @@ struct ArticleListView: View {
                 processedOnly: true
             )
             .async()
-            
+
             articles = paginatedArticles.articles
             totalPages = paginatedArticles.pagination.totalPages
             errorMessage = nil

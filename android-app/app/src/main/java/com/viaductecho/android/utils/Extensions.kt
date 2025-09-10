@@ -20,11 +20,11 @@ import java.util.*
 // Network connectivity check
 fun Context.isNetworkAvailable(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-        
+
         return when {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
@@ -43,25 +43,25 @@ fun Context.isNetworkAvailable(): Boolean {
 
 // Date formatting utilities
 object DateUtils {
-    
+
     private const val API_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS+00:00"
     private const val API_DATE_FORMAT_ALT = "yyyy-MM-dd'T'HH:mm:ss+00:00"
     private const val DISPLAY_DATE_FORMAT = "MMM dd, yyyy"
     private const val DISPLAY_TIME_FORMAT = "HH:mm"
-    
+
     fun formatRelativeTime(dateString: String?): String {
         if (dateString.isNullOrBlank()) return ""
-        
+
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val instant = Instant.parse(dateString.replace("+00:00", "Z"))
                 val publishedTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
                 val now = LocalDateTime.now()
-                
+
                 val minutesAgo = ChronoUnit.MINUTES.between(publishedTime, now)
                 val hoursAgo = ChronoUnit.HOURS.between(publishedTime, now)
                 val daysAgo = ChronoUnit.DAYS.between(publishedTime, now)
-                
+
                 when {
                     minutesAgo < 1 -> "Just now"
                     minutesAgo < 60 -> "${minutesAgo}m ago"
@@ -77,10 +77,10 @@ object DateUtils {
             ""
         }
     }
-    
+
     fun formatDisplayDate(dateString: String?): String {
         if (dateString.isNullOrBlank()) return ""
-        
+
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val instant = Instant.parse(dateString.replace("+00:00", "Z"))
@@ -93,7 +93,7 @@ object DateUtils {
             dateString
         }
     }
-    
+
     @Suppress("DEPRECATION")
     private fun formatDateLegacy(dateString: String): String {
         return try {

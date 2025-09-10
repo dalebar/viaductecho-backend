@@ -20,17 +20,17 @@ import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
 class ArticleRepositoryTest {
-    
+
     @Mock
     private lateinit var apiService: ApiService
-    
+
     private lateinit var repository: ArticleRepository
-    
+
     @Before
     fun setup() {
         repository = ArticleRepository(apiService)
     }
-    
+
     @Test
     fun `getHealth returns success when API call succeeds`() = runTest {
         // Given
@@ -42,28 +42,28 @@ class ArticleRepositoryTest {
             timestamp = "2024-03-15T10:00:00Z"
         )
         whenever(apiService.getHealth()).thenReturn(Response.success(healthResponse))
-        
+
         // When
         val result = repository.getHealth()
-        
+
         // Then
         assertTrue(result is Resource.Success)
         assertEquals(healthResponse, (result as Resource.Success).data)
     }
-    
+
     @Test
     fun `getHealth returns error when API call fails`() = runTest {
         // Given
         whenever(apiService.getHealth()).thenThrow(IOException("Network error"))
-        
+
         // When
         val result = repository.getHealth()
-        
+
         // Then
         assertTrue(result is Resource.Error)
         assertTrue((result as Resource.Error).message!!.contains("Network error"))
     }
-    
+
     @Test
     fun `getArticles returns success with articles when API call succeeds`() = runTest {
         // Given
@@ -73,61 +73,61 @@ class ArticleRepositoryTest {
         )
         val pagination = Pagination(1, 20, 2, 1, false, false)
         val articlesResponse = ArticlesResponse(articles, pagination)
-        
+
         whenever(apiService.getArticles(1, 20, null, true))
             .thenReturn(Response.success(articlesResponse))
-        
+
         // When
         val result = repository.getArticles()
-        
+
         // Then
         assertTrue(result is Resource.Success)
         assertEquals(articlesResponse, (result as Resource.Success).data)
         assertEquals(2, result.data.articles.size)
     }
-    
+
     @Test
     fun `getArticles returns error when network is unavailable`() = runTest {
         // Given
         whenever(apiService.getArticles(1, 20, null, true))
             .thenThrow(IOException("No internet connection"))
-        
+
         // When
         val result = repository.getArticles()
-        
+
         // Then
         assertTrue(result is Resource.Error)
         assertEquals("No internet connection", (result as Resource.Error).message)
     }
-    
+
     @Test
     fun `getArticleById returns success when article exists`() = runTest {
         // Given
         val article = createMockArticle(1, "Test Article")
         whenever(apiService.getArticleById(1)).thenReturn(Response.success(article))
-        
+
         // When
         val result = repository.getArticleById(1)
-        
+
         // Then
         assertTrue(result is Resource.Success)
         assertEquals(article, (result as Resource.Success).data)
     }
-    
+
     @Test
     fun `getArticleById returns error when article not found`() = runTest {
         // Given
         whenever(apiService.getArticleById(999))
             .thenReturn(Response.error(404, okhttp3.ResponseBody.create(null, "")))
-        
+
         // When
         val result = repository.getArticleById(999)
-        
+
         // Then
         assertTrue(result is Resource.Error)
         assertTrue((result as Resource.Error).message!!.contains("404"))
     }
-    
+
     private fun createMockArticle(id: Int, title: String) = Article(
         id = id,
         title = title,

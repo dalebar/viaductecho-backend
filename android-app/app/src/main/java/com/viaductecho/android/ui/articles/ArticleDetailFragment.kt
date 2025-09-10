@@ -25,15 +25,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment(), MenuProvider {
-    
+
     private var _binding: FragmentArticleDetailBinding? = null
     private val binding get() = _binding!!
-    
+
     private val args: ArticleDetailFragmentArgs by navArgs()
     private val viewModel: ArticleDetailViewModel by viewModels()
-    
+
     private var currentArticle: Article? = null
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +42,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         _binding = FragmentArticleDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -67,7 +67,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
                 // Handle scroll events if needed (e.g., hiding/showing FAB)
             }
-            
+
             // Setup read full article button
             buttonReadFullArticle.setOnClickListener {
                 currentArticle?.let { article ->
@@ -76,7 +76,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             }
         }
     }
-    
+
     private fun setupObservers() {
         viewModel.article.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -97,7 +97,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             }
         }
     }
-    
+
     private fun displayArticle(article: Article) {
         binding.apply {
             // Load article image
@@ -106,16 +106,16 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
                 placeholder = R.drawable.placeholder_article,
                 error = R.drawable.error_image
             )
-            
+
             // Set article title
             textViewTitle.text = article.title
-            
+
             // Set source and date information
             textViewSource.text = getString(R.string.article_source, article.source)
-            textViewDate.text = article.publishedDate?.let { 
+            textViewDate.text = article.publishedDate?.let {
                 getString(R.string.published_on, DateUtils.formatDisplayDate(it))
             } ?: ""
-            
+
             // Display AI Summary if available
             if (!article.aiSummary.isNullOrBlank()) {
                 aiSummaryContainer.visibility = View.VISIBLE
@@ -127,32 +127,32 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
                 textViewAiSummary.text = getString(R.string.ai_summary_not_available)
                 textViewAiSummary.alpha = 0.7f // Make it slightly faded to indicate it's placeholder text
             }
-            
+
             // Hide the original content - only show AI summary
             textViewContent.visibility = View.GONE
-            
+
             // Setup accessibility
-            imageViewArticle.contentDescription = 
+            imageViewArticle.contentDescription =
                 getString(R.string.cd_article_image)
-            buttonReadFullArticle.contentDescription = 
+            buttonReadFullArticle.contentDescription =
                 getString(R.string.cd_external_link)
         }
     }
-    
+
     private fun showLoading() {
         binding.apply {
             progressBar.visibility = View.VISIBLE
             contentContainer.visibility = View.GONE
         }
     }
-    
+
     private fun hideLoading() {
         binding.apply {
             progressBar.visibility = View.GONE
             contentContainer.visibility = View.VISIBLE
         }
     }
-    
+
     private fun showError(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.retry)) {
@@ -160,7 +160,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             }
             .show()
     }
-    
+
     private fun openExternalLink(url: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -173,7 +173,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             ).show()
         }
     }
-    
+
     private fun shareArticle() {
         currentArticle?.let { article ->
             val shareText = "${article.title}\n\n${article.link}"
@@ -183,16 +183,16 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
                 putExtra(Intent.EXTRA_TEXT, shareText)
                 putExtra(Intent.EXTRA_SUBJECT, article.title)
             }
-            
+
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)))
         }
     }
-    
+
     // MenuProvider implementation
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.article_detail_menu, menu)
     }
-    
+
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_share -> {
@@ -202,7 +202,7 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
             else -> false
         }
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

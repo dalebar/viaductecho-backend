@@ -217,6 +217,9 @@ Our automated quality assurance includes:
 - **Bandit**: Security vulnerability scanning
 - **Pre-commit hooks**: Automated quality checks on every commit
 
+**HTTP Timeouts**:
+- Configure outbound request timeouts by setting `HTTP_TIMEOUT` (seconds). Leaving it unset preserves legacy behavior with no timeout.
+
 **Testing & Coverage**:
 - **pytest**: 225+ comprehensive tests
 - **Coverage**: >90% code coverage with HTML reports

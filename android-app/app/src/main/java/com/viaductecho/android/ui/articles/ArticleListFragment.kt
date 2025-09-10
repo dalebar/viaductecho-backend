@@ -21,14 +21,14 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArticleListFragment : Fragment() {
-    
+
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
-    
+
     private val viewModel: ArticleListViewModel by viewModels()
     private lateinit var articleAdapter: ArticleListAdapter
-    
-    
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,42 +37,42 @@ class ArticleListFragment : Fragment() {
         _binding = FragmentArticleListBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         setupRecyclerView()
         setupSwipeRefresh()
         setupObservers()
-        
+
         // Load articles if not already loaded
         if (viewModel.articles.value?.data.isNullOrEmpty()) {
             viewModel.loadArticles()
         }
     }
-    
+
     private fun setupRecyclerView() {
         articleAdapter = ArticleListAdapter { article ->
             navigateToArticleDetail(article)
         }
-        
+
         binding.recyclerViewArticles.apply {
             adapter = articleAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            
+
             // Add pagination scroll listener
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    
+
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val visibleItemCount = layoutManager.childCount
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-                    
+
                     val isLoading = viewModel.isLoadingMore.value ?: false
                     val isLastPage = viewModel.isLastPage.value ?: false
-                    
+
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                             && firstVisibleItemPosition >= 0
@@ -84,7 +84,7 @@ class ArticleListFragment : Fragment() {
             })
         }
     }
-    
+
     private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.apply {
             setColorSchemeResources(
@@ -92,7 +92,7 @@ class ArticleListFragment : Fragment() {
                 R.color.md_theme_light_secondary,
                 R.color.md_theme_light_tertiary
             )
-            
+
             setOnRefreshListener {
                 if (requireContext().isNetworkAvailable()) {
                     viewModel.refreshArticles()
@@ -103,7 +103,7 @@ class ArticleListFragment : Fragment() {
             }
         }
     }
-    
+
     private fun setupObservers() {
         viewModel.articles.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -127,26 +127,26 @@ class ArticleListFragment : Fragment() {
                 }
             }
         }
-        
+
         viewModel.isRefreshing.observe(viewLifecycleOwner) { isRefreshing ->
             binding.swipeRefreshLayout.isRefreshing = isRefreshing
         }
-        
+
         viewModel.isLoadingMore.observe(viewLifecycleOwner) { isLoadingMore ->
             // Show/hide loading more indicator if needed
         }
-        
+
         viewModel.isLastPage.observe(viewLifecycleOwner) { lastPage ->
             // Update pagination state
         }
     }
-    
+
     private fun loadMoreArticles() {
         if (requireContext().isNetworkAvailable()) {
             viewModel.loadMoreArticles()
         }
     }
-    
+
     private fun navigateToArticleDetail(article: Article) {
         val action = ArticleListFragmentDirections
             .actionArticleListFragmentToArticleDetailFragment(
@@ -155,7 +155,7 @@ class ArticleListFragment : Fragment() {
             )
         findNavController().navigate(action)
     }
-    
+
     private fun showLoading() {
         if (articleAdapter.itemCount == 0) {
             binding.progressBar.visibility = View.VISIBLE
@@ -163,23 +163,23 @@ class ArticleListFragment : Fragment() {
             binding.emptyStateView.visibility = View.GONE
         }
     }
-    
+
     private fun hideLoading() {
         binding.progressBar.visibility = View.GONE
         binding.recyclerViewArticles.visibility = View.VISIBLE
         binding.swipeRefreshLayout.isRefreshing = false
     }
-    
+
     private fun showEmptyState() {
         binding.emptyStateView.visibility = View.VISIBLE
         binding.recyclerViewArticles.visibility = View.GONE
     }
-    
+
     private fun hideEmptyState() {
         binding.emptyStateView.visibility = View.GONE
         binding.recyclerViewArticles.visibility = View.VISIBLE
     }
-    
+
     private fun showError(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.retry)) {
@@ -187,12 +187,12 @@ class ArticleListFragment : Fragment() {
             }
             .show()
     }
-    
+
     private fun showNetworkError() {
         Snackbar.make(binding.root, getString(R.string.error_network), Snackbar.LENGTH_LONG)
             .show()
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -18,7 +18,7 @@ import com.viaductecho.android.R
  * Enhanced image loading utilities with proper error handling and optimization
  */
 object ImageLoadingUtils {
-    
+
     /**
      * Load image with enhanced error handling and smooth transitions
      */
@@ -35,20 +35,20 @@ object ImageLoadingUtils {
             .error(error)
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .skipMemoryCache(false)
-        
+
         // Apply corner radius if specified
         val transformation = if (cornerRadius > 0) {
             RequestOptions().transform(CenterCrop(), RoundedCorners(cornerRadius))
         } else {
             RequestOptions().transform(CenterCrop())
         }
-        
+
         val request = Glide.with(context)
             .load(url)
             .apply(requestOptions)
             .apply(transformation)
             .transition(DrawableTransitionOptions.withCrossFade(300))
-            
+
         // Add listener only if callbacks are provided
         if (onSuccess != null || onError != null) {
             // Use simpler callback approach to avoid interface issues
@@ -57,7 +57,7 @@ object ImageLoadingUtils {
                     super.onResourceReady(resource, transition)
                     onSuccess?.invoke()
                 }
-                
+
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     super.onLoadFailed(errorDrawable)
                     onError?.invoke(null)
@@ -67,7 +67,7 @@ object ImageLoadingUtils {
             request.into(this)
         }
     }
-    
+
     /**
      * Load image with circular transformation
      */
@@ -88,7 +88,7 @@ object ImageLoadingUtils {
             .transition(DrawableTransitionOptions.withCrossFade(300))
             .into(this)
     }
-    
+
     /**
      * Preload image for better performance
      */
@@ -100,7 +100,7 @@ object ImageLoadingUtils {
                 .preload()
         }
     }
-    
+
     /**
      * Clear image and free memory
      */
@@ -108,4 +108,3 @@ object ImageLoadingUtils {
         Glide.with(context).clear(this)
     }
 }
-

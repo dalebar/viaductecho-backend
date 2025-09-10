@@ -1,4 +1,3 @@
-import math
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -7,6 +6,10 @@ try:
     from ...database.api_operations import APIOperations
 except ImportError:
     from database.api_operations import APIOperations
+try:
+    from ...config import Config
+except ImportError:
+    from config import Config
 
 from ..schemas.articles import (
     ArticleDetail,
@@ -15,6 +18,8 @@ from ..schemas.articles import (
     PaginationInfo,
 )
 from ..schemas.common import ErrorResponse
+from ..utils.mappers import create_pagination_info as _create_pagination_info
+from ..utils.mappers import to_article_detail, to_article_summary
 
 router = APIRouter()
 
@@ -31,17 +36,8 @@ def get_db():
 def create_pagination_info(
     page: int, per_page: int, total_items: int
 ) -> PaginationInfo:
-    """Create pagination information"""
-    total_pages = math.ceil(total_items / per_page) if total_items > 0 else 0
-
-    return PaginationInfo(
-        page=page,
-        per_page=per_page,
-        total_items=total_items,
-        total_pages=total_pages,
-        has_next=page < total_pages,
-        has_prev=page > 1,
-    )
+    # Keep function for backward-compatibility import paths, delegate to util
+    return _create_pagination_info(page, per_page, total_items)
 
 
 @router.get(
@@ -57,7 +53,12 @@ def create_pagination_info(
 )
 async def get_articles(
     page: int = Query(1, ge=1, description="Page number"),
-    per_page: int = Query(20, ge=1, le=100, description="Items per page"),
+    per_page: int = Query(
+        Config.DEFAULT_PAGE_SIZE,
+        ge=1,
+        le=Config.MAX_PAGE_SIZE,
+        description="Items per page",
+    ),
     source: str = Query(None, description="Filter by source name"),
     processed_only: bool = Query(True, description="Only return processed articles"),
     db: APIOperations = Depends(get_db),
@@ -69,20 +70,7 @@ async def get_articles(
         )
 
         # Convert to response models
-        article_summaries = [
-            ArticleSummary(
-                id=article.id,
-                title=article.original_title,
-                link=article.original_link,
-                summary=article.original_summary,
-                source=article.original_source,
-                source_type=article.source_type,
-                published_date=article.original_pubdate,
-                created_at=article.created_at,
-                image_url=article.image_url,
-            )
-            for article in articles
-        ]
+        article_summaries = [to_article_summary(article) for article in articles]
 
         pagination = create_pagination_info(page, per_page, total_count)
 
@@ -110,27 +98,16 @@ async def get_recent_articles(
     hours: int = Query(
         24, ge=1, le=168, description="Hours back to look (max 168 = 1 week)"
     ),
-    limit: int = Query(50, ge=1, le=100, description="Maximum articles to return"),
+    limit: int = Query(
+        50, ge=1, le=Config.MAX_PAGE_SIZE, description="Maximum articles to return"
+    ),
     db: APIOperations = Depends(get_db),
 ):
     """Get recent articles"""
     try:
         articles = db.get_recent_articles(hours=hours, limit=limit)
 
-        return [
-            ArticleSummary(
-                id=article.id,
-                title=article.original_title,
-                link=article.original_link,
-                summary=article.original_summary,
-                source=article.original_source,
-                source_type=article.source_type,
-                published_date=article.original_pubdate,
-                created_at=article.created_at,
-                image_url=article.image_url,
-            )
-            for article in articles
-        ]
+        return [to_article_summary(article) for article in articles]
 
     except Exception as e:
         raise HTTPException(
@@ -155,7 +132,12 @@ async def search_articles(
         ..., min_length=2, description="Search query (minimum 2 characters)"
     ),
     page: int = Query(1, ge=1, description="Page number"),
-    per_page: int = Query(20, ge=1, le=100, description="Items per page"),
+    per_page: int = Query(
+        Config.DEFAULT_PAGE_SIZE,
+        ge=1,
+        le=Config.MAX_PAGE_SIZE,
+        description="Items per page",
+    ),
     db: APIOperations = Depends(get_db),
 ):
     """Search articles"""
@@ -213,21 +195,7 @@ async def get_article(article_id: int, db: APIOperations = Depends(get_db)):
                 detail=f"Article with ID {article_id} not found",
             )
 
-        return ArticleDetail(
-            id=article.id,
-            title=article.original_title,
-            link=article.original_link,
-            summary=article.original_summary,
-            source=article.original_source,
-            source_type=article.source_type,
-            published_date=article.original_pubdate,
-            created_at=article.created_at,
-            updated_at=article.updated_at,
-            processed=article.processed,
-            extracted_content=article.extracted_content,
-            ai_summary=article.ai_summary,
-            image_url=article.image_url,
-        )
+        return to_article_detail(article)
 
     except HTTPException:
         raise
