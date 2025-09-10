@@ -4,11 +4,15 @@ try:
     from ...database.api_operations import APIOperations
 except ImportError:
     from database.api_operations import APIOperations
+try:
+    from ...config import Config
+except ImportError:
+    from config import Config
 
-from ..schemas.articles import ArticleSummary, PaginatedArticles
+from ..schemas.articles import PaginatedArticles
 from ..schemas.common import ErrorResponse
 from ..schemas.sources import SourcesResponse, SourceStats
-from .articles import create_pagination_info
+from ..utils.mappers import create_pagination_info, to_article_summary
 
 router = APIRouter()
 
@@ -71,7 +75,12 @@ async def get_sources(db: APIOperations = Depends(get_db)):
 async def get_articles_by_source(
     source_name: str,
     page: int = Query(1, ge=1, description="Page number"),
-    per_page: int = Query(20, ge=1, le=100, description="Items per page"),
+    per_page: int = Query(
+        Config.DEFAULT_PAGE_SIZE,
+        ge=1,
+        le=Config.MAX_PAGE_SIZE,
+        description="Items per page",
+    ),
     db: APIOperations = Depends(get_db),
 ):
     """Get articles from a specific source"""
@@ -91,20 +100,7 @@ async def get_articles_by_source(
         )
 
         # Convert to response models
-        article_summaries = [
-            ArticleSummary(
-                id=article.id,
-                title=article.original_title,
-                link=article.original_link,
-                summary=article.original_summary,
-                source=article.original_source,
-                source_type=article.source_type,
-                published_date=article.original_pubdate,
-                created_at=article.created_at,
-                image_url=article.image_url,
-            )
-            for article in articles
-        ]
+        article_summaries = [to_article_summary(article) for article in articles]
 
         pagination = create_pagination_info(page, per_page, total_count)
 

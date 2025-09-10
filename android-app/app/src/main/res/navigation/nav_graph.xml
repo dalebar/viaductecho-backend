@@ -10,7 +10,7 @@
         android:name="com.viaductecho.android.ui.articles.ArticleListFragment"
         android:label="@string/articles_title"
         tools:layout="@layout/fragment_article_list">
-        
+
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment"
@@ -25,11 +25,11 @@
         android:name="com.viaductecho.android.ui.articles.ArticleDetailFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_article_detail">
-        
+
         <argument
             android:name="articleId"
             app:argType="integer" />
-        
+
         <argument
             android:name="article"
             app:argType="com.viaductecho.android.data.models.Article"

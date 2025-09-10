@@ -29,15 +29,15 @@ services:
     environment:
       # Database configuration
       DATABASE_URL: postgresql://viaduct:echo_secure_password@postgres:5432/viaduct_echo
-      
+
       # API configuration
       CORS_ORIGINS: "*"
       API_TITLE: "Viaduct Echo API"
       API_VERSION: "1.0.0"
-      
+
       # OpenAI configuration (set in .env file)
       # OPENAI_API_KEY: your_openai_api_key
-      
+
       # GitHub configuration (set in .env file)
       # GITHUB_TOKEN: your_github_token
       # GITHUB_REPO: your_repo
@@ -63,10 +63,10 @@ services:
     environment:
       # Database configuration
       DATABASE_URL: postgresql://viaduct:echo_secure_password@postgres:5432/viaduct_echo
-      
+
       # OpenAI configuration (set in .env file)
       # OPENAI_API_KEY: your_openai_api_key
-      
+
       # GitHub configuration (set in .env file)
       # GITHUB_TOKEN: your_github_token
       # GITHUB_REPO: your_repo

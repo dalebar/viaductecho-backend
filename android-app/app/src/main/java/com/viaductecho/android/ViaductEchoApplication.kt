@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class ViaductEchoApplication : Application() {
-    
+
     override fun onCreate() {
         super.onCreate()
     }

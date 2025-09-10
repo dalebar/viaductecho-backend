@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SourceRowView: View {
     let source: Source
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -10,39 +10,39 @@ struct SourceRowView: View {
                     Text(source.name)
                         .font(.headline)
                         .foregroundColor(.primary)
-                    
+
                     Text(source.latestArticleFormatted)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 VStack(alignment: .trailing) {
                     Text("\(source.articleCount)")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(.blue)
-                    
+
                     Text("articles")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             VStack(spacing: 8) {
                 HStack {
                     Text("Processing Status")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    
+
                     Spacer()
-                    
+
                     Text("\(source.processedCount)/\(source.articleCount)")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
+
                 ProgressView(value: source.completionRate)
                     .progressViewStyle(LinearProgressViewStyle(tint: source.completionRate == 1.0 ? .green : .blue))
                     .scaleEffect(x: 1, y: 0.8)
@@ -63,9 +63,9 @@ struct SourceRowView: View {
             )
         )
         .padding()
-        
+
         Divider()
-        
+
         SourceRowView(
             source: Source(
                 name: "Manchester Evening News",
@@ -75,9 +75,9 @@ struct SourceRowView: View {
             )
         )
         .padding()
-        
+
         Divider()
-        
+
         SourceRowView(
             source: Source(
                 name: "Stockport Nub News",

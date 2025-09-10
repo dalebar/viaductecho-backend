@@ -12,15 +12,15 @@ struct SearchView: View {
     @State private var isLoadingRecent = true
     @State private var errorMessage: String?
     @State private var cancellables = Set<AnyCancellable>()
-    
+
     private let perPage = 20
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 SearchBar(text: $searchText, onSearchButtonClicked: performSearch)
                     .padding()
-                
+
                 if searchText.isEmpty {
                     recentArticlesView
                 } else {
@@ -35,7 +35,7 @@ struct SearchView: View {
             }
         }
     }
-    
+
     private var recentArticlesView: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -44,7 +44,7 @@ struct SearchView: View {
                     .padding(.horizontal)
                 Spacer()
             }
-            
+
             if isLoadingRecent {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -77,7 +77,7 @@ struct SearchView: View {
             }
         }
     }
-    
+
     private var searchResultsView: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -92,7 +92,7 @@ struct SearchView: View {
                         .padding(.horizontal)
                 }
             }
-            
+
             if isSearching {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -134,7 +134,7 @@ struct SearchView: View {
                             ArticleRowView(article: article)
                         }
                     }
-                    
+
                     if currentPage < totalPages {
                         Button(action: loadMoreResults) {
                             if isSearching {
@@ -152,16 +152,16 @@ struct SearchView: View {
             }
         }
     }
-    
+
     private func performSearch() {
         guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return
         }
-        
+
         isSearching = true
         errorMessage = nil
         currentPage = 1
-        
+
         apiService.searchArticles(
             query: searchText,
             page: currentPage,
@@ -181,13 +181,13 @@ struct SearchView: View {
         )
         .store(in: &cancellables)
     }
-    
+
     private func loadMoreResults() {
         guard !isSearching, currentPage < totalPages else { return }
-        
+
         isSearching = true
         let nextPage = currentPage + 1
-        
+
         apiService.searchArticles(
             query: searchText,
             page: nextPage,
@@ -208,11 +208,11 @@ struct SearchView: View {
         )
         .store(in: &cancellables)
     }
-    
+
     private func loadRecentArticles() {
         isLoadingRecent = true
         errorMessage = nil
-        
+
         apiService.getRecentArticles(hours: 24, limit: 50)
             .sink(
                 receiveCompletion: { completion in
@@ -227,7 +227,7 @@ struct SearchView: View {
             )
             .store(in: &cancellables)
     }
-    
+
     @MainActor
     private func refreshRecentArticles() async {
         do {
@@ -243,18 +243,18 @@ struct SearchView: View {
 struct SearchBar: View {
     @Binding var text: String
     var onSearchButtonClicked: () -> Void
-    
+
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
-            
+
             TextField("Search articles...", text: $text)
                 .textFieldStyle(PlainTextFieldStyle())
                 .onSubmit {
                     onSearchButtonClicked()
                 }
-            
+
             if !text.isEmpty {
                 Button(action: {
                     text = ""

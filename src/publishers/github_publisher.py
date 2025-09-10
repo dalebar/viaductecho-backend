@@ -44,7 +44,12 @@ class GitHubPublisher:
                 "branch": self.branch,
             }
 
-            response = requests.put(url, json=data, headers=self.headers)
+            if Config.HTTP_TIMEOUT is not None:
+                response = requests.put(
+                    url, json=data, headers=self.headers, timeout=Config.HTTP_TIMEOUT
+                )
+            else:
+                response = requests.put(url, json=data, headers=self.headers)
 
             if response.status_code == 201:
                 logging.info(f"Published: {article_data['original_title']}")

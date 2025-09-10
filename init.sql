@@ -42,15 +42,15 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_rss_articles_updated_at 
-    BEFORE UPDATE ON rss_articles 
-    FOR EACH ROW 
+CREATE TRIGGER update_rss_articles_updated_at
+    BEFORE UPDATE ON rss_articles
+    FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
 -- Insert some sample data for development/testing
-INSERT INTO rss_articles 
-    (original_title, original_link, original_summary, original_source, source_type, original_pubdate, processed, extracted_content, ai_summary, ai_image_url) 
-VALUES 
+INSERT INTO rss_articles
+    (original_title, original_link, original_summary, original_source, source_type, original_pubdate, processed, extracted_content, ai_summary, ai_image_url)
+VALUES
     (
         'Stockport Market renovation begins with major investment',
         'https://example.com/stockport-market-renovation',

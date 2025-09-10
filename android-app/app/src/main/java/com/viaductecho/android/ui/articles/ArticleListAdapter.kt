@@ -16,7 +16,7 @@ import com.viaductecho.android.utils.AccessibilityUtils.setupImageAccessibility
 class ArticleListAdapter(
     private val onArticleClick: (Article) -> Unit
 ) : ListAdapter<Article, ArticleListAdapter.ArticleViewHolder>(ArticleDiffCallback()) {
-    
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val binding = ItemArticleBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -25,34 +25,34 @@ class ArticleListAdapter(
         )
         return ArticleViewHolder(binding, onArticleClick)
     }
-    
+
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-    
+
     class ArticleViewHolder(
         private val binding: ItemArticleBinding,
         private val onArticleClick: (Article) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        
+
         fun bind(article: Article) {
             binding.apply {
                 // Set article title
                 textViewTitle.text = article.title
-                
+
                 // Set source information
                 textViewSource.text = article.source
-                
+
                 // Set published date
                 textViewDate.text = DateUtils.formatRelativeTime(article.publishedDate)
-                
+
                 // Load article image
                 imageViewArticle.loadImageEnhanced(
                     url = article.imageUrl,
                     placeholder = R.drawable.placeholder_article,
                     error = R.drawable.error_image
                 )
-                
+
                 // Set up comprehensive accessibility
                 root.setupArticleAccessibility(
                     title = article.title,
@@ -60,7 +60,7 @@ class ArticleListAdapter(
                     publishedDate = DateUtils.formatRelativeTime(article.publishedDate),
                     hasImage = !article.imageUrl.isNullOrBlank()
                 )
-                
+
                 imageViewArticle.setupImageAccessibility(
                     description = if (!article.imageUrl.isNullOrBlank()) {
                         root.context.getString(R.string.cd_article_image)
@@ -69,16 +69,16 @@ class ArticleListAdapter(
                     },
                     isDecorative = article.imageUrl.isNullOrBlank()
                 )
-                
+
                 // Handle click events
                 root.setOnClickListener {
                     onArticleClick(article)
                 }
-                
+
                 // Add ripple effect and proper touch feedback
                 root.isClickable = true
                 root.isFocusable = true
-                
+
                 // Set up source label styling
                 textViewSource.apply {
                     setBackgroundResource(R.color.source_label_background)
@@ -92,12 +92,12 @@ class ArticleListAdapter(
             }
         }
     }
-    
+
     class ArticleDiffCallback : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.id == newItem.id
         }
-        
+
         override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem == newItem
         }

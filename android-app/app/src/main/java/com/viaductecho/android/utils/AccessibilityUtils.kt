@@ -11,7 +11,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
  * Utility functions for improving accessibility throughout the app
  */
 object AccessibilityUtils {
-    
+
     /**
      * Check if accessibility services are enabled
      */
@@ -19,7 +19,7 @@ object AccessibilityUtils {
         val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
         return accessibilityManager.isEnabled
     }
-    
+
     /**
      * Check if TalkBack or other screen readers are enabled
      */
@@ -27,7 +27,7 @@ object AccessibilityUtils {
         val accessibilityManager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
         return accessibilityManager.isTouchExplorationEnabled
     }
-    
+
     /**
      * Set up accessibility for article items
      */
@@ -48,9 +48,9 @@ object AccessibilityUtils {
             }
             append("Double tap to open.")
         }
-        
+
         contentDescription = accessibilityText
-        
+
         // Set up custom accessibility delegate for additional actions
         ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
             override fun onInitializeAccessibilityNodeInfo(
@@ -58,7 +58,7 @@ object AccessibilityUtils {
                 info: AccessibilityNodeInfoCompat
             ) {
                 super.onInitializeAccessibilityNodeInfo(host, info)
-                
+
                 info.addAction(
                     AccessibilityNodeInfoCompat.AccessibilityActionCompat(
                         AccessibilityNodeInfoCompat.ACTION_CLICK,
@@ -68,7 +68,7 @@ object AccessibilityUtils {
             }
         })
     }
-    
+
     /**
      * Set up accessibility for buttons with enhanced descriptions
      */
@@ -84,9 +84,9 @@ object AccessibilityUtils {
             }
             description?.let { append(". $it") }
         }
-        
+
         contentDescription = accessibilityText
-        
+
         // Add role information
         ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
             override fun onInitializeAccessibilityNodeInfo(
@@ -98,7 +98,7 @@ object AccessibilityUtils {
             }
         })
     }
-    
+
     /**
      * Set up accessibility for images with proper descriptions
      */
@@ -112,7 +112,7 @@ object AccessibilityUtils {
         } else {
             contentDescription = description
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-            
+
             ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
                 override fun onInitializeAccessibilityNodeInfo(
                     host: View,
@@ -124,18 +124,18 @@ object AccessibilityUtils {
             })
         }
     }
-    
+
     /**
      * Set up accessibility for loading states
      */
     fun View.setupLoadingAccessibility(message: String = "Loading") {
         contentDescription = message
         importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        
+
         // Announce loading state changes
         announceForAccessibility(message)
     }
-    
+
     /**
      * Set up accessibility for error states
      */
@@ -146,14 +146,14 @@ object AccessibilityUtils {
                 append(". Retry button available.")
             }
         }
-        
+
         contentDescription = accessibilityText
         importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        
+
         // Announce error
         announceForAccessibility(accessibilityText)
     }
-    
+
     /**
      * Set up heading accessibility for better navigation
      */
@@ -169,14 +169,14 @@ object AccessibilityUtils {
             }
         })
     }
-    
+
     /**
      * Set up list accessibility with item counts
      */
     fun View.setupListAccessibility(itemCount: Int, listType: String = "list") {
         val description = "$listType with $itemCount items"
         contentDescription = description
-        
+
         ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
             override fun onInitializeAccessibilityNodeInfo(
                 host: View,

@@ -34,21 +34,20 @@ test-coverage: ## Run tests with coverage report
 	@echo "$(BLUE)Running tests with coverage...$(NC)"
 	uv run python -m pytest tests/ --cov=src --cov-report=html --cov-report=term-missing
 
-lint: ## Run linting checks
-	@echo "$(BLUE)Running linting checks...$(NC)"
-	uv run flake8 src/ tests/
+lint: ## Run linting checks (Ruff + Bandit)
+	@echo "$(BLUE)Running linting checks (Ruff + Bandit)...$(NC)"
+	uv run ruff check src/ tests/
 	uv run bandit -r src/ -f json
 
-format: ## Format code with black and isort
-	@echo "$(BLUE)Formatting code...$(NC)"
+format: ## Format code with Black and fix import order via Ruff
+	@echo "$(BLUE)Formatting code (Black + Ruff imports)...$(NC)"
 	uv run black src/ tests/
-	uv run isort src/ tests/ --profile=black
+	uv run ruff check --select I --fix src/ tests/
 
-check: ## Run all checks (lint + format check + tests)
+check: ## Run all checks (format check + Ruff + tests)
 	@echo "$(BLUE)Running all quality checks...$(NC)"
 	uv run black --check src/ tests/
-	uv run isort --check-only src/ tests/ --profile=black
-	uv run flake8 src/ tests/
+	uv run ruff check src/ tests/
 	uv run python -m pytest tests/ -q
 
 # Pre-commit hooks

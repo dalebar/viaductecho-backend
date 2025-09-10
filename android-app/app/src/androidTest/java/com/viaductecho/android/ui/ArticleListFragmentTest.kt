@@ -25,52 +25,52 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @HiltAndroidTest
 class ArticleListFragmentTest {
-    
+
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
-    
+
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
-    
+
     @Before
     fun setup() {
         hiltRule.inject()
     }
-    
+
     @Test
     fun articleListFragment_displaysList() {
         // Verify RecyclerView is displayed
         onView(withId(R.id.recycler_view_articles))
             .check(matches(isDisplayed()))
     }
-    
+
     @Test
     fun articleListFragment_pullToRefreshWorks() {
         // Perform pull to refresh
         onView(withId(R.id.swipe_refresh_layout))
             .perform(swipeDown())
-        
+
         // Verify refresh layout exists
         onView(withId(R.id.swipe_refresh_layout))
             .check(matches(isDisplayed()))
     }
-    
+
     @Test
     fun articleListFragment_clickArticleNavigatesToDetail() {
         // Wait for articles to load, then click first item
         Thread.sleep(2000) // Wait for network call
-        
+
         onView(withId(R.id.recycler_view_articles))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<ArticleListAdapter.ArticleViewHolder>(
                     0, click()
                 )
             )
-        
+
         // Verify we're on detail screen (toolbar should show back button or different title)
         // This test would require actual data or mocked responses
     }
-    
+
     @Test
     fun articleListFragment_showsEmptyStateWhenNoArticles() {
         // This test would require mocking the repository to return empty results

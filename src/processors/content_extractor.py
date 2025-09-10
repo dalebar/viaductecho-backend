@@ -5,6 +5,11 @@ import time
 from typing import Dict
 
 import requests
+
+try:
+    from ..config import Config
+except ImportError:
+    from config import Config
 from bs4 import BeautifulSoup
 
 
@@ -17,7 +22,12 @@ class ContentExtractor:
     def extract_content(self, url: str, source: str) -> Dict:
         """Extract content based on source"""
         try:
-            response = requests.get(url, headers=self.headers)
+            if Config.HTTP_TIMEOUT is not None:
+                response = requests.get(
+                    url, headers=self.headers, timeout=Config.HTTP_TIMEOUT
+                )
+            else:
+                response = requests.get(url, headers=self.headers)
             response.raise_for_status()
             soup = BeautifulSoup(response.content, "html.parser")
 

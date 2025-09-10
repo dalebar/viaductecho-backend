@@ -15,17 +15,17 @@ import javax.inject.Inject
 class ArticleDetailViewModel @Inject constructor(
     private val repository: ArticleRepository
 ) : ViewModel() {
-    
+
     private val _article = MutableLiveData<Resource<Article>>()
     val article: LiveData<Resource<Article>> = _article
-    
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-    
+
     fun loadArticle(articleId: Int) {
         _article.value = Resource.loading()
         _isLoading.value = true
-        
+
         viewModelScope.launch {
             try {
                 val result = repository.getArticleById(articleId)
@@ -37,7 +37,7 @@ class ArticleDetailViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun retry(articleId: Int) {
         loadArticle(articleId)
     }

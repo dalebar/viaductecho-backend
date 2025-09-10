@@ -24,7 +24,28 @@ dependencies = [
 [dependency-groups]
 dev = [
     "black>=25.1.0",
-    "flake8>=7.3.0",
-    "isort>=6.0.1",
+    "ruff>=0.6.3",
     "pytest-cov>=5.0.0",
+    "pre-commit>=3.8.0",
 ]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E203", "E501", "C901"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/test_*.py" = ["F401", "F811"]
+"tests/test_nub_source.py" = ["E402"]
+"tests/test_bbc_source.py" = ["E402"]
+"tests/test_men_source.py" = ["E402"]
+"src/database/backfill_ai_summaries.py" = ["E402"]
+"src/database/check_ai_summary_status.py" = ["E402"]
+
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10

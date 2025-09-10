@@ -10,7 +10,7 @@ struct Article: Identifiable, Codable {
     let publishedDate: Date
     let createdAt: Date
     let imageUrl: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case title
@@ -38,7 +38,7 @@ struct ArticleDetail: Identifiable, Codable {
     let extractedContent: String?
     let aiSummary: String?
     let imageUrl: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case title
@@ -68,7 +68,7 @@ struct PaginationInfo: Codable {
     let totalPages: Int
     let hasNext: Bool
     let hasPrev: Bool
-    
+
     enum CodingKeys: String, CodingKey {
         case page
         case perPage = "per_page"

@@ -8,7 +8,7 @@ struct ArticleDetailView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var cancellables = Set<AnyCancellable>()
-    
+
     var body: some View {
         ScrollView {
             if isLoading {
@@ -46,20 +46,20 @@ struct ArticleDetailView: View {
                                 .padding(.vertical, 4)
                                 .background(Color.blue.opacity(0.1))
                                 .cornerRadius(8)
-                            
+
                             Spacer()
-                            
+
                             Text(article.publishedDate, style: .date)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
-                        
+
                         Text(article.title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.leading)
                     }
-                    
+
                     if let imageUrl = article.imageUrl, !imageUrl.isEmpty {
                         AsyncImage(url: URL(string: imageUrl)) { image in
                             image
@@ -76,8 +76,8 @@ struct ArticleDetailView: View {
                                 )
                         }
                     }
-                    
-                    
+
+
                     if let aiSummary = article.aiSummary, !aiSummary.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -94,8 +94,8 @@ struct ArticleDetailView: View {
                                 .cornerRadius(8)
                         }
                     }
-                    
-                    
+
+
                     Link(destination: URL(string: article.link)!) {
                         HStack {
                             Image(systemName: "safari")
@@ -107,20 +107,20 @@ struct ArticleDetailView: View {
                         .background(Color.blue.opacity(0.1))
                         .cornerRadius(8)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Article Info")
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .textCase(.uppercase)
-                        
+
                         HStack {
                             Text("Source:")
                             Text(article.source)
                                 .fontWeight(.medium)
                         }
                         .font(.caption)
-                        
+
                         HStack {
                             Text("Published:")
                             Text(article.publishedDate, style: .date)
@@ -140,11 +140,11 @@ struct ArticleDetailView: View {
             loadArticle()
         }
     }
-    
+
     private func loadArticle() {
         isLoading = true
         errorMessage = nil
-        
+
         apiService.getArticle(id: articleId)
             .sink(
                 receiveCompletion: { completion in

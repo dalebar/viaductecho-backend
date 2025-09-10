@@ -14,21 +14,21 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: ArticleRepository
 ) : ViewModel() {
-    
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-    
+
     private val _connectionStatus = MutableLiveData<ConnectionStatus>()
     val connectionStatus: LiveData<ConnectionStatus> = _connectionStatus
-    
+
     init {
         checkConnectionStatus()
     }
-    
+
     fun checkConnectionStatus() {
         viewModelScope.launch {
             _isLoading.value = true
-            
+
             when (val result = repository.getHealth()) {
                 is Resource.Success -> {
                     _connectionStatus.value = if (result.data?.databaseConnected == true) {
@@ -44,11 +44,11 @@ class MainViewModel @Inject constructor(
                     // Handle loading state
                 }
             }
-            
+
             _isLoading.value = false
         }
     }
-    
+
     enum class ConnectionStatus {
         ONLINE,
         OFFLINE,

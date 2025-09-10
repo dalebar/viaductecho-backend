@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, codex]
   pull_request:
-    branches: [main, develop]
+    branches: [main, codex]
 
 jobs:
   test:
@@ -53,9 +53,8 @@ jobs:
 
       - name: Run linting checks
         run: |
-          uv run flake8 src/ tests/
           uv run black --check src/ tests/
-          uv run isort --check-only src/ tests/ --profile=black
+          uv run ruff check src/ tests/ --output-format=github
 
       - name: Run security checks
         run: uv run bandit -r src/ -f json || true
