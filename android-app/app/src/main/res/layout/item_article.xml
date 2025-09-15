@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAppearance="@style/TextAppearance.ViaductEcho.Label"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="@dimen/article_item_source_text_size"
                     android:background="@color/source_label_background"
                     android:paddingHorizontal="@dimen/spacing_sm"
