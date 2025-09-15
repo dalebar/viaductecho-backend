@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Dark Color System -->
+
+    <!-- Primary Colors -->
+    <color name="md_theme_dark_primary">#90CAF9</color>
+    <color name="md_theme_dark_onPrimary">#0D47A1</color>
+    <color name="md_theme_dark_primaryContainer">#1565C0</color>
+    <color name="md_theme_dark_onPrimaryContainer">#E3F2FD</color>
+
+    <!-- Secondary Colors (Purple for AI summaries) -->
+    <color name="md_theme_dark_secondary">#CE93D8</color>
+    <color name="md_theme_dark_onSecondary">#4A148C</color>
+    <color name="md_theme_dark_secondaryContainer">#6A1B9A</color>
+    <color name="md_theme_dark_onSecondaryContainer">#F3E5F5</color>
+
+    <!-- Tertiary Colors -->
+    <color name="md_theme_dark_tertiary">#81C784</color>
+    <color name="md_theme_dark_onTertiary">#1B5E20</color>
+    <color name="md_theme_dark_tertiaryContainer">#2E7D32</color>
+    <color name="md_theme_dark_onTertiaryContainer">#E8F5E8</color>
+
+    <!-- Error Colors -->
+    <color name="md_theme_dark_error">#EF5350</color>
+    <color name="md_theme_dark_errorContainer">#B71C1C</color>
+    <color name="md_theme_dark_onError">#000000</color>
+    <color name="md_theme_dark_onErrorContainer">#FFEBEE</color>
+
+    <!-- Surface Colors -->
+    <color name="md_theme_dark_background">#1C1B1F</color>
+    <color name="md_theme_dark_onBackground">#E6E1E5</color>
+    <color name="md_theme_dark_surface">#1C1B1F</color>
+    <color name="md_theme_dark_onSurface">#E6E1E5</color>
+    <color name="md_theme_dark_surfaceVariant">#2A2A2A</color>
+    <color name="md_theme_dark_onSurfaceVariant">#CAC5CD</color>
+
+    <!-- Outline Colors -->
+    <color name="md_theme_dark_outline">#958F99</color>
+    <color name="md_theme_dark_inverseOnSurface">#1C1B1F</color>
+    <color name="md_theme_dark_inverseSurface">#E6E1E5</color>
+    <color name="md_theme_dark_inversePrimary">#1976D2</color>
+
+    <!-- Custom App Colors - Dark Mode Equivalents -->
+    <color name="article_card_background">#2A2A2A</color>
+    <color name="ai_summary_background">#3D2A42</color>
+    <color name="source_label_background">#2A3B4D</color>
+    <color name="loading_background">#2A2A2A</color>
+    <color name="divider_color">#404040</color>
+
+    <!-- Status Colors - Adjusted for dark backgrounds -->
+    <color name="status_online">#66BB6A</color>
+    <color name="status_offline">#EF5350</color>
+    <color name="status_warning">#FFA726</color>
+
+    <!-- Text Colors - Dark Mode -->
+    <color name="text_primary">#E6E1E5</color>
+    <color name="text_secondary">#A0A0A0</color>
+    <color name="text_tertiary">#808080</color>
+    <color name="text_on_primary">#000000</color>
+</resources>
