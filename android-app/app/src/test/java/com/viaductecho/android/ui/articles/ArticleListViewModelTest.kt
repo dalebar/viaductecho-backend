@@ -73,7 +73,7 @@ class ArticleListViewModelTest {
 
         // Then
         assertTrue(viewModel.articles.value is Resource.Success)
-        assertEquals(2, (viewModel.articles.value as Resource.Success).data?.size)
+        assertEquals(2, (viewModel.articles.value as Resource.Success).data.size)
         assertFalse(viewModel.isRefreshing.value ?: true)
     }
 
@@ -114,8 +114,8 @@ class ArticleListViewModelTest {
 
         // Then
         assertTrue(viewModel.articles.value is Resource.Success)
-        assertEquals(1, (viewModel.articles.value as Resource.Success).data?.size)
-        assertEquals("Refreshed Article", (viewModel.articles.value as Resource.Success).data?.first()?.title)
+        assertEquals(1, (viewModel.articles.value as Resource.Success).data.size)
+        assertEquals("Refreshed Article", (viewModel.articles.value as Resource.Success).data.first().title)
         assertFalse(viewModel.isRefreshing.value ?: true)
     }
 
@@ -141,7 +141,7 @@ class ArticleListViewModelTest {
 
         // Then
         assertTrue(viewModel.articles.value is Resource.Success)
-        assertEquals(2, (viewModel.articles.value as Resource.Success).data?.size)
+        assertEquals(2, (viewModel.articles.value as Resource.Success).data.size)
         assertTrue(viewModel.isLastPage.value ?: false)
         assertFalse(viewModel.isLoadingMore.value ?: true)
     }

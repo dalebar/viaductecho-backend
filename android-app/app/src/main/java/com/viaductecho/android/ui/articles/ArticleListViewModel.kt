@@ -51,22 +51,19 @@ class ArticleListViewModel @Inject constructor(
 
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let { response ->
-                            if (refresh) {
-                                allArticles.clear()
-                            }
+                        val response = result.data
+                        if (refresh) {
+                            allArticles.clear()
+                        }
 
-                            allArticles.addAll(response.articles)
-                            totalPages = response.pagination.totalPages
+                        allArticles.addAll(response.articles)
+                        totalPages = response.pagination.totalPages
 
-                            _articles.value = Resource.success(allArticles.toList())
-                            _isLastPage.value = currentPage >= totalPages
+                        _articles.value = Resource.success(allArticles.toList())
+                        _isLastPage.value = currentPage >= totalPages
 
-                            if (!_isLastPage.value!!) {
-                                currentPage++
-                            }
-                        } ?: run {
-                            _articles.value = Resource.error("No data received")
+                        if (!_isLastPage.value!!) {
+                            currentPage++
                         }
                     }
 

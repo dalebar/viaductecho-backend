@@ -82,8 +82,9 @@ class ArticleRepositoryTest {
 
         // Then
         assertTrue(result is Resource.Success)
-        assertEquals(articlesResponse, (result as Resource.Success).data)
-        assertEquals(2, result.data.articles.size)
+        val successResult = result as Resource.Success
+        assertEquals(articlesResponse, successResult.data)
+        assertEquals(2, successResult.data.articles.size)
     }
 
     @Test

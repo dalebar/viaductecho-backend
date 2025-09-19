@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
 
             when (val result = repository.getHealth()) {
                 is Resource.Success -> {
-                    _connectionStatus.value = if (result.data?.databaseConnected == true) {
+                    _connectionStatus.value = if (result.data.databaseConnected) {
                         ConnectionStatus.ONLINE
                     } else {
                         ConnectionStatus.SERVER_ISSUE

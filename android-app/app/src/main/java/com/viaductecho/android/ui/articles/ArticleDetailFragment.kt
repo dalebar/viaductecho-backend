@@ -85,10 +85,9 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
                 }
                 is Resource.Success -> {
                     hideLoading()
-                    resource.data?.let { article ->
-                        currentArticle = article
-                        displayArticle(article)
-                    }
+                    val article = resource.data
+                    currentArticle = article
+                    displayArticle(article)
                 }
                 is Resource.Error -> {
                     hideLoading()

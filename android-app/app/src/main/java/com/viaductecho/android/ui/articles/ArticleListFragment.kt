@@ -46,7 +46,8 @@ class ArticleListFragment : Fragment() {
         setupObservers()
 
         // Load articles if not already loaded
-        if (viewModel.articles.value?.data.isNullOrEmpty()) {
+        val currentData = viewModel.articles.value
+        if (currentData == null || (currentData is Resource.Success && currentData.data.isEmpty()) || currentData is Resource.Error) {
             viewModel.loadArticles()
         }
     }
@@ -112,13 +113,12 @@ class ArticleListFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     hideLoading()
-                    resource.data?.let { articles ->
-                        if (articles.isEmpty()) {
-                            showEmptyState()
-                        } else {
-                            hideEmptyState()
-                            articleAdapter.submitList(articles)
-                        }
+                    val articles = resource.data
+                    if (articles.isEmpty()) {
+                        showEmptyState()
+                    } else {
+                        hideEmptyState()
+                        articleAdapter.submitList(articles)
                     }
                 }
                 is Resource.Error -> {
