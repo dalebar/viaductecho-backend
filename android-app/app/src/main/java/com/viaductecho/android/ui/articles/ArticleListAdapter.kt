@@ -10,6 +10,7 @@ import com.viaductecho.android.data.models.Article
 import com.viaductecho.android.databinding.ItemArticleBinding
 import com.viaductecho.android.utils.DateUtils
 import com.viaductecho.android.utils.ImageLoadingUtils.loadImageEnhanced
+import com.viaductecho.android.utils.ImageLoadingUtils.clearImage
 import com.viaductecho.android.utils.AccessibilityUtils.setupArticleAccessibility
 import com.viaductecho.android.utils.AccessibilityUtils.setupImageAccessibility
 
@@ -30,6 +31,11 @@ class ArticleListAdapter(
         holder.bind(getItem(position))
     }
 
+    override fun onViewRecycled(holder: ArticleViewHolder) {
+        super.onViewRecycled(holder)
+        holder.cleanup()
+    }
+
     class ArticleViewHolder(
         private val binding: ItemArticleBinding,
         private val onArticleClick: (Article) -> Unit
@@ -37,6 +43,9 @@ class ArticleListAdapter(
 
         fun bind(article: Article) {
             binding.apply {
+                // Clear previous image to prevent memory leaks
+                imageViewArticle.clearImage()
+
                 // Set article title
                 textViewTitle.text = article.title
 
@@ -90,6 +99,11 @@ class ArticleListAdapter(
                     )
                 }
             }
+        }
+
+        fun cleanup() {
+            // Clear image to prevent memory leaks when ViewHolder is recycled
+            binding.imageViewArticle.clearImage()
         }
     }
 

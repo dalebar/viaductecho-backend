@@ -195,6 +195,8 @@ class ArticleListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Clear any pending Glide requests for the RecyclerView
+        binding.recyclerViewArticles.adapter = null
         _binding = null
     }
 }

@@ -21,6 +21,7 @@ import com.viaductecho.android.databinding.FragmentArticleDetailBinding
 import com.viaductecho.android.utils.DateUtils
 import com.viaductecho.android.utils.Resource
 import com.viaductecho.android.utils.ImageLoadingUtils.loadImageEnhanced
+import com.viaductecho.android.utils.ImageLoadingUtils.clearImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -204,6 +205,10 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Clear images to prevent memory leaks
+        binding.imageViewArticle.clearImage()
+        // Clear current article reference
+        currentArticle = null
         _binding = null
     }
 }
