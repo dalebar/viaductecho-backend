@@ -110,6 +110,14 @@ class NetworkManager @Inject constructor(
         return false
     }
 
+    fun cleanup() {
+        try {
+            connectivityManager.unregisterNetworkCallback(networkCallback)
+        } catch (e: Exception) {
+            // Callback might already be unregistered
+        }
+    }
+
     enum class NetworkType {
         WIFI,
         CELLULAR,

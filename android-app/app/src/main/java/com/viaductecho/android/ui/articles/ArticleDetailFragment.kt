@@ -209,6 +209,8 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         binding.imageViewArticle.clearImage()
         // Clear current article reference
         currentArticle = null
+        // Clear Navigation args article object (major memory leak source)
+        args.article = null
         _binding = null
     }
 }

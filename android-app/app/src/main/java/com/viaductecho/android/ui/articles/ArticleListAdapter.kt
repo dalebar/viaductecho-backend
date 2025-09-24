@@ -15,7 +15,7 @@ import com.viaductecho.android.utils.AccessibilityUtils.setupArticleAccessibilit
 import com.viaductecho.android.utils.AccessibilityUtils.setupImageAccessibility
 
 class ArticleListAdapter(
-    private val onArticleClick: (Article) -> Unit
+    private var onArticleClick: ((Article) -> Unit)?
 ) : ListAdapter<Article, ArticleListAdapter.ArticleViewHolder>(ArticleDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
@@ -24,7 +24,7 @@ class ArticleListAdapter(
             parent,
             false
         )
-        return ArticleViewHolder(binding, onArticleClick)
+        return ArticleViewHolder(binding) { onArticleClick }
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
@@ -36,9 +36,13 @@ class ArticleListAdapter(
         holder.cleanup()
     }
 
+    fun clearCallbacks() {
+        onArticleClick = null
+    }
+
     class ArticleViewHolder(
         private val binding: ItemArticleBinding,
-        private val onArticleClick: (Article) -> Unit
+        private val onArticleClick: (() -> ((Article) -> Unit)?)
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(article: Article) {
@@ -81,7 +85,7 @@ class ArticleListAdapter(
 
                 // Handle click events
                 root.setOnClickListener {
-                    onArticleClick(article)
+                    onArticleClick()?.invoke(article)
                 }
 
                 // Add ripple effect and proper touch feedback

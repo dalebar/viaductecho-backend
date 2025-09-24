@@ -195,6 +195,12 @@ class ArticleListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Clear SwipeRefreshLayout listener to prevent fragment capture leak
+        binding.swipeRefreshLayout.setOnRefreshListener(null)
+        // Clear scroll listeners to prevent fragment capture leak
+        binding.recyclerViewArticles.clearOnScrollListeners()
+        // Clear lambda callbacks to prevent fragment capture leak
+        articleAdapter.clearCallbacks()
         // Clear any pending Glide requests for the RecyclerView
         binding.recyclerViewArticles.adapter = null
         _binding = null
