@@ -53,8 +53,8 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         setupObservers()
 
         // Always fetch full article details to get AI summary and extracted content
-        // The article from the list doesn't include AI summaries
-        val articleId = args.article?.id ?: args.articleId
+        // Now we only receive articleId, no more memory-leaking article parcelables
+        val articleId = args.articleId
         if (articleId > 0) {
             viewModel.loadArticle(articleId)
         } else {
@@ -209,8 +209,6 @@ class ArticleDetailFragment : Fragment(), MenuProvider {
         binding.imageViewArticle.clearImage()
         // Clear current article reference
         currentArticle = null
-        // Clear Navigation args article object (major memory leak source)
-        args.article = null
         _binding = null
     }
 }

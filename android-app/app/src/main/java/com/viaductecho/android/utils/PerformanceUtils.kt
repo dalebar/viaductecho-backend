@@ -5,6 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,10 +20,13 @@ object PerformanceUtils {
 
     /**
      * Debounce function calls to prevent excessive API calls
+     * MEMORY LEAK FIX: Made lifecycle-aware to prevent orphaned coroutines
      */
-    class Debouncer(private val delayMs: Long = 300L) {
+    class Debouncer(
+        private val delayMs: Long = 300L,
+        private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    ) {
         private var job: Job? = null
-        private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
         fun submit(action: () -> Unit) {
             job?.cancel()
@@ -34,6 +38,18 @@ object PerformanceUtils {
 
         fun cancel() {
             job?.cancel()
+        }
+
+        companion object {
+            /**
+             * Create a lifecycle-aware debouncer that automatically cancels when lifecycle is destroyed
+             */
+            fun createLifecycleAware(
+                lifecycleOwner: androidx.lifecycle.LifecycleOwner,
+                delayMs: Long = 300L
+            ): Debouncer {
+                return Debouncer(delayMs, lifecycleOwner.lifecycleScope)
+            }
         }
     }
 
@@ -89,9 +105,11 @@ object PerformanceUtils {
     }
 
     /**
-     * Memory-efficient image preloader
+     * Memory-efficient image preloader with WeakReference to prevent context leaks
      */
-    class ImagePreloader(private val context: android.content.Context) {
+    class ImagePreloader(context: android.content.Context) {
+        // MEMORY LEAK FIX: Use WeakReference to prevent holding strong Context reference
+        private val contextRef = java.lang.ref.WeakReference(context.applicationContext)
         private val handler = Handler(Looper.getMainLooper())
         private val preloadQueue = mutableListOf<String>()
 
@@ -103,6 +121,14 @@ object PerformanceUtils {
         }
 
         private fun preloadNextImage(delay: Long) {
+            // MEMORY LEAK FIX: Check if context is still available before proceeding
+            val context = contextRef.get()
+            if (context == null) {
+                // Context has been garbage collected, stop preloading
+                clear()
+                return
+            }
+
             if (preloadQueue.isNotEmpty()) {
                 val url = preloadQueue.removeFirst()
                 ImageLoadingUtils.preloadImage(context, url)

@@ -150,8 +150,7 @@ class ArticleListFragment : Fragment() {
     private fun navigateToArticleDetail(article: Article) {
         val action = ArticleListFragmentDirections
             .actionArticleListFragmentToArticleDetailFragment(
-                articleId = article.id,
-                article = article
+                articleId = article.id
             )
         findNavController().navigate(action)
     }

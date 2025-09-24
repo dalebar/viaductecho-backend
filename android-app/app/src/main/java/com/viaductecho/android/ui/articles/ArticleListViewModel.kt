@@ -31,7 +31,15 @@ class ArticleListViewModel @Inject constructor(
     private var currentPage = 1
     private var totalPages = 1
     private val articlesPerPage = 20
-    private val allArticles = mutableListOf<Article>()
+
+    // MEMORY LEAK FIX: Use bounded LinkedHashMap to prevent infinite memory growth
+    // Keep max 200 articles (10 pages * 20 articles) in memory
+    private val maxArticlesInMemory = 200
+    private val allArticles = object : LinkedHashMap<Int, Article>(maxArticlesInMemory, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Int, Article>?): Boolean {
+            return size > maxArticlesInMemory
+        }
+    }
 
     fun loadArticles(refresh: Boolean = false) {
         if (refresh) {
@@ -56,10 +64,14 @@ class ArticleListViewModel @Inject constructor(
                             allArticles.clear()
                         }
 
-                        allArticles.addAll(response.articles)
+                        // Add new articles to the bounded map by their ID
+                        response.articles.forEach { article ->
+                            allArticles[article.id] = article
+                        }
                         totalPages = response.pagination.totalPages
 
-                        _articles.value = Resource.success(allArticles.toList())
+                        // Convert map values to list, maintain insertion order for display
+                        _articles.value = Resource.success(allArticles.values.toList())
                         _isLastPage.value = currentPage >= totalPages
 
                         if (!_isLastPage.value!!) {
@@ -72,7 +84,7 @@ class ArticleListViewModel @Inject constructor(
                             _articles.value = Resource.error(result.message ?: "Unknown error")
                         } else {
                             // Show error but keep existing data
-                            _articles.value = Resource.success(allArticles.toList())
+                            _articles.value = Resource.success(allArticles.values.toList())
                         }
                     }
 

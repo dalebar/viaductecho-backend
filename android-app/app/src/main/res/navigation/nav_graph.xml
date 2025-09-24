@@ -29,11 +29,6 @@
         <argument
             android:name="articleId"
             app:argType="integer" />
-
-        <argument
-            android:name="article"
-            app:argType="com.viaductecho.android.data.models.Article"
-            app:nullable="true" />
     </fragment>
 
 </navigation>
