@@ -20,11 +20,11 @@ object PerformanceUtils {
 
     /**
      * Debounce function calls to prevent excessive API calls
-     * MEMORY LEAK FIX: Made lifecycle-aware to prevent orphaned coroutines
+     * MEMORY LEAK FIX: Made lifecycle-aware by default to prevent orphaned coroutines
      */
-    class Debouncer(
-        private val delayMs: Long = 300L,
-        private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    class Debouncer private constructor(
+        private val delayMs: Long,
+        private val scope: CoroutineScope
     ) {
         private var job: Job? = null
 
@@ -43,12 +43,25 @@ object PerformanceUtils {
         companion object {
             /**
              * Create a lifecycle-aware debouncer that automatically cancels when lifecycle is destroyed
+             * This is the ONLY safe way to create a Debouncer - prevents accidental memory leaks
              */
-            fun createLifecycleAware(
+            fun create(
                 lifecycleOwner: androidx.lifecycle.LifecycleOwner,
                 delayMs: Long = 300L
             ): Debouncer {
                 return Debouncer(delayMs, lifecycleOwner.lifecycleScope)
+            }
+
+            /**
+             * Create debouncer with custom scope - USE WITH CAUTION
+             * Only use this if you're managing the CoroutineScope lifecycle manually
+             * Most callers should use create(lifecycleOwner) instead
+             */
+            fun createWithScope(
+                scope: CoroutineScope,
+                delayMs: Long = 300L
+            ): Debouncer {
+                return Debouncer(delayMs, scope)
             }
         }
     }
