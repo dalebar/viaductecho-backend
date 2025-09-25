@@ -45,6 +45,18 @@ class MainActivity : AppCompatActivity() {
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Hide AppBar on HomeFragment for full-screen experience
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.appBarLayout.visibility = android.view.View.GONE
+                }
+                else -> {
+                    binding.appBarLayout.visibility = android.view.View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun setupUI() {
