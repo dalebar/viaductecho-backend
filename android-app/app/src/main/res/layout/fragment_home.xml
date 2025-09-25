@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:fitsSystemWindows="true"
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
@@ -13,7 +14,8 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:paddingTop="24dp"
-        android:paddingBottom="32dp">
+        android:paddingBottom="32dp"
+        android:fitsSystemWindows="true">
 
         <!-- Welcome Header -->
         <LinearLayout
