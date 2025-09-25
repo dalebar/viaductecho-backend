@@ -62,15 +62,15 @@
 
     <!-- Home Hub Sections -->
     <string name="home_welcome_title">Welcome to Viaduct Echo</string>
-    <string name="home_welcome_subtitle">Your local Manchester hub</string>
-    <string name="home_footer">Stay connected with Manchester\'s local community</string>
+    <string name="home_welcome_subtitle">Your local Stockport hub</string>
+    <string name="home_footer">Stay connected with the Stockport community</string>
 
     <!-- Section Titles -->
     <string name="section_local_news">Local News</string>
     <string name="section_events">Events</string>
-    <string name="section_business_directory">Business Directory</string>
-    <string name="section_local_offers">Local Offers</string>
-    <string name="section_local_contacts">Local Contacts</string>
+    <string name="section_attractions">Attractions</string>
+    <string name="section_offers">Offers</string>
+    <string name="section_directory">Directory</string>
     <string name="coming_soon">Coming Soon</string>
 
     <!-- Coming Soon Messages -->

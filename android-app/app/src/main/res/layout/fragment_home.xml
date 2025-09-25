@@ -193,7 +193,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/section_business_directory"
+                            android:text="@string/section_attractions"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="@color/md_theme_light_onTertiaryContainer"
                             android:textStyle="bold"
@@ -245,7 +245,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/section_local_offers"
+                            android:text="@string/section_offers"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold"
@@ -304,7 +304,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/section_local_contacts"
+                                android:text="@string/section_directory"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
                                 android:textColor="@android:color/white"
                                 android:textStyle="bold" />

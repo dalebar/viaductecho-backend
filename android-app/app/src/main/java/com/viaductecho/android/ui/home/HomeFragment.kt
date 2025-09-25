@@ -45,15 +45,15 @@ class HomeFragment : Fragment() {
             }
 
             cardBusinessDirectory.setOnClickListener {
-                showComingSoonMessage("Business Directory")
+                showComingSoonMessage("Attractions")
             }
 
             cardOffers.setOnClickListener {
-                showComingSoonMessage("Local Offers")
+                showComingSoonMessage("Offers")
             }
 
             cardContacts.setOnClickListener {
-                showComingSoonMessage("Local Contacts")
+                showComingSoonMessage("Directory")
             }
         }
     }
