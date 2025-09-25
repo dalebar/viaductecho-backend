@@ -82,5 +82,4 @@
 
     <!-- Legacy launcher colors -->
     <color name="ic_launcher_background">#1b2021</color>
-    <color name="ic_launcher_round_background">#1b2021</color>
 </resources>
