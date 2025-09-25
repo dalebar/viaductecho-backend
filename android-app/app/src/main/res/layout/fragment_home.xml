@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
+    android:background="@color/viaduct_echo_background_dark"
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
