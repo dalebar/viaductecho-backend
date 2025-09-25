@@ -63,6 +63,7 @@
     <color name="viaduct_echo_accent_lime">#BECC00</color>
     <color name="viaduct_echo_background_dark">#1b2021</color>
     <color name="viaduct_echo_background_light">#f7f7ff</color>
+    <color name="viaduct_echo_home_background">#f7f7ff</color>
 
     <!-- Legacy launcher colors -->
     <color name="ic_launcher_background">#1b2021</color>

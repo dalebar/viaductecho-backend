@@ -57,4 +57,9 @@
     <color name="text_secondary">#A0A0A0</color>
     <color name="text_tertiary">#808080</color>
     <color name="text_on_primary">#000000</color>
+
+    <!-- Viaduct Echo Brand Colors - Dark Mode -->
+    <color name="viaduct_echo_arch_brown">#964436</color>
+    <color name="viaduct_echo_accent_lime">#BECC00</color>
+    <color name="viaduct_echo_home_background">#1b2021</color>
 </resources>
