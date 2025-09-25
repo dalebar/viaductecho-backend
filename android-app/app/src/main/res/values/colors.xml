@@ -40,7 +40,7 @@
     <color name="md_theme_light_inverseSurface">#313033</color>
     <color name="md_theme_light_inversePrimary">#90CAF9</color>
 
-    <!-- Custom App Colors -->
+    <!-- Custom App Colors - Light Theme -->
     <color name="article_card_background">#FFFFFF</color>
     <color name="ai_summary_background">#F3E5F5</color>
     <color name="source_label_background">#E3F2FD</color>
@@ -57,22 +57,6 @@
     <color name="text_secondary">#6C6C6C</color>
     <color name="text_tertiary">#9E9E9E</color>
     <color name="text_on_primary">#FFFFFF</color>
-
-    <!-- Dark Theme Colors -->
-    <color name="md_theme_dark_primary">#90CAF9</color>
-    <color name="md_theme_dark_onPrimary">#0D47A1</color>
-    <color name="md_theme_dark_primaryContainer">#1565C0</color>
-    <color name="md_theme_dark_onPrimaryContainer">#E3F2FD</color>
-
-    <color name="md_theme_dark_secondary">#CE93D8</color>
-    <color name="md_theme_dark_onSecondary">#4A148C</color>
-    <color name="md_theme_dark_secondaryContainer">#6A1B9A</color>
-    <color name="md_theme_dark_onSecondaryContainer">#F3E5F5</color>
-
-    <color name="md_theme_dark_background">#1C1B1F</color>
-    <color name="md_theme_dark_onBackground">#E6E1E5</color>
-    <color name="md_theme_dark_surface">#1C1B1F</color>
-    <color name="md_theme_dark_onSurface">#E6E1E5</color>
 
     <!-- Viaduct Echo Brand Colors -->
     <color name="viaduct_echo_arch_brown">#964436</color>
