@@ -102,9 +102,18 @@ object ImageLoadingUtils {
     }
 
     /**
-     * Clear image and free memory
+     * Clear image and free memory - safe for destroyed contexts
      */
     fun ImageView.clearImage() {
-        Glide.with(context).clear(this)
+        try {
+            // MEMORY LEAK FIX: Use application context to avoid "destroyed activity" crashes
+            // during orientation changes or fragment destruction
+            val appContext = context.applicationContext
+            Glide.with(appContext).clear(this)
+        } catch (e: Exception) {
+            // If clearing fails (e.g., destroyed context), just set to null drawable
+            // This prevents crashes during activity/fragment lifecycle events
+            setImageDrawable(null)
+        }
     }
 }
