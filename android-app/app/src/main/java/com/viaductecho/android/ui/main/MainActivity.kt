@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupUI() {
         // Any additional UI setup
         supportActionBar?.apply {
-            setDisplayShowTitleEnabled(true)
+            setDisplayShowTitleEnabled(false)
         }
     }
 
