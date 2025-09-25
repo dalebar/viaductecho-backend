@@ -134,7 +134,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_event"
+                            android:src="@drawable/ic_sparkles"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/md_theme_light_secondary"
                             android:contentDescription="Events" />
@@ -185,7 +185,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_mapmode"
+                            android:src="@drawable/ic_external_link"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/md_theme_light_tertiary"
                             android:contentDescription="Business Directory" />
@@ -237,7 +237,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_gallery"
+                            android:src="@drawable/ic_share"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/viaduct_echo_accent_lime"
                             android:contentDescription="Offers" />
@@ -290,7 +290,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_call"
+                            android:src="@drawable/ic_back"
                             android:layout_marginEnd="12dp"
                             app:tint="@color/viaduct_echo_arch_brown"
                             android:contentDescription="Contacts" />
