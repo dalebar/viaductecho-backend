@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Viaduct Echo"
+            android:text="@string/splash_title"
             android:textColor="@android:color/white"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manchester Local Hub"
+            android:text="@string/splash_subtitle"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:alpha="0.9"
@@ -82,7 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Connecting Manchester's Communities"
+            android:text="@string/splash_footer"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:alpha="0.7"

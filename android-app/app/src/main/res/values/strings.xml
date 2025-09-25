@@ -75,4 +75,9 @@
 
     <!-- Coming Soon Messages -->
     <string name="coming_soon_message">%1$s coming soon! Stay tuned for updates.</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_title">Viaduct Echo</string>
+    <string name="splash_subtitle">Your Stockport Hub</string>
+    <string name="splash_footer">Connecting the Stockport Community</string>
 </resources>
