@@ -7,7 +7,7 @@
     <group
         android:name="scaled_translated_group"
         android:translateX="18"
-        android:translateY="25"
+        android:translateY="15"
         android:scaleX="0.12"
         android:scaleY="0.12">
         <group android:name="Vector">
