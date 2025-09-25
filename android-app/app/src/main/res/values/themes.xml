@@ -134,4 +134,15 @@
         <item name="titleTextAppearance">@style/TextAppearance.ViaductEcho.Headline</item>
         <item name="android:elevation">@dimen/app_bar_elevation</item>
     </style>
+
+    <!-- Splash Screen Theme -->
+    <style name="Theme.ViaductEcho.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/viaduct_echo_background_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 </resources>

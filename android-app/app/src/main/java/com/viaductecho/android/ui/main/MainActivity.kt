@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         // Define top-level destinations
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.articleListFragment)
+            setOf(R.id.homeFragment)
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)

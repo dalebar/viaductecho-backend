@@ -17,15 +17,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
+        <!-- Splash Screen Activity (Launcher) -->
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.ViaductEcho">
+            android:theme="@style/Theme.ViaductEcho.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ViaductEcho" />
     </application>
 
 </manifest>
