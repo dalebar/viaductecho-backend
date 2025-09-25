@@ -221,7 +221,6 @@
                     android:layout_margin="8dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="1dp"
-                    app:strokeWidth="0dp"
                     app:cardBackgroundColor="@color/viaduct_echo_background_light"
                     app:strokeColor="@color/viaduct_echo_accent_lime"
                     app:strokeWidth="2dp"
