@@ -64,6 +64,10 @@ run-api: ## Run the FastAPI development server
 	@echo "$(BLUE)Starting FastAPI development server...$(NC)"
 	uv run uvicorn src.api.app:app --reload --host 0.0.0.0 --port 8000
 
+run-api-prod: ## Run the FastAPI production server
+	@echo "$(BLUE)Starting FastAPI production server...$(NC)"
+	nohup uv run uvicorn src.api.app:app --reload --host 0.0.0.0 --port 8000
+
 # Database utilities
 db-status: ## Check AI summary status in database
 	@echo "$(BLUE)Checking AI summary status...$(NC)"
