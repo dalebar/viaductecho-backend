@@ -31,8 +31,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // TODO: Update with your production API endpoint before release
-            buildConfigField("String", "API_BASE_URL", "\"https://api.viaductecho.com\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://api.viaductecho.info\"")
         }
         debug {
             buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000\"") // Android emulator localhost
