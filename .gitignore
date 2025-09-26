@@ -131,3 +131,6 @@ android-app/.cxx/
 # Docker
 .dockerignore
 docker-compose.override.yml
+
+# APK Release Key
+*.jks
