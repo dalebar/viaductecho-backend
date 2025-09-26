@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.viaductecho.android"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.viaductecho.android"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -31,7 +31,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "API_BASE_URL", "\"https://your-api.com\"")
+            // TODO: Update with your production API endpoint before release
+            buildConfigField("String", "API_BASE_URL", "\"https://api.viaductecho.com\"")
         }
         debug {
             buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000\"") // Android emulator localhost
