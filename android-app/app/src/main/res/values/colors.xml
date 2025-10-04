@@ -92,13 +92,50 @@
     <color name="text_tertiary">#9E9E9E</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-    <!-- Viaduct Echo Brand Colors -->
-    <color name="viaduct_echo_arch_brown">#964436</color>
-    <color name="viaduct_echo_accent_lime">#BECC00</color>
-    <color name="viaduct_echo_background_dark">#1b2021</color>
-    <color name="viaduct_echo_background_light">#f7f7ff</color>
-    <color name="viaduct_echo_home_background">#f7f7ff</color>
+    <!-- ============================================ -->
+    <!-- VIADUCT ECHO BRAND COLOR PALETTE            -->
+    <!-- Primary brand colors - update these to      -->
+    <!-- change the entire app's color scheme        -->
+    <!-- ============================================ -->
 
-    <!-- Legacy launcher colors -->
-    <color name="ic_launcher_background">#1b2021</color>
+    <!-- Core Brand Colors (Source of Truth) -->
+    <color name="brand_brown">#964436</color>          <!-- Viaduct arch brown -->
+    <color name="brand_lime">#BECC00</color>            <!-- Accent lime/yellow-green -->
+    <color name="brand_light_bg">#f7f7ff</color>        <!-- Light background -->
+    <color name="brand_dark_bg">#1b2021</color>         <!-- Dark background -->
+    <color name="brand_sky_blue">#7cd4f4</color>        <!-- Info/secondary sky blue -->
+
+    <!-- Light Mode: Section Card Colors -->
+    <color name="card_news_bg">#F5EAE7</color>          <!-- Light brown tint -->
+    <color name="card_news_accent">@color/brand_brown</color>
+    <color name="card_news_text">#5A2E27</color>        <!-- Dark brown text -->
+
+    <color name="card_events_bg">#F5F9CC</color>        <!-- Light lime tint -->
+    <color name="card_events_accent">@color/brand_lime</color>
+    <color name="card_events_text">#4A5000</color>      <!-- Dark lime text -->
+
+    <color name="card_attractions_bg">#E8E8EA</color>   <!-- Light grey tint -->
+    <color name="card_attractions_accent">#5A5B5D</color> <!-- Dark grey -->
+    <color name="card_attractions_text">@color/brand_dark_bg</color>
+
+    <color name="card_offers_bg">@color/brand_light_bg</color>
+    <color name="card_offers_accent">@color/brand_lime</color>
+    <color name="card_offers_text">@color/brand_dark_bg</color>
+
+    <color name="card_directory_bg">#E3F8FD</color>     <!-- Light sky blue tint -->
+    <color name="card_directory_accent">@color/brand_sky_blue</color>
+    <color name="card_directory_text">#1E5C6E</color>   <!-- Dark blue text -->
+
+    <!-- Light Mode: Home Page -->
+    <color name="home_background">@color/brand_light_bg</color>
+    <color name="home_text_primary">@color/brand_dark_bg</color>
+    <color name="home_text_secondary">#6C6C6C</color>
+
+    <!-- Legacy Support (keep for backward compatibility) -->
+    <color name="viaduct_echo_arch_brown">@color/brand_brown</color>
+    <color name="viaduct_echo_accent_lime">@color/brand_lime</color>
+    <color name="viaduct_echo_background_dark">@color/brand_dark_bg</color>
+    <color name="viaduct_echo_background_light">@color/brand_light_bg</color>
+    <color name="viaduct_echo_home_background">@color/home_background</color>
+    <color name="ic_launcher_background">@color/brand_dark_bg</color>
 </resources>

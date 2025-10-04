@@ -58,8 +58,47 @@
     <color name="text_tertiary">#808080</color>
     <color name="text_on_primary">#000000</color>
 
-    <!-- Viaduct Echo Brand Colors - Dark Mode -->
-    <color name="viaduct_echo_arch_brown">#964436</color>
-    <color name="viaduct_echo_accent_lime">#BECC00</color>
-    <color name="viaduct_echo_home_background">#1b2021</color>
+    <!-- ============================================ -->
+    <!-- VIADUCT ECHO BRAND COLORS - DARK MODE       -->
+    <!-- Dark background with colored accents        -->
+    <!-- ============================================ -->
+
+    <!-- Core Brand Colors (inherited from light mode) -->
+    <color name="brand_brown">#964436</color>
+    <color name="brand_lime">#BECC00</color>
+    <color name="brand_light_bg">#f7f7ff</color>
+    <color name="brand_dark_bg">#1b2021</color>
+    <color name="brand_sky_blue">#7cd4f4</color>
+
+    <!-- Dark Mode: Section Card Colors -->
+    <!-- Cards use dark background with brand color accents and borders -->
+    <color name="card_news_bg">@color/brand_dark_bg</color>
+    <color name="card_news_accent">@color/brand_brown</color>
+    <color name="card_news_text">#D4A99C</color>           <!-- Light brown text -->
+
+    <color name="card_events_bg">@color/brand_dark_bg</color>
+    <color name="card_events_accent">@color/brand_lime</color>
+    <color name="card_events_text">#D9E680</color>          <!-- Light lime text -->
+
+    <color name="card_attractions_bg">@color/brand_dark_bg</color>
+    <color name="card_attractions_accent">#B0B0B2</color>   <!-- Light grey -->
+    <color name="card_attractions_text">#D9D9DB</color>     <!-- Light grey text -->
+
+    <color name="card_offers_bg">@color/brand_dark_bg</color>
+    <color name="card_offers_accent">@color/brand_lime</color>
+    <color name="card_offers_text">@color/brand_light_bg</color>
+
+    <color name="card_directory_bg">@color/brand_dark_bg</color>
+    <color name="card_directory_accent">@color/brand_sky_blue</color>
+    <color name="card_directory_text">#B8E8F7</color>       <!-- Light sky blue text -->
+
+    <!-- Dark Mode: Home Page -->
+    <color name="home_background">@color/brand_dark_bg</color>
+    <color name="home_text_primary">@color/brand_light_bg</color>
+    <color name="home_text_secondary">#A0A0A0</color>
+
+    <!-- Legacy Support -->
+    <color name="viaduct_echo_arch_brown">@color/brand_brown</color>
+    <color name="viaduct_echo_accent_lime">@color/brand_lime</color>
+    <color name="viaduct_echo_home_background">@color/home_background</color>
 </resources>
