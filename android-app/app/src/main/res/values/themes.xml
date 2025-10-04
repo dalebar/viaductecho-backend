@@ -46,6 +46,20 @@
         <item name="android:navigationBarColor">@color/md_theme_light_surface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <!-- Override Material3 text appearances for 50% larger fonts -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.ViaductEcho.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.ViaductEcho.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.ViaductEcho.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.ViaductEcho.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.ViaductEcho.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.ViaductEcho.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.ViaductEcho.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.ViaductEcho.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.ViaductEcho.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.ViaductEcho.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.ViaductEcho.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.ViaductEcho.LabelSmall</item>
     </style>
 
     <!-- Article Card Style -->
@@ -57,27 +71,81 @@
         <item name="contentPadding">@dimen/card_padding</item>
     </style>
 
-    <!-- Text Styles -->
-    <style name="TextAppearance.ViaductEcho.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+    <!-- Text Styles - 50% larger than default Material3 sizes -->
+
+    <!-- Headline Styles -->
+    <style name="TextAppearance.ViaductEcho.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textSize">48sp</item> <!-- 32sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">42sp</item> <!-- 28sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">36sp</item> <!-- 24sp * 1.5 -->
+    </style>
+
+    <!-- Title Styles -->
+    <style name="TextAppearance.ViaductEcho.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">33sp</item> <!-- 22sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">24sp</item> <!-- 16sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">21sp</item> <!-- 14sp * 1.5 -->
+    </style>
+
+    <!-- Body Styles -->
+    <style name="TextAppearance.ViaductEcho.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">24sp</item> <!-- 16sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">21sp</item> <!-- 14sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">18sp</item> <!-- 12sp * 1.5 -->
+    </style>
+
+    <!-- Label Styles -->
+    <style name="TextAppearance.ViaductEcho.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">21sp</item> <!-- 14sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">18sp</item> <!-- 12sp * 1.5 -->
+    </style>
+
+    <style name="TextAppearance.ViaductEcho.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">16sp</item> <!-- 11sp * 1.5 -->
+    </style>
+
+    <!-- Legacy custom styles (keep for backward compatibility) -->
+    <style name="TextAppearance.ViaductEcho.Headline" parent="TextAppearance.ViaductEcho.HeadlineMedium">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.ViaductEcho.Title" parent="TextAppearance.Material3.TitleMedium">
+    <style name="TextAppearance.ViaductEcho.Title" parent="TextAppearance.ViaductEcho.TitleMedium">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="TextAppearance.ViaductEcho.Body" parent="TextAppearance.Material3.BodyMedium">
+    <style name="TextAppearance.ViaductEcho.Body" parent="TextAppearance.ViaductEcho.BodyMedium">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:lineSpacingExtra">4dp</item>
     </style>
 
-    <style name="TextAppearance.ViaductEcho.Caption" parent="TextAppearance.Material3.BodySmall">
+    <style name="TextAppearance.ViaductEcho.Caption" parent="TextAppearance.ViaductEcho.BodySmall">
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="TextAppearance.ViaductEcho.Label" parent="TextAppearance.Material3.LabelMedium">
+    <style name="TextAppearance.ViaductEcho.Label" parent="TextAppearance.ViaductEcho.LabelMedium">
         <item name="android:textColor">@color/text_tertiary</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
