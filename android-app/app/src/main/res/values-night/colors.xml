@@ -69,6 +69,7 @@
     <color name="brand_light_bg">#f7f7ff</color>
     <color name="brand_dark_bg">#1b2021</color>
     <color name="brand_sky_blue">#7cd4f4</color>
+    <color name="brand_orange">#FF5800</color>
 
     <!-- Dark Mode: Section Card Colors -->
     <!-- Cards use dark background with brand color accents and borders -->
@@ -81,8 +82,8 @@
     <color name="card_events_text">#D9E680</color>          <!-- Light lime text -->
 
     <color name="card_places_bg">@color/brand_dark_bg</color>
-    <color name="card_places_accent">#B0B0B2</color>   <!-- Light grey -->
-    <color name="card_places_text">#D9D9DB</color>     <!-- Light grey text -->
+    <color name="card_places_accent">@color/brand_orange</color>
+    <color name="card_places_text">#FFB380</color>     <!-- Light orange text -->
 
     <color name="card_offers_bg">@color/brand_dark_bg</color>
     <color name="card_offers_accent">@color/brand_sky_blue</color>
