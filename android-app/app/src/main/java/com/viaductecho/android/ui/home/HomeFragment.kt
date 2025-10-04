@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
             }
 
             cardBusinessDirectory.setOnClickListener {
-                showComingSoonMessage("Attractions")
+                showComingSoonMessage("Places")
             }
 
             cardOffers.setOnClickListener {

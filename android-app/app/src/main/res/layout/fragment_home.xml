@@ -166,7 +166,7 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Attractions Section -->
+                <!-- Places Section -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardBusinessDirectory"
                     android:layout_width="0dp"
@@ -176,8 +176,8 @@
                     app:cardCornerRadius="12dp"
                     app:cardElevation="1dp"
                     app:strokeWidth="2dp"
-                    app:strokeColor="@color/card_attractions_accent"
-                    app:cardBackgroundColor="@color/card_attractions_bg"
+                    app:strokeColor="@color/card_places_accent"
+                    app:cardBackgroundColor="@color/card_places_bg"
                     android:clickable="true"
                     android:focusable="true">
 
@@ -193,15 +193,15 @@
                             android:layout_height="32dp"
                             android:src="@drawable/ic_location_pin"
                             android:layout_marginBottom="8dp"
-                            app:tint="@color/card_attractions_accent"
-                            android:contentDescription="Attractions" />
+                            app:tint="@color/card_places_accent"
+                            android:contentDescription="Places" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/section_attractions"
+                            android:text="@string/section_places"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textColor="@color/card_attractions_text"
+                            android:textColor="@color/card_places_text"
                             android:textStyle="bold"
                             android:textAlignment="center" />
 
@@ -210,7 +210,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/coming_soon"
                             android:textAppearance="?attr/textAppearanceCaption"
-                            android:textColor="@color/card_attractions_text"
+                            android:textColor="@color/card_places_text"
                             android:alpha="0.7"
                             android:layout_marginTop="2dp" />
 

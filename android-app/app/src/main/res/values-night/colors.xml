@@ -80,9 +80,9 @@
     <color name="card_events_accent">@color/brand_lime</color>
     <color name="card_events_text">#D9E680</color>          <!-- Light lime text -->
 
-    <color name="card_attractions_bg">@color/brand_dark_bg</color>
-    <color name="card_attractions_accent">#B0B0B2</color>   <!-- Light grey -->
-    <color name="card_attractions_text">#D9D9DB</color>     <!-- Light grey text -->
+    <color name="card_places_bg">@color/brand_dark_bg</color>
+    <color name="card_places_accent">#B0B0B2</color>   <!-- Light grey -->
+    <color name="card_places_text">#D9D9DB</color>     <!-- Light grey text -->
 
     <color name="card_offers_bg">@color/brand_dark_bg</color>
     <color name="card_offers_accent">@color/brand_sky_blue</color>

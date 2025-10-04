@@ -114,9 +114,9 @@
     <color name="card_events_accent">@color/brand_lime</color>
     <color name="card_events_text">#4A5000</color>      <!-- Dark lime text -->
 
-    <color name="card_attractions_bg">#E8E8EA</color>   <!-- Light grey tint -->
-    <color name="card_attractions_accent">#5A5B5D</color> <!-- Dark grey -->
-    <color name="card_attractions_text">@color/brand_dark_bg</color>
+    <color name="card_places_bg">#E8E8EA</color>   <!-- Light grey tint -->
+    <color name="card_places_accent">#5A5B5D</color> <!-- Dark grey -->
+    <color name="card_places_text">@color/brand_dark_bg</color>
 
     <color name="card_offers_bg">#E3F8FD</color>        <!-- Light sky blue tint -->
     <color name="card_offers_accent">@color/brand_sky_blue</color>
