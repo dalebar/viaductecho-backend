@@ -69,7 +69,7 @@
     <color name="brand_light_bg">#f7f7ff</color>
     <color name="brand_dark_bg">#1b2021</color>
     <color name="brand_sky_blue">#7cd4f4</color>
-    <color name="brand_orange">#FF5800</color>
+    <color name="brand_orange">#FFA500</color>
 
     <!-- Dark Mode: Section Card Colors -->
     <!-- Cards use dark background with brand color accents and borders -->

@@ -104,7 +104,7 @@
     <color name="brand_light_bg">#f7f7ff</color>        <!-- Light background -->
     <color name="brand_dark_bg">#1b2021</color>         <!-- Dark background -->
     <color name="brand_sky_blue">#7cd4f4</color>        <!-- Info/secondary sky blue -->
-    <color name="brand_orange">#FF5800</color>          <!-- Warm inviting orange -->
+    <color name="brand_orange">#FFA500</color>          <!-- Warm inviting orange -->
 
     <!-- Light Mode: Section Card Colors -->
     <color name="card_news_bg">#F5EAE7</color>          <!-- Light brown tint -->
