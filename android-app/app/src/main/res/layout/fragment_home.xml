@@ -95,7 +95,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_sparkles"
+                            android:src="@drawable/ic_newspaper"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/md_theme_light_primary"
                             android:contentDescription="Local News" />
@@ -137,7 +137,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_sparkles"
+                            android:src="@drawable/ic_calendar"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/md_theme_light_secondary"
                             android:contentDescription="Events" />
@@ -188,10 +188,10 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_external_link"
+                            android:src="@drawable/ic_location_pin"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/md_theme_light_tertiary"
-                            android:contentDescription="Business Directory" />
+                            android:contentDescription="Attractions" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -240,7 +240,7 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_share"
+                            android:src="@drawable/ic_tag"
                             android:layout_marginBottom="8dp"
                             app:tint="@color/viaduct_echo_accent_lime"
                             android:contentDescription="Offers" />
@@ -293,10 +293,10 @@
                         <ImageView
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:src="@drawable/ic_back"
+                            android:src="@drawable/ic_book"
                             android:layout_marginEnd="12dp"
                             app:tint="@color/viaduct_echo_arch_brown"
-                            android:contentDescription="Contacts" />
+                            android:contentDescription="Directory" />
 
                         <LinearLayout
                             android:layout_width="0dp"
