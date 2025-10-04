@@ -46,8 +46,7 @@
                 android:textColor="@color/text_primary"
                 android:fontFamily="serif"
                 android:textStyle="bold"
-                android:lineSpacingMultiplier="2.0"
-                android:lineSpacingExtra="12dp"
+                android:lineSpacingMultiplier="1.0"
                 android:maxLines="3"
                 android:ellipsize="end"
                 tools:text="Local Council Announces New Investment in Parks and Green Spaces" />
