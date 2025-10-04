@@ -41,9 +41,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_primary"
-                    android:textSize="54sp"
+                    android:textSize="27sp"
                     android:textStyle="bold"
-                    android:lineSpacingMultiplier="1.1"
+                    android:lineSpacingMultiplier="1.2"
                     android:layout_marginBottom="@dimen/spacing_md"
                     tools:text="Local Council Announces Major Investment in Parks and Green Spaces" />
 
@@ -96,7 +96,7 @@
                         android:textSize="21sp"
                         android:textColor="@color/text_primary"
                         android:fontFamily="serif"
-                        android:lineSpacingMultiplier="2.0"
+                        android:lineSpacingMultiplier="1.1"
                         tools:text="The local council has announced a £2.5 million investment to improve parks and green spaces across the borough. This initiative will focus on creating new recreational facilities and improving existing infrastructure to benefit residents and promote environmental sustainability." />
 
                 </LinearLayout>
