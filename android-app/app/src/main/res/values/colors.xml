@@ -118,13 +118,13 @@
     <color name="card_attractions_accent">#5A5B5D</color> <!-- Dark grey -->
     <color name="card_attractions_text">@color/brand_dark_bg</color>
 
-    <color name="card_offers_bg">@color/brand_light_bg</color>
-    <color name="card_offers_accent">@color/brand_lime</color>
-    <color name="card_offers_text">@color/brand_dark_bg</color>
+    <color name="card_offers_bg">#E3F8FD</color>        <!-- Light sky blue tint -->
+    <color name="card_offers_accent">@color/brand_sky_blue</color>
+    <color name="card_offers_text">#1E5C6E</color>      <!-- Dark blue text -->
 
-    <color name="card_directory_bg">#E3F8FD</color>     <!-- Light sky blue tint -->
-    <color name="card_directory_accent">@color/brand_sky_blue</color>
-    <color name="card_directory_text">#1E5C6E</color>   <!-- Dark blue text -->
+    <color name="card_directory_bg">#F0F0F1</color>     <!-- Light neutral grey tint -->
+    <color name="card_directory_accent">#6C6C6E</color> <!-- Medium grey -->
+    <color name="card_directory_text">#3A3A3C</color>   <!-- Dark grey text -->
 
     <!-- Light Mode: Home Page -->
     <color name="home_background">@color/brand_light_bg</color>
