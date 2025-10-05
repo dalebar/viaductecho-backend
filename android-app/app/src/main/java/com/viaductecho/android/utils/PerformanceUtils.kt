@@ -143,7 +143,7 @@ object PerformanceUtils {
             }
 
             if (preloadQueue.isNotEmpty()) {
-                val url = preloadQueue.removeFirst()
+                val url = preloadQueue.removeAt(0)
                 ImageLoadingUtils.preloadImage(context, url)
 
                 handler.postDelayed({
