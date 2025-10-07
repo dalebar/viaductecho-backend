@@ -336,6 +336,22 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- About / Contact Link -->
+        <TextView
+            android:id="@+id/text_about_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="@string/menu_about"
+            android:textSize="14sp"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

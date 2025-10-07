@@ -80,4 +80,19 @@
     <string name="splash_title">Viaduct Echo</string>
     <string name="splash_subtitle">Your Stockport Hub</string>
     <string name="splash_footer">Connecting the Stockport Community</string>
+
+    <!-- About / Contact -->
+    <string name="about_title">About</string>
+    <string name="about_description">Viaduct Echo is your local Stockport news aggregator, bringing you the latest news, events, and information from across Greater Manchester. We curate content from trusted sources to keep you informed about what matters most to your community.</string>
+    <string name="contact_us_title">Contact Us</string>
+    <string name="email">Email</string>
+    <string name="contact_email">hello@viaductecho.info</string>
+    <string name="phone">Phone</string>
+    <string name="contact_phone">+44 7729 594632</string>
+    <string name="website">Website</string>
+    <string name="contact_website">https://viaductecho.info</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_link">View Privacy Policy</string>
+    <string name="about_footer">© 2025 Viaduct Echo. All rights reserved.</string>
+    <string name="menu_about">About / Contact</string>
 </resources>

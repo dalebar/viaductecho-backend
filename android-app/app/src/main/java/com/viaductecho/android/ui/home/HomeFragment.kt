@@ -55,6 +55,11 @@ class HomeFragment : Fragment() {
             cardContacts.setOnClickListener {
                 showComingSoonMessage("Directory")
             }
+
+            // About / Contact link
+            textAboutLink.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_aboutFragment)
+            }
         }
     }
 
