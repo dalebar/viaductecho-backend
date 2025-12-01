@@ -123,3 +123,33 @@ class Config:
         "chapel-en-le-frith",
         "high peak",
     ]
+
+    # Skiddle API configuration
+    SKIDDLE_API_KEY = os.getenv("SKIDDLE_API_KEY")
+
+    # Events geo configuration (Stockport town centre)
+    EVENTS_LATITUDE = float(os.getenv("EVENTS_LATITUDE", "53.4106"))
+    EVENTS_LONGITUDE = float(os.getenv("EVENTS_LONGITUDE", "-2.1575"))
+    EVENTS_RADIUS_MILES = int(os.getenv("EVENTS_RADIUS_MILES", "10"))
+
+    # Events fetch settings
+    EVENTS_FETCH_DAYS_AHEAD = int(os.getenv("EVENTS_FETCH_DAYS_AHEAD", "60"))
+
+    # Valid SK postcodes prefix for filtering
+    VALID_POSTCODE_PREFIXES = ["SK"]
+
+    # Event type mappings from Skiddle codes
+    SKIDDLE_EVENT_TYPE_MAP = {
+        "LIVE": "music",
+        "CLUB": "music",
+        "FEST": "music",
+        "COMEDY": "comedy",
+        "THEATRE": "theatre",
+        "EXHIB": "arts",
+        "KIDS": "family",
+        "BARPUB": "community",
+        "DATE": "other",
+    }
+
+    # Admin API configuration
+    ADMIN_API_KEY = os.getenv("ADMIN_API_KEY", "viaduct-echo-admin-2025")

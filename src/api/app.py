@@ -12,7 +12,7 @@ try:
 except ImportError:
     from database.api_operations import APIOperations
 
-from .routes import articles, sources
+from .routes import admin, articles, events, sources, venues
 from .schemas.common import ErrorResponse
 
 
@@ -175,6 +175,9 @@ async def read_root():
         "endpoints": {
             "articles": "/api/v1/articles",
             "sources": "/api/v1/sources",
+            "events": "/api/v1/events",
+            "venues": "/api/v1/venues",
+            "admin": "/api/v1/admin",
         },
         "timestamp": datetime.now().isoformat(),
     }
@@ -183,6 +186,9 @@ async def read_root():
 # Include routers
 app.include_router(articles.router, prefix="/api/v1", tags=["Articles"])
 app.include_router(sources.router, prefix="/api/v1", tags=["Sources"])
+app.include_router(events.router, tags=["Events"])
+app.include_router(venues.router, tags=["Venues"])
+app.include_router(admin.router, tags=["Admin"])
 
 
 # Request logging middleware

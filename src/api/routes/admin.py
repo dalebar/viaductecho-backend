@@ -1,0 +1,515 @@
+"""
+Admin API routes - protected by API key authentication
+"""
+
+import logging
+
+from fastapi import APIRouter, Depends, Header, HTTPException, status
+
+from ...config import Config
+from ...database.event_operations import EventOperations
+from ...database.models import Event, Venue
+from ...events_aggregator import EventsAggregator
+from ..schemas.admin import (
+    AggregationResponse,
+    EventCreate,
+    EventUpdate,
+    VenueCreate,
+    VenueUpdate,
+)
+from ..schemas.events import EventDetail
+from ..schemas.venues import VenueDetail
+
+router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
+
+logger = logging.getLogger(__name__)
+
+
+def verify_admin_key(x_api_key: str = Header(..., description="Admin API key")):
+    """Verify admin API key from header"""
+    if x_api_key != Config.ADMIN_API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid API key",
+        )
+    return x_api_key
+
+
+# Venue Management
+
+
+@router.post("/venues", response_model=VenueDetail, status_code=status.HTTP_201_CREATED)
+async def create_venue(
+    venue_data: VenueCreate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Create a new venue (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        # Convert to dict and add source info
+        venue_dict = venue_data.model_dump()
+        venue_dict["source_name"] = "manual"
+
+        # Create venue
+        venue = db.get_or_create_venue(venue_dict)
+
+        if not venue:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to create venue",
+            )
+
+        return {
+            "id": venue.id,
+            "name": venue.name,
+            "slug": venue.slug,
+            "address_line1": venue.address_line1,
+            "address_line2": venue.address_line2,
+            "town": venue.town,
+            "postcode": venue.postcode,
+            "latitude": float(venue.latitude) if venue.latitude else None,
+            "longitude": float(venue.longitude) if venue.longitude else None,
+            "description": venue.description,
+            "venue_type": venue.venue_type,
+            "capacity": venue.capacity,
+            "website_url": venue.website_url,
+            "phone": venue.phone,
+            "image_url": venue.image_url,
+            "source_name": venue.source_name,
+            "created_at": venue.created_at,
+        }
+
+    except Exception as e:
+        logger.error(f"Error creating venue: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create venue: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.patch("/venues/{venue_id}", response_model=VenueDetail)
+async def update_venue(
+    venue_id: int,
+    venue_data: VenueUpdate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Update a venue (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        venue = db.get_venue_by_id(venue_id)
+
+        if not venue:
+            raise HTTPException(status_code=404, detail="Venue not found")
+
+        # Update only provided fields
+        update_data = venue_data.model_dump(exclude_unset=True)
+
+        for field, value in update_data.items():
+            setattr(venue, field, value)
+
+        # Regenerate slug if name changed
+        if "name" in update_data:
+            venue.slug = db._generate_slug(Venue, venue.name, venue.id)
+
+        db.session.commit()
+        db.session.refresh(venue)
+
+        return {
+            "id": venue.id,
+            "name": venue.name,
+            "slug": venue.slug,
+            "address_line1": venue.address_line1,
+            "address_line2": venue.address_line2,
+            "town": venue.town,
+            "postcode": venue.postcode,
+            "latitude": float(venue.latitude) if venue.latitude else None,
+            "longitude": float(venue.longitude) if venue.longitude else None,
+            "description": venue.description,
+            "venue_type": venue.venue_type,
+            "capacity": venue.capacity,
+            "website_url": venue.website_url,
+            "phone": venue.phone,
+            "image_url": venue.image_url,
+            "source_name": venue.source_name,
+            "created_at": venue.created_at,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating venue: {e}")
+        db.session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update venue: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.delete("/venues/{venue_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_venue(
+    venue_id: int,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Delete a venue (Admin only)
+    Note: This will fail if there are events associated with this venue
+    """
+    db = EventOperations()
+
+    try:
+        venue = db.get_venue_by_id(venue_id)
+
+        if not venue:
+            raise HTTPException(status_code=404, detail="Venue not found")
+
+        db.session.delete(venue)
+        db.session.commit()
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting venue: {e}")
+        db.session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete venue: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+# Event Management
+
+
+@router.post("/events", response_model=EventDetail, status_code=status.HTTP_201_CREATED)
+async def create_event(
+    event_data: EventCreate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Create a new event (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        # Verify venue exists
+        venue = db.get_venue_by_id(event_data.venue_id)
+
+        if not venue:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Venue with ID {event_data.venue_id} not found",
+            )
+
+        # Convert to dict and add source info
+        event_dict = event_data.model_dump()
+        event_dict["source_name"] = "manual"
+        event_dict["source_type"] = "manual"
+        event_dict["source_id"] = None
+        event_dict["source_url"] = None
+
+        # Remove venue_id from dict (it's handled separately)
+        event_dict.pop("venue_id", None)
+
+        # Create event
+        event = db.insert_event(event_dict, venue)
+
+        if not event:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to create event (possible duplicate)",
+            )
+
+        return {
+            "id": event.id,
+            "title": event.title,
+            "slug": event.slug,
+            "description": event.description,
+            "short_description": event.short_description,
+            "event_type": event.event_type,
+            "start_datetime": event.start_datetime,
+            "end_datetime": event.end_datetime,
+            "doors_time": event.doors_time,
+            "venue": (
+                {
+                    "id": event.venue.id,
+                    "name": event.venue.name,
+                    "slug": event.venue.slug,
+                    "town": event.venue.town,
+                    "postcode": event.venue.postcode,
+                    "venue_type": event.venue.venue_type,
+                }
+                if event.venue
+                else None
+            ),
+            "image_url": event.image_url,
+            "ticket_url": event.ticket_url,
+            "price_min": float(event.price_min) if event.price_min else None,
+            "price_max": float(event.price_max) if event.price_max else None,
+            "is_free": event.is_free,
+            "source_name": event.source_name,
+            "source_url": event.source_url,
+            "status": event.status,
+            "is_featured": event.is_featured,
+            "created_at": event.created_at,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating event: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create event: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.patch("/events/{event_id}", response_model=EventDetail)
+async def update_event(
+    event_id: int,
+    event_data: EventUpdate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Update an event (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        event = db.get_event_by_id(event_id)
+
+        if not event:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+        # Update only provided fields
+        update_data = event_data.model_dump(exclude_unset=True)
+
+        # If venue_id is being changed, verify it exists
+        if "venue_id" in update_data:
+            venue = db.get_venue_by_id(update_data["venue_id"])
+            if not venue:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Venue with ID {update_data['venue_id']} not found",
+                )
+
+        for field, value in update_data.items():
+            setattr(event, field, value)
+
+        # Regenerate slug if title changed
+        if "title" in update_data:
+            event.slug = db._generate_slug(Event, event.title, event.id)
+
+        # Regenerate hash if key fields changed
+        if any(k in update_data for k in ["venue_id", "start_datetime", "title"]):
+            event.event_hash = db._create_event_hash(
+                event.venue_id,
+                event.start_datetime,
+                event.title,
+            )
+
+        db.session.commit()
+        db.session.refresh(event)
+
+        return {
+            "id": event.id,
+            "title": event.title,
+            "slug": event.slug,
+            "description": event.description,
+            "short_description": event.short_description,
+            "event_type": event.event_type,
+            "start_datetime": event.start_datetime,
+            "end_datetime": event.end_datetime,
+            "doors_time": event.doors_time,
+            "venue": (
+                {
+                    "id": event.venue.id,
+                    "name": event.venue.name,
+                    "slug": event.venue.slug,
+                    "town": event.venue.town,
+                    "postcode": event.venue.postcode,
+                    "venue_type": event.venue.venue_type,
+                }
+                if event.venue
+                else None
+            ),
+            "image_url": event.image_url,
+            "ticket_url": event.ticket_url,
+            "price_min": float(event.price_min) if event.price_min else None,
+            "price_max": float(event.price_max) if event.price_max else None,
+            "is_free": event.is_free,
+            "source_name": event.source_name,
+            "source_url": event.source_url,
+            "status": event.status,
+            "is_featured": event.is_featured,
+            "created_at": event.created_at,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating event: {e}")
+        db.session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update event: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.delete("/events/{event_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_event(
+    event_id: int,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Delete an event (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        event = db.get_event_by_id(event_id)
+
+        if not event:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+        db.session.delete(event)
+        db.session.commit()
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting event: {e}")
+        db.session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete event: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.patch("/events/{event_id}/feature", response_model=EventDetail)
+async def toggle_featured(
+    event_id: int,
+    is_featured: bool,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Set an event's featured status (Admin only)
+    """
+    db = EventOperations()
+
+    try:
+        event = db.get_event_by_id(event_id)
+
+        if not event:
+            raise HTTPException(status_code=404, detail="Event not found")
+
+        event.is_featured = is_featured
+        db.session.commit()
+        db.session.refresh(event)
+
+        return {
+            "id": event.id,
+            "title": event.title,
+            "slug": event.slug,
+            "description": event.description,
+            "short_description": event.short_description,
+            "event_type": event.event_type,
+            "start_datetime": event.start_datetime,
+            "end_datetime": event.end_datetime,
+            "doors_time": event.doors_time,
+            "venue": (
+                {
+                    "id": event.venue.id,
+                    "name": event.venue.name,
+                    "slug": event.venue.slug,
+                    "town": event.venue.town,
+                    "postcode": event.venue.postcode,
+                    "venue_type": event.venue.venue_type,
+                }
+                if event.venue
+                else None
+            ),
+            "image_url": event.image_url,
+            "ticket_url": event.ticket_url,
+            "price_min": float(event.price_min) if event.price_min else None,
+            "price_max": float(event.price_max) if event.price_max else None,
+            "is_free": event.is_free,
+            "source_name": event.source_name,
+            "source_url": event.source_url,
+            "status": event.status,
+            "is_featured": event.is_featured,
+            "created_at": event.created_at,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error toggling featured status: {e}")
+        db.session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update featured status: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+# Aggregation Job
+
+
+@router.post("/aggregate", response_model=AggregationResponse)
+async def trigger_aggregation(
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Manually trigger events aggregation job (Admin only)
+    """
+    try:
+        aggregator = EventsAggregator()
+
+        # Run aggregation
+        stats = aggregator.run_aggregation()
+
+        # Mark past events
+        past_count = aggregator.db.mark_past_events()
+
+        # Generate static JSON files
+        json_files = aggregator.generate_static_json()
+
+        aggregator.close()
+
+        return {
+            "success": True,
+            "message": f"Aggregation completed. Generated {len(json_files)} static files.",
+            "stats": {
+                "total_fetched": stats["total_fetched"],
+                "total_inserted": stats["total_inserted"],
+                "total_duplicates": stats["total_duplicates"],
+                "total_errors": stats["total_errors"],
+                "past_events_marked": past_count,
+            },
+        }
+
+    except Exception as e:
+        logger.error(f"Aggregation job failed: {e}")
+        return {
+            "success": False,
+            "message": f"Aggregation failed: {str(e)}",
+            "stats": None,
+        }
