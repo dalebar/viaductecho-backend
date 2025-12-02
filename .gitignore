@@ -82,6 +82,12 @@ logs/
 *.temp
 .tmp/
 
+# Uploaded event images
+static/event_images/
+
+# Generated static JSON files (copied to Jekyll)
+static_data/
+
 # iOS / Xcode
 ios-app/ViaductEcho.xcodeproj/project.xcworkspace/
 ios-app/ViaductEcho.xcodeproj/xcuserdata/
@@ -127,10 +133,6 @@ android-app/.idea/
 android-app/captures/
 android-app/.externalNativeBuild/
 android-app/.cxx/
-
-# Docker
-.dockerignore
-docker-compose.override.yml
 
 # APK Release Key
 *.jks

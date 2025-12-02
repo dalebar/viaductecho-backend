@@ -5,7 +5,8 @@ from datetime import datetime
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 try:
     from ..database.api_operations import APIOperations
@@ -172,6 +173,7 @@ async def read_root():
         "description": "REST API for Greater Manchester news aggregation",
         "docs": "/docs",
         "health": "/health",
+        "admin_dashboard": "/admin",
         "endpoints": {
             "articles": "/api/v1/articles",
             "sources": "/api/v1/sources",
@@ -189,6 +191,22 @@ app.include_router(sources.router, prefix="/api/v1", tags=["Sources"])
 app.include_router(events.router, tags=["Events"])
 app.include_router(venues.router, tags=["Venues"])
 app.include_router(admin.router, tags=["Admin"])
+
+
+# Admin dashboard route
+@app.get("/admin", include_in_schema=False)
+async def admin_dashboard():
+    """Serve admin dashboard"""
+    return FileResponse("src/api/static/admin.html")
+
+
+# Mount static files
+app.mount(
+    "/static/event_images",
+    StaticFiles(directory="static/event_images"),
+    name="event_images",
+)
+app.mount("/static", StaticFiles(directory="src/api/static"), name="static")
 
 
 # Request logging middleware

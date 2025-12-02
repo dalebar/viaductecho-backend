@@ -3,8 +3,10 @@ Admin API routes - protected by API key authentication
 """
 
 import logging
+import uuid
+from pathlib import Path
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, File, Header, HTTPException, UploadFile, status
 
 from ...config import Config
 from ...database.event_operations import EventOperations
@@ -513,3 +515,68 @@ async def trigger_aggregation(
             "message": f"Aggregation failed: {str(e)}",
             "stats": None,
         }
+
+
+# Image Upload
+
+
+@router.post("/upload-image", status_code=status.HTTP_201_CREATED)
+async def upload_image(
+    file: UploadFile = File(...),
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Upload an event image (Admin only)
+
+    Accepts: JPG, JPEG, PNG, GIF, WEBP
+    Returns: URL to the uploaded image
+    """
+    # Validate file type
+    allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file type. Allowed: JPG, PNG, GIF, WEBP. Got: {file.content_type}",
+        )
+
+    # Validate file size (max 5MB)
+    max_size = 5 * 1024 * 1024  # 5MB
+    contents = await file.read()
+    if len(contents) > max_size:
+        raise HTTPException(
+            status_code=400,
+            detail=f"File too large. Max size: 5MB. Got: {len(contents) / 1024 / 1024:.2f}MB",
+        )
+
+    try:
+        # Generate unique filename
+        file_ext = Path(file.filename).suffix
+        unique_filename = f"{uuid.uuid4()}{file_ext}"
+
+        # Save to static/event_images directory
+        upload_dir = Path("static/event_images")
+        upload_dir.mkdir(parents=True, exist_ok=True)
+
+        file_path = upload_dir / unique_filename
+
+        with open(file_path, "wb") as f:
+            f.write(contents)
+
+        # Return URL
+        image_url = f"/static/event_images/{unique_filename}"
+
+        logger.info(f"Image uploaded: {unique_filename}")
+
+        return {
+            "success": True,
+            "filename": unique_filename,
+            "url": image_url,
+            "size": len(contents),
+        }
+
+    except Exception as e:
+        logger.error(f"Image upload failed: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to upload image: {str(e)}",
+        )
