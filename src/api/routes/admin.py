@@ -12,6 +12,7 @@ from ...config import Config
 from ...database.event_operations import EventOperations
 from ...database.models import Event, Venue
 from ...events_aggregator import EventsAggregator
+from ...publishers.github_publisher import GitHubPublisher
 from ..schemas.admin import (
     AggregationResponse,
     EventCreate,
@@ -481,6 +482,7 @@ async def trigger_aggregation(
 ):
     """
     Manually trigger events aggregation job (Admin only)
+    Also publishes updated JSON files to GitHub Pages
     """
     try:
         aggregator = EventsAggregator()
@@ -492,19 +494,32 @@ async def trigger_aggregation(
         past_count = aggregator.db.mark_past_events()
 
         # Generate static JSON files
-        json_files = aggregator.generate_static_json()
+        aggregator.generate_static_json()
 
         aggregator.close()
 
+        # Publish to GitHub Pages
+        publisher = GitHubPublisher()
+        publish_results = publisher.publish_static_json_files()
+
+        if publish_results["success"]:
+            message = f"Aggregation completed. Generated and published {len(publish_results['published'])} files to GitHub Pages."
+            logger.info(message)
+        else:
+            message = f"Aggregation completed but publishing failed: {publish_results.get('error', 'Unknown error')}"
+            logger.warning(message)
+
         return {
             "success": True,
-            "message": f"Aggregation completed. Generated {len(json_files)} static files.",
+            "message": message,
             "stats": {
                 "total_fetched": stats["total_fetched"],
                 "total_inserted": stats["total_inserted"],
                 "total_duplicates": stats["total_duplicates"],
                 "total_errors": stats["total_errors"],
                 "past_events_marked": past_count,
+                "github_published": len(publish_results.get("published", [])),
+                "github_failed": len(publish_results.get("failed", [])),
             },
         }
 

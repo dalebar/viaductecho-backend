@@ -93,6 +93,10 @@ class AggregationStats(BaseModel):
     total_duplicates: int = Field(..., description="Total duplicates/skipped")
     total_errors: int = Field(..., description="Total errors")
     past_events_marked: int = Field(..., description="Past events marked")
+    github_published: int = Field(
+        0, description="Number of files published to GitHub Pages"
+    )
+    github_failed: int = Field(0, description="Number of files that failed to publish")
 
 
 class AggregationResponse(BaseModel):
