@@ -33,6 +33,37 @@ class EventOperations(DatabaseOperations):
         slug = re.sub(r"[-\s]+", "-", slug).strip("-")
         return slug[:200]
 
+    def _generate_slug(
+        self, model_class, text: str, exclude_id: Optional[int] = None
+    ) -> str:
+        """
+        Generate unique slug for a model instance
+
+        Args:
+            model_class: Event or Venue model class
+            text: Text to convert to slug
+            exclude_id: Optional ID to exclude from uniqueness check (for updates)
+
+        Returns:
+            Unique slug
+        """
+        base_slug = self._create_slug(text)
+        slug = base_slug
+        counter = 1
+
+        while True:
+            # Check if slug exists
+            query = self.session.query(model_class).filter_by(slug=slug)
+            if exclude_id:
+                query = query.filter(model_class.id != exclude_id)
+
+            if not query.first():
+                return slug
+
+            # Slug exists, add counter
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+
     def get_or_create_venue(self, venue_data: Dict[str, Any]) -> Venue:
         """Get existing venue or create new one"""
         # Try to find by source first
