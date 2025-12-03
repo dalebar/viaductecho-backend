@@ -13,6 +13,7 @@ from .sources.bbc_source import BBCSource
 from .sources.men_source import MENSource
 from .sources.nub_source import NubSource
 from .sources.onestockport_source import OneStockportSource
+from .sources.stockportcouncil_source import StockportCouncilSource
 from .sources.totallystockport_source import TotallyStockportSource
 
 
@@ -47,6 +48,7 @@ class ViaductEcho:
             NubSource(),
             TotallyStockportSource(),
             OneStockportSource(),
+            StockportCouncilSource(),
         ]
         self.content_extractor = ContentExtractor()
         self.ai_summarizer = AISummarizer()

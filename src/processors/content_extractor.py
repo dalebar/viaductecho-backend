@@ -41,6 +41,8 @@ class ContentExtractor:
                 return self._extract_totallystockport_content(soup)
             elif "onestockport.co.uk" in url:
                 return self._extract_onestockport_content(soup)
+            elif "stockport.gov.uk" in url:
+                return self._extract_stockportcouncil_content(soup)
             else:
                 return self._extract_generic_content(soup)
 
@@ -188,6 +190,48 @@ class ContentExtractor:
             content_area = soup.find("article")
         if not content_area:
             content_area = soup.find("main")
+
+        if content_area:
+            # Extract all paragraphs
+            for p in content_area.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:
+                    paragraphs.append(text)
+
+            # Extract lists
+            for ul in content_area.find_all(["ul", "ol"]):
+                for li in ul.find_all("li"):
+                    text = li.get_text().strip()
+                    if text and len(text) > 10:
+                        paragraphs.append(f"• {text}")
+
+        # Fallback: generic paragraph search
+        if not paragraphs:
+            for p in soup.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:
+                    paragraphs.append(text)
+
+        content = "\n\n".join(paragraphs) if paragraphs else ""
+
+        # Extract image
+        og_image = soup.find("meta", property="og:image")
+        image_url = og_image.get("content") if og_image else ""
+
+        return {"content": content, "image_url": image_url}
+
+    def _extract_stockportcouncil_content(self, soup: BeautifulSoup) -> Dict:
+        """Extract content from Stockport Council articles"""
+        paragraphs = []
+
+        # Try to find main content area - gov.uk sites often use .govuk-* classes
+        content_area = soup.find("main")
+        if not content_area:
+            content_area = soup.find("article")
+        if not content_area:
+            content_area = soup.find(
+                "div", class_=lambda x: x and "content" in x.lower()
+            )
 
         if content_area:
             # Extract all paragraphs
