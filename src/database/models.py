@@ -34,6 +34,7 @@ class RSSArticle(Base):
     extracted_content = Column(Text)
     ai_summary = Column(Text)
     image_url = Column(Text)
+    status = Column(String(20), default="published")  # draft, published, deleted
     updated_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
@@ -65,6 +66,7 @@ class RSSArticle(Base):
             "extracted_content": self.extracted_content,
             "ai_summary": self.ai_summary,
             "image_url": self.image_url,
+            "status": self.status,
         }
 
     def to_summary_dict(self) -> Dict[str, Any]:
@@ -81,6 +83,7 @@ class RSSArticle(Base):
             ),
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "image_url": self.image_url,
+            "status": self.status,
         }
 
 

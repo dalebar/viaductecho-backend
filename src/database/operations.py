@@ -155,6 +155,82 @@ class DatabaseOperations:
 
         self._run_with_reconnect(_op)
 
+    def get_article_by_id(self, article_id: int) -> RSSArticle:
+        """Get article by ID"""
+
+        def _op() -> RSSArticle:
+            return self.session.query(RSSArticle).filter_by(id=article_id).first()
+
+        return self._run_with_reconnect(_op)
+
+    def get_all_articles(
+        self, limit: int = 100, offset: int = 0, status_filter: str = None
+    ):
+        """Get all articles with optional filtering"""
+
+        def _op():
+            query = self.session.query(RSSArticle)
+
+            # Filter by status if provided
+            if status_filter and status_filter != "all":
+                query = query.filter_by(status=status_filter)
+
+            # Order by created_at descending (newest first)
+            query = query.order_by(RSSArticle.created_at.desc())
+
+            # Get total count
+            total = query.count()
+
+            # Apply pagination
+            articles = query.limit(limit).offset(offset).all()
+
+            return {"articles": articles, "total": total}
+
+        return self._run_with_reconnect(_op)
+
+    def update_article(self, article_id: int, update_data: dict) -> RSSArticle:
+        """Update article fields"""
+
+        def _op() -> RSSArticle:
+            article = self.session.query(RSSArticle).filter_by(id=article_id).first()
+
+            if not article:
+                return None
+
+            # Update provided fields
+            for key, value in update_data.items():
+                if hasattr(article, key):
+                    setattr(article, key, value)
+
+            # Update URL hash if link changed
+            if "original_link" in update_data:
+                article.url_hash = self._hash_url(update_data["original_link"])
+
+            self.session.commit()
+            self.session.refresh(article)
+            self.logger.info(f"Updated article: {article.original_title}")
+
+            return article
+
+        return self._run_with_reconnect(_op)
+
+    def delete_article(self, article_id: int) -> bool:
+        """Soft delete article by setting status to 'deleted'"""
+
+        def _op() -> bool:
+            article = self.session.query(RSSArticle).filter_by(id=article_id).first()
+
+            if not article:
+                return False
+
+            article.status = "deleted"
+            self.session.commit()
+            self.logger.info(f"Deleted article: {article.original_title}")
+
+            return True
+
+        return self._run_with_reconnect(_op)
+
     def close(self):
         if self.session:
             self.session.close()

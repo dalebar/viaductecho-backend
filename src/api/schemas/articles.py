@@ -29,6 +29,9 @@ class ArticleSummary(ArticleBase):
     id: int = Field(..., description="Article ID")
     created_at: datetime = Field(..., description="Date added to system")
     image_url: Optional[str] = Field(None, description="Article image URL")
+    status: str = Field(
+        "published", description="Article status (draft, published, deleted)"
+    )
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -49,6 +52,9 @@ class ArticleDetail(ArticleBase):
     )
     ai_summary: Optional[str] = Field(None, description="AI-generated summary")
     image_url: Optional[str] = Field(None, description="Article image URL")
+    status: str = Field(
+        "published", description="Article status (draft, published, deleted)"
+    )
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -101,3 +107,47 @@ class RecentArticlesParams(BaseModel):
 
     hours: int = Field(24, description="Hours back to look", ge=1, le=168)  # Max 1 week
     limit: int = Field(50, description="Maximum articles to return", ge=1, le=100)
+
+
+# Admin schemas for CRUD operations
+
+
+class ArticleCreate(BaseModel):
+    """Schema for creating a new article (Admin only)"""
+
+    title: str = Field(..., description="Article title", min_length=1, max_length=500)
+    link: str = Field(..., description="Original article URL")
+    summary: Optional[str] = Field(None, description="Article summary")
+    source: str = Field(..., description="Source name", max_length=100)
+    source_type: str = Field("manual", description="Type of source")
+    published_date: Optional[datetime] = Field(
+        None, description="Original publication date"
+    )
+    extracted_content: Optional[str] = Field(None, description="Full article content")
+    ai_summary: Optional[str] = Field(None, description="AI-generated summary")
+    image_url: Optional[str] = Field(None, description="Article image URL")
+    status: str = Field("draft", description="Article status (draft, published)")
+
+
+class ArticleUpdate(BaseModel):
+    """Schema for updating an existing article (Admin only)"""
+
+    title: Optional[str] = Field(
+        None, description="Article title", min_length=1, max_length=500
+    )
+    link: Optional[str] = Field(None, description="Original article URL")
+    summary: Optional[str] = Field(None, description="Article summary")
+    source: Optional[str] = Field(None, description="Source name", max_length=100)
+    source_type: Optional[str] = Field(None, description="Type of source")
+    published_date: Optional[datetime] = Field(
+        None, description="Original publication date"
+    )
+    extracted_content: Optional[str] = Field(None, description="Full article content")
+    ai_summary: Optional[str] = Field(None, description="AI-generated summary")
+    image_url: Optional[str] = Field(None, description="Article image URL")
+    status: Optional[str] = Field(
+        None, description="Article status (draft, published, deleted)"
+    )
+    processed: Optional[bool] = Field(
+        None, description="Whether article has been processed"
+    )

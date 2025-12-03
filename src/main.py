@@ -60,7 +60,23 @@ class ViaductEcho:
                 content_data.get("image_url"),
             )
 
-            summary = self.ai_summarizer.summarize(content_data["content"])
+            # Validate content before AI summarization
+            content = content_data["content"]
+            summary = None
+
+            if not content or len(content.strip()) < 100:
+                logging.warning(
+                    f"Content too short or empty for AI summary ({len(content) if content else 0} chars): {article.original_title}"
+                )
+                # Use original summary from RSS feed as fallback
+                summary = article_data.get("original_summary", "")
+                if summary:
+                    logging.info(
+                        f"Using RSS summary as fallback for: {article.original_title}"
+                    )
+            else:
+                # Content is valid, generate AI summary
+                summary = self.ai_summarizer.summarize(content)
 
             # Store AI summary in database
             if summary:

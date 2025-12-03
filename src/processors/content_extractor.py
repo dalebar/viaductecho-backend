@@ -62,6 +62,9 @@ class ContentExtractor:
         return {"content": content, "image_url": image_url}
 
     def _extract_men_content(self, soup: BeautifulSoup) -> Dict:
+        content = ""
+
+        # Try JSON-LD first (most reliable when present)
         script_tag = soup.find("script", type="application/ld+json")
         if script_tag:
             try:
@@ -74,8 +77,44 @@ class ContentExtractor:
                     content = re.sub(r"<[^>]+>", "", content)
             except (json.JSONDecodeError, KeyError, TypeError):
                 content = ""
-        else:
-            content = ""
+
+        # Fallback: Scrape article content from HTML
+        if not content or len(content.strip()) < 100:
+            logging.info(
+                "MEN JSON-LD extraction failed or too short, trying HTML fallback"
+            )
+            paragraphs = []
+
+            # Try to find main article content div
+            article_body = soup.find(
+                "div", class_=re.compile(r"article-body|article__body")
+            )
+            if article_body:
+                # Extract paragraphs
+                for p in article_body.find_all("p"):
+                    text = p.get_text().strip()
+                    if text and len(text) > 20:  # Skip very short paragraphs
+                        paragraphs.append(text)
+
+                # Extract bullet points/lists
+                for ul in article_body.find_all(["ul", "ol"]):
+                    for li in ul.find_all("li"):
+                        text = li.get_text().strip()
+                        if text and len(text) > 10:
+                            paragraphs.append(f"• {text}")
+
+            # If no article body found, try generic paragraph search
+            if not paragraphs:
+                for p in soup.find_all("p"):
+                    text = p.get_text().strip()
+                    if text and len(text) > 20:
+                        paragraphs.append(text)
+
+            if paragraphs:
+                content = "\n\n".join(paragraphs)
+                logging.info(
+                    f"MEN HTML fallback extracted {len(paragraphs)} paragraphs"
+                )
 
         og_image = soup.find("meta", property="og:image")
         image_url = og_image.get("content") if og_image else ""

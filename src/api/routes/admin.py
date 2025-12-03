@@ -11,6 +11,7 @@ from fastapi import APIRouter, Depends, File, Header, HTTPException, UploadFile,
 from ...config import Config
 from ...database.event_operations import EventOperations
 from ...database.models import Event, Venue
+from ...database.operations import DatabaseOperations
 from ...events_aggregator import EventsAggregator
 from ...main import ViaductEcho
 from ...publishers.github_publisher import GitHubPublisher
@@ -21,6 +22,7 @@ from ..schemas.admin import (
     VenueCreate,
     VenueUpdate,
 )
+from ..schemas.articles import ArticleCreate, ArticleDetail, ArticleUpdate
 from ..schemas.events import EventDetail
 from ..schemas.venues import VenueDetail
 
@@ -607,6 +609,280 @@ async def trigger_news_aggregation(
             "success": False,
             "message": f"News aggregation failed: {str(e)}",
         }
+
+
+# News Article Management
+
+
+@router.get("/articles", response_model=list[ArticleDetail])
+async def list_articles(
+    status_filter: str = "all",
+    limit: int = 100,
+    offset: int = 0,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    List all news articles (Admin only)
+    Filter by status: all, draft, published, deleted
+    """
+    db = DatabaseOperations()
+
+    try:
+        result = db.get_all_articles(
+            limit=limit, offset=offset, status_filter=status_filter
+        )
+
+        # Convert to response format
+        articles = []
+        for article in result["articles"]:
+            articles.append(
+                {
+                    "id": article.id,
+                    "title": article.original_title,
+                    "link": article.original_link,
+                    "summary": article.original_summary,
+                    "source": article.original_source,
+                    "source_type": article.source_type,
+                    "published_date": article.original_pubdate,
+                    "created_at": article.created_at,
+                    "updated_at": article.updated_at,
+                    "processed": article.processed,
+                    "extracted_content": article.extracted_content,
+                    "ai_summary": article.ai_summary,
+                    "image_url": article.image_url,
+                    "status": article.status,
+                }
+            )
+
+        return articles
+
+    except Exception as e:
+        logger.error(f"Error listing articles: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to list articles: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.get("/articles/{article_id}", response_model=ArticleDetail)
+async def get_article(
+    article_id: int,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Get a single article by ID (Admin only)
+    """
+    db = DatabaseOperations()
+
+    try:
+        article = db.get_article_by_id(article_id)
+
+        if not article:
+            raise HTTPException(status_code=404, detail="Article not found")
+
+        return {
+            "id": article.id,
+            "title": article.original_title,
+            "link": article.original_link,
+            "summary": article.original_summary,
+            "source": article.original_source,
+            "source_type": article.source_type,
+            "published_date": article.original_pubdate,
+            "created_at": article.created_at,
+            "updated_at": article.updated_at,
+            "processed": article.processed,
+            "extracted_content": article.extracted_content,
+            "ai_summary": article.ai_summary,
+            "image_url": article.image_url,
+            "status": article.status,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting article: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get article: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.post(
+    "/articles", response_model=ArticleDetail, status_code=status.HTTP_201_CREATED
+)
+async def create_article(
+    article_data: ArticleCreate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Create a new article manually (Admin only)
+    """
+    db = DatabaseOperations()
+
+    try:
+        # Convert Pydantic model to dict
+        article_dict = {
+            "original_title": article_data.title,
+            "original_link": article_data.link,
+            "original_summary": article_data.summary,
+            "original_source": article_data.source,
+            "source_type": article_data.source_type,
+            "original_pubdate": article_data.published_date,
+        }
+
+        # Insert article
+        article = db.insert_article(article_dict)
+
+        # Update additional fields
+        update_dict = {
+            "extracted_content": article_data.extracted_content,
+            "ai_summary": article_data.ai_summary,
+            "image_url": article_data.image_url,
+            "status": article_data.status,
+        }
+
+        # Remove None values
+        update_dict = {k: v for k, v in update_dict.items() if v is not None}
+
+        if update_dict:
+            article = db.update_article(article.id, update_dict)
+
+        return {
+            "id": article.id,
+            "title": article.original_title,
+            "link": article.original_link,
+            "summary": article.original_summary,
+            "source": article.original_source,
+            "source_type": article.source_type,
+            "published_date": article.original_pubdate,
+            "created_at": article.created_at,
+            "updated_at": article.updated_at,
+            "processed": article.processed,
+            "extracted_content": article.extracted_content,
+            "ai_summary": article.ai_summary,
+            "image_url": article.image_url,
+            "status": article.status,
+        }
+
+    except Exception as e:
+        logger.error(f"Error creating article: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create article: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.patch("/articles/{article_id}", response_model=ArticleDetail)
+async def update_article(
+    article_id: int,
+    article_data: ArticleUpdate,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Update an existing article (Admin only)
+    """
+    db = DatabaseOperations()
+
+    try:
+        # Check if article exists
+        article = db.get_article_by_id(article_id)
+
+        if not article:
+            raise HTTPException(status_code=404, detail="Article not found")
+
+        # Build update dictionary with field name mapping
+        update_dict = {}
+
+        if article_data.title is not None:
+            update_dict["original_title"] = article_data.title
+        if article_data.link is not None:
+            update_dict["original_link"] = article_data.link
+        if article_data.summary is not None:
+            update_dict["original_summary"] = article_data.summary
+        if article_data.source is not None:
+            update_dict["original_source"] = article_data.source
+        if article_data.source_type is not None:
+            update_dict["source_type"] = article_data.source_type
+        if article_data.published_date is not None:
+            update_dict["original_pubdate"] = article_data.published_date
+        if article_data.extracted_content is not None:
+            update_dict["extracted_content"] = article_data.extracted_content
+        if article_data.ai_summary is not None:
+            update_dict["ai_summary"] = article_data.ai_summary
+        if article_data.image_url is not None:
+            update_dict["image_url"] = article_data.image_url
+        if article_data.status is not None:
+            update_dict["status"] = article_data.status
+        if article_data.processed is not None:
+            update_dict["processed"] = article_data.processed
+
+        # Update article
+        article = db.update_article(article_id, update_dict)
+
+        return {
+            "id": article.id,
+            "title": article.original_title,
+            "link": article.original_link,
+            "summary": article.original_summary,
+            "source": article.original_source,
+            "source_type": article.source_type,
+            "published_date": article.original_pubdate,
+            "created_at": article.created_at,
+            "updated_at": article.updated_at,
+            "processed": article.processed,
+            "extracted_content": article.extracted_content,
+            "ai_summary": article.ai_summary,
+            "image_url": article.image_url,
+            "status": article.status,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating article: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update article: {str(e)}",
+        )
+    finally:
+        db.close()
+
+
+@router.delete("/articles/{article_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_article(
+    article_id: int,
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Delete an article (Admin only)
+    Soft delete: marks article as 'deleted'
+    """
+    db = DatabaseOperations()
+
+    try:
+        success = db.delete_article(article_id)
+
+        if not success:
+            raise HTTPException(status_code=404, detail="Article not found")
+
+        logger.info(f"Article deleted: {article_id}")
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting article: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete article: {str(e)}",
+        )
+    finally:
+        db.close()
 
 
 # Image Upload
