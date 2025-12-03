@@ -39,6 +39,8 @@ class ContentExtractor:
                 return self._extract_nub_content(soup)
             elif "totallystockport.co.uk" in url:
                 return self._extract_totallystockport_content(soup)
+            elif "onestockport.co.uk" in url:
+                return self._extract_onestockport_content(soup)
             else:
                 return self._extract_generic_content(soup)
 
@@ -156,6 +158,46 @@ class ContentExtractor:
 
             # Extract bullet points/lists
             for ul in article_content.find_all(["ul", "ol"]):
+                for li in ul.find_all("li"):
+                    text = li.get_text().strip()
+                    if text and len(text) > 10:
+                        paragraphs.append(f"• {text}")
+
+        # Fallback: generic paragraph search
+        if not paragraphs:
+            for p in soup.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:
+                    paragraphs.append(text)
+
+        content = "\n\n".join(paragraphs) if paragraphs else ""
+
+        # Extract image
+        og_image = soup.find("meta", property="og:image")
+        image_url = og_image.get("content") if og_image else ""
+
+        return {"content": content, "image_url": image_url}
+
+    def _extract_onestockport_content(self, soup: BeautifulSoup) -> Dict:
+        """Extract content from One Stockport articles"""
+        paragraphs = []
+
+        # Try to find main content area
+        content_area = soup.find("div", class_="content_v2")
+        if not content_area:
+            content_area = soup.find("article")
+        if not content_area:
+            content_area = soup.find("main")
+
+        if content_area:
+            # Extract all paragraphs
+            for p in content_area.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:
+                    paragraphs.append(text)
+
+            # Extract lists
+            for ul in content_area.find_all(["ul", "ol"]):
                 for li in ul.find_all("li"):
                     text = li.get_text().strip()
                     if text and len(text) > 10:

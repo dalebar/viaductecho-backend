@@ -12,6 +12,7 @@ from .publishers.github_publisher import GitHubPublisher
 from .sources.bbc_source import BBCSource
 from .sources.men_source import MENSource
 from .sources.nub_source import NubSource
+from .sources.onestockport_source import OneStockportSource
 from .sources.totallystockport_source import TotallyStockportSource
 
 
@@ -45,6 +46,7 @@ class ViaductEcho:
             MENSource(),
             NubSource(),
             TotallyStockportSource(),
+            OneStockportSource(),
         ]
         self.content_extractor = ContentExtractor()
         self.ai_summarizer = AISummarizer()
