@@ -103,6 +103,7 @@ async def get_events(
                 "price_max": float(e.price_max) if e.price_max else None,
                 "is_free": e.is_free,
                 "ticket_url": e.ticket_url,
+                "source_name": e.source_name,
             }
             for e in events
         ]
