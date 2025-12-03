@@ -33,7 +33,7 @@ class EventSummary(EventBase):
     price_max: Optional[float] = Field(None, description="Maximum ticket price")
     is_free: bool = Field(False, description="Whether event is free")
     ticket_url: Optional[str] = Field(None, description="Ticket purchase URL")
-    source_name: str = Field(..., description="Data source")
+    source_name: Optional[str] = Field(None, description="Data source")
 
     model_config = ConfigDict(from_attributes=True)
 
