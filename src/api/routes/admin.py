@@ -216,8 +216,8 @@ async def create_event(
 
         # Convert to dict and add source info
         event_dict = event_data.model_dump()
-        event_dict["source_name"] = "manual"
-        event_dict["source_type"] = "manual"
+        # source_name comes from the form (Instagram, Skiddle, Other, etc)
+        event_dict["source_type"] = "manual"  # All admin-created events are manual
         event_dict["source_id"] = None
         event_dict["source_url"] = None
 
@@ -380,6 +380,7 @@ async def delete_event(
 ):
     """
     Delete an event (Admin only)
+    Soft delete: marks event as 'deleted' to prevent re-fetching from Skiddle
     """
     db = EventOperations()
 
@@ -389,8 +390,11 @@ async def delete_event(
         if not event:
             raise HTTPException(status_code=404, detail="Event not found")
 
-        db.session.delete(event)
+        # Soft delete: mark as deleted instead of removing from database
+        event.status = "deleted"
         db.session.commit()
+
+        logger.info(f"Event marked as deleted: {event.title} (ID: {event_id})")
 
     except HTTPException:
         raise

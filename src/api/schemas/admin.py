@@ -51,6 +51,7 @@ class EventCreate(BaseModel):
     description: Optional[str] = Field(None, description="Full description")
     short_description: Optional[str] = Field(None, description="Short description")
     event_type: str = Field(..., description="Event category")
+    source_name: str = Field(..., description="Event source (Instagram, Skiddle, etc)")
     start_datetime: datetime = Field(..., description="Event start date/time")
     end_datetime: Optional[datetime] = Field(None, description="Event end date/time")
     doors_time: Optional[time] = Field(None, description="Doors open time")
@@ -70,6 +71,9 @@ class EventUpdate(BaseModel):
     description: Optional[str] = Field(None, description="Full description")
     short_description: Optional[str] = Field(None, description="Short description")
     event_type: Optional[str] = Field(None, description="Event category")
+    source_name: Optional[str] = Field(
+        None, description="Event source (Instagram, Skiddle, etc)"
+    )
     start_datetime: Optional[datetime] = Field(
         None, description="Event start date/time"
     )

@@ -167,6 +167,14 @@
                                     <option value="other">Other</option>
                                 </select>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Source *</label>
+                                <select class="form-select" id="eventSource" required>
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="Skiddle">Skiddle</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label">Description</label>
                                 <textarea class="form-control" id="eventDescription" rows="3"></textarea>
@@ -394,6 +402,16 @@
         }
 
         // Render events
+        // Get background color based on source
+        function getSourceColor(source) {
+            const colors = {
+                'Skiddle': '#e0f2f1',     // Light teal
+                'Instagram': '#f3e5f5',   // Light pink/purple
+                'Other': '#fff9e6'        // Light yellow
+            };
+            return colors[source] || '#ffffff';
+        }
+
         function renderEvents() {
             const container = document.getElementById('eventsList');
             container.innerHTML = '';
@@ -402,14 +420,19 @@
                 const date = new Date(event.start_datetime);
                 const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
                 const timeStr = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const sourceName = event.source_name || 'Other';
+                const bgColor = getSourceColor(sourceName);
 
                 container.innerHTML += `
                     <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card event-card h-100">
+                        <div class="card event-card h-100" style="background-color: ${bgColor};">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="card-title">${event.title}</h5>
-                                    ${event.is_featured ? '<span class="badge bg-warning">Featured</span>' : ''}
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">${event.title}</h5>
+                                    <div>
+                                        ${event.is_featured ? '<span class="badge bg-warning me-1">Featured</span>' : ''}
+                                        <span class="badge bg-secondary">${sourceName}</span>
+                                    </div>
                                 </div>
                                 <p class="text-muted small mb-2">
                                     <i class="far fa-calendar"></i> ${dateStr} ${timeStr}<br>
@@ -492,6 +515,7 @@
                 if (event) {
                     document.getElementById('eventTitle').value = event.title;
                     document.getElementById('eventType').value = event.event_type;
+                    document.getElementById('eventSource').value = event.source_name || 'Instagram';
                     document.getElementById('eventDescription').value = event.description || '';
                     document.getElementById('eventStartDate').value = event.start_datetime.slice(0, 16);
                     if (event.end_datetime) document.getElementById('eventEndDate').value = event.end_datetime.slice(0, 16);
@@ -515,6 +539,7 @@
             const data = {
                 title: document.getElementById('eventTitle').value,
                 event_type: document.getElementById('eventType').value,
+                source_name: document.getElementById('eventSource').value,
                 description: document.getElementById('eventDescription').value,
                 start_datetime: document.getElementById('eventStartDate').value,
                 end_datetime: document.getElementById('eventEndDate').value || null,

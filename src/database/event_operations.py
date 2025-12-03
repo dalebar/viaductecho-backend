@@ -205,6 +205,13 @@ class EventOperations(DatabaseOperations):
                 self.session.query(Event).filter_by(event_hash=event_hash).first()
             )
             if existing:
+                # If event was deleted, don't re-add it
+                if existing.status == "deleted":
+                    self.logger.debug(
+                        f"Event was deleted, skipping: {event_data['title']}"
+                    )
+                    return None
+                # Event already exists and is active
                 self.logger.debug(f"Event already exists: {event_data['title']}")
                 return None
 
