@@ -402,14 +402,22 @@
         }
 
         // Render events
+        // Normalize source name for display
+        function normalizeSourceName(source) {
+            if (!source) return 'Other';
+            // Capitalize first letter
+            return source.charAt(0).toUpperCase() + source.slice(1).toLowerCase();
+        }
+
         // Get background color based on source
         function getSourceColor(source) {
+            const normalizedSource = normalizeSourceName(source);
             const colors = {
                 'Skiddle': '#e0f2f1',     // Light teal
                 'Instagram': '#f3e5f5',   // Light pink/purple
                 'Other': '#fff9e6'        // Light yellow
             };
-            return colors[source] || '#ffffff';
+            return colors[normalizedSource] || '#ffffff';
         }
 
         function renderEvents() {
@@ -420,8 +428,8 @@
                 const date = new Date(event.start_datetime);
                 const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
                 const timeStr = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-                const sourceName = event.source_name || 'Other';
-                const bgColor = getSourceColor(sourceName);
+                const sourceName = normalizeSourceName(event.source_name);
+                const bgColor = getSourceColor(event.source_name);
 
                 container.innerHTML += `
                     <div class="col-md-6 col-lg-4 mb-3">
@@ -515,7 +523,8 @@
                 if (event) {
                     document.getElementById('eventTitle').value = event.title;
                     document.getElementById('eventType').value = event.event_type;
-                    document.getElementById('eventSource').value = event.source_name || 'Instagram';
+                    // Normalize source name for dropdown (capitalize first letter)
+                    document.getElementById('eventSource').value = normalizeSourceName(event.source_name) || 'Instagram';
                     document.getElementById('eventDescription').value = event.description || '';
                     document.getElementById('eventStartDate').value = event.start_datetime.slice(0, 16);
                     if (event.end_datetime) document.getElementById('eventEndDate').value = event.end_datetime.slice(0, 16);
