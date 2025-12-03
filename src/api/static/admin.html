@@ -956,10 +956,23 @@
 
                     alert('Image uploaded successfully!');
                 } else {
-                    const error = await response.json();
-                    alert('Upload failed: ' + (error.detail || 'Unknown error'));
+                    // Try to parse as JSON, but handle HTML error pages
+                    const contentType = response.headers.get('content-type');
+                    let errorMessage = 'Unknown error';
+
+                    if (contentType && contentType.includes('application/json')) {
+                        const error = await response.json();
+                        errorMessage = error.detail || error.error || 'Unknown error';
+                    } else {
+                        const text = await response.text();
+                        console.error('Server returned non-JSON response:', text);
+                        errorMessage = `Server error (${response.status}): ${response.statusText}`;
+                    }
+
+                    alert('Upload failed: ' + errorMessage);
                 }
             } catch (error) {
+                console.error('Upload error:', error);
                 alert('Upload failed: ' + error.message);
             } finally {
                 document.getElementById('uploadProgress').style.display = 'none';
