@@ -922,9 +922,17 @@
             }
 
             // Validate file size (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Image too large. Maximum size is 5MB');
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+                alert(`Image too large: ${fileSizeMB}MB\n\nMaximum size is 5MB. Please resize or compress your image.`);
                 return;
+            }
+
+            // Warn if file is close to the limit
+            if (file.size > 1 * 1024 * 1024 && file.size <= maxSize) {
+                const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+                console.log(`Note: Uploading ${fileSizeMB}MB image. If upload fails, try compressing the image.`);
             }
 
             // Show progress
