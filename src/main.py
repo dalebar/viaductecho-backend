@@ -12,6 +12,7 @@ from .publishers.github_publisher import GitHubPublisher
 from .sources.bbc_source import BBCSource
 from .sources.men_source import MENSource
 from .sources.nub_source import NubSource
+from .sources.totallystockport_source import TotallyStockportSource
 
 
 def setup_logging():
@@ -39,7 +40,12 @@ setup_logging()
 class ViaductEcho:
     def __init__(self):
         self.db = DatabaseOperations()
-        self.sources = [BBCSource(), MENSource(), NubSource()]
+        self.sources = [
+            BBCSource(),
+            MENSource(),
+            NubSource(),
+            TotallyStockportSource(),
+        ]
         self.content_extractor = ContentExtractor()
         self.ai_summarizer = AISummarizer()
         self.github_publisher = GitHubPublisher()

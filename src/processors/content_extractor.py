@@ -37,6 +37,8 @@ class ContentExtractor:
                 return self._extract_men_content(soup)
             elif "stockport.nub.news" in url:
                 return self._extract_nub_content(soup)
+            elif "totallystockport.co.uk" in url:
+                return self._extract_totallystockport_content(soup)
             else:
                 return self._extract_generic_content(soup)
 
@@ -131,6 +133,46 @@ class ContentExtractor:
             img = img_div.find("img")
             if img:
                 image_url = img.get("src", "")
+
+        return {"content": content, "image_url": image_url}
+
+    def _extract_totallystockport_content(self, soup: BeautifulSoup) -> Dict:
+        """Extract content from Totally Stockport WordPress articles"""
+        paragraphs = []
+
+        # Try to find main article content (WordPress post content)
+        article_content = soup.find("div", class_="post-content")
+        if not article_content:
+            article_content = soup.find("div", class_="fusion-post-content")
+        if not article_content:
+            article_content = soup.find("article")
+
+        if article_content:
+            # Extract all paragraphs
+            for p in article_content.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:  # Skip very short paragraphs
+                    paragraphs.append(text)
+
+            # Extract bullet points/lists
+            for ul in article_content.find_all(["ul", "ol"]):
+                for li in ul.find_all("li"):
+                    text = li.get_text().strip()
+                    if text and len(text) > 10:
+                        paragraphs.append(f"• {text}")
+
+        # Fallback: generic paragraph search
+        if not paragraphs:
+            for p in soup.find_all("p"):
+                text = p.get_text().strip()
+                if text and len(text) > 20:
+                    paragraphs.append(text)
+
+        content = "\n\n".join(paragraphs) if paragraphs else ""
+
+        # Extract image
+        og_image = soup.find("meta", property="og:image")
+        image_url = og_image.get("content") if og_image else ""
 
         return {"content": content, "image_url": image_url}
 
