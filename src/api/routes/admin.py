@@ -12,6 +12,7 @@ from ...config import Config
 from ...database.event_operations import EventOperations
 from ...database.models import Event, Venue
 from ...events_aggregator import EventsAggregator
+from ...main import ViaductEcho
 from ...publishers.github_publisher import GitHubPublisher
 from ..schemas.admin import (
     AggregationResponse,
@@ -575,6 +576,36 @@ async def publish_to_github(
             "success": False,
             "message": f"Publishing failed: {str(e)}",
             "stats": None,
+        }
+
+
+@router.post("/aggregate-news")
+async def trigger_news_aggregation(
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Manually trigger news aggregation (Admin only)
+    Runs the ViaductEcho aggregator once to fetch, process, and publish news articles
+    """
+    try:
+        logger.info("Starting manual news aggregation...")
+
+        # Run aggregation once
+        echo = ViaductEcho()
+        echo.run_once()
+
+        logger.info("News aggregation completed successfully")
+
+        return {
+            "success": True,
+            "message": "News aggregation completed successfully. Check logs for details.",
+        }
+
+    except Exception as e:
+        logger.error(f"News aggregation failed: {e}")
+        return {
+            "success": False,
+            "message": f"News aggregation failed: {str(e)}",
         }
 
 
