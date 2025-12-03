@@ -482,7 +482,7 @@ async def trigger_aggregation(
 ):
     """
     Manually trigger events aggregation job (Admin only)
-    Also publishes updated JSON files to GitHub Pages
+    Fetches events from Skiddle API but does NOT publish to GitHub Pages
     """
     try:
         aggregator = EventsAggregator()
@@ -493,21 +493,10 @@ async def trigger_aggregation(
         # Mark past events
         past_count = aggregator.db.mark_past_events()
 
-        # Generate static JSON files
-        aggregator.generate_static_json()
-
         aggregator.close()
 
-        # Publish to GitHub Pages
-        publisher = GitHubPublisher()
-        publish_results = publisher.publish_static_json_files()
-
-        if publish_results["success"]:
-            message = f"Aggregation completed. Generated and published {len(publish_results['published'])} files to GitHub Pages."
-            logger.info(message)
-        else:
-            message = f"Aggregation completed but publishing failed: {publish_results.get('error', 'Unknown error')}"
-            logger.warning(message)
+        message = f"Fetched {stats['total_fetched']} events from Skiddle. {stats['total_inserted']} new, {stats['total_duplicates']} duplicates."
+        logger.info(message)
 
         return {
             "success": True,
@@ -518,8 +507,8 @@ async def trigger_aggregation(
                 "total_duplicates": stats["total_duplicates"],
                 "total_errors": stats["total_errors"],
                 "past_events_marked": past_count,
-                "github_published": len(publish_results.get("published", [])),
-                "github_failed": len(publish_results.get("failed", [])),
+                "github_published": 0,
+                "github_failed": 0,
             },
         }
 
@@ -528,6 +517,59 @@ async def trigger_aggregation(
         return {
             "success": False,
             "message": f"Aggregation failed: {str(e)}",
+            "stats": None,
+        }
+
+
+@router.post("/publish", response_model=AggregationResponse)
+async def publish_to_github(
+    _: str = Depends(verify_admin_key),
+):
+    """
+    Publish events to GitHub Pages (Admin only)
+    Generates JSON files from current database and pushes to GitHub Pages
+    Does NOT fetch new events from Skiddle
+    """
+    try:
+        aggregator = EventsAggregator()
+
+        # Generate static JSON files from current database
+        aggregator.generate_static_json()
+
+        aggregator.close()
+
+        # Publish to GitHub Pages
+        publisher = GitHubPublisher()
+        publish_results = publisher.publish_static_json_files()
+
+        if publish_results["success"]:
+            message = f"Published {len(publish_results['published'])} files to GitHub Pages successfully."
+            logger.info(message)
+        else:
+            message = (
+                f"Publishing failed: {publish_results.get('error', 'Unknown error')}"
+            )
+            logger.warning(message)
+
+        return {
+            "success": publish_results["success"],
+            "message": message,
+            "stats": {
+                "total_fetched": 0,
+                "total_inserted": 0,
+                "total_duplicates": 0,
+                "total_errors": 0,
+                "past_events_marked": 0,
+                "github_published": len(publish_results.get("published", [])),
+                "github_failed": len(publish_results.get("failed", [])),
+            },
+        }
+
+    except Exception as e:
+        logger.error(f"Publishing failed: {e}")
+        return {
+            "success": False,
+            "message": f"Publishing failed: {str(e)}",
             "stats": None,
         }
 

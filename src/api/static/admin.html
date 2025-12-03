@@ -85,10 +85,14 @@
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body text-center">
-                            <button class="btn btn-publish text-white w-100" onclick="publishToJekyll()">
-                                <i class="fas fa-sync"></i> Publish to Jekyll
+                            <button class="btn btn-warning text-white w-100 mb-2" onclick="fetchFromSkiddle()">
+                                <i class="fas fa-download"></i> Fetch from Skiddle
                             </button>
-                            <small class="text-muted d-block mt-2">Regenerate JSON files</small>
+                            <small class="text-muted d-block mb-3">Get new events from API</small>
+                            <button class="btn btn-publish text-white w-100" onclick="publishToJekyll()">
+                                <i class="fas fa-upload"></i> Publish to Jekyll
+                            </button>
+                            <small class="text-muted d-block mt-2">Push to GitHub Pages</small>
                         </div>
                     </div>
                 </div>
@@ -674,13 +678,13 @@
             }
         }
 
-        // Publish to Jekyll
-        async function publishToJekyll() {
-            if (!confirm('This will regenerate all static JSON files and update the Jekyll site. Continue?')) return;
+        // Fetch from Skiddle
+        async function fetchFromSkiddle() {
+            if (!confirm('This will fetch new events from Skiddle API. Continue?')) return;
 
             const btn = event.target;
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
 
             try {
                 const response = await fetch(`${API_BASE}/api/v1/admin/aggregate`, {
@@ -691,7 +695,8 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    alert(`Success! ${result.message}\n\nStats:\n- Fetched: ${result.stats.total_fetched}\n- Inserted: ${result.stats.total_inserted}\n- Duplicates: ${result.stats.total_duplicates}\n\nJSON files have been regenerated in static_data/. Don't forget to copy them to your Jekyll site!`);
+                    alert(`Success! ${result.message}\n\nStats:\n- Fetched: ${result.stats.total_fetched}\n- Inserted: ${result.stats.total_inserted}\n- Duplicates: ${result.stats.total_duplicates}\n- Past events marked: ${result.stats.past_events_marked}`);
+                    loadDashboard();
                 } else {
                     alert('Error: ' + result.message);
                 }
@@ -699,7 +704,36 @@
                 alert('Error: ' + error.message);
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-sync"></i> Publish to Jekyll';
+                btn.innerHTML = '<i class="fas fa-download"></i> Fetch from Skiddle';
+            }
+        }
+
+        // Publish to Jekyll
+        async function publishToJekyll() {
+            if (!confirm('This will publish current events to GitHub Pages. Continue?')) return;
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/admin/publish`, {
+                    method: 'POST',
+                    headers: { 'X-API-Key': apiKey }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`Success! ${result.message}\n\nPublished:\n- Files: ${result.stats.github_published}\n- Failed: ${result.stats.github_failed}\n\nGitHub Pages will update in 1-3 minutes.`);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload"></i> Publish to Jekyll';
             }
         }
 
