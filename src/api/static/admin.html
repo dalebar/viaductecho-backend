@@ -16,6 +16,24 @@
         .event-card:hover, .venue-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .badge-free { background-color: #28a745; }
         .badge-paid { background-color: #6c757d; }
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+        }
+        .drop-zone:hover {
+            border-color: #667eea;
+            background-color: #f0f0ff;
+        }
+        .drop-zone.dragover {
+            border-color: #667eea;
+            background-color: #e8e8ff;
+            border-style: solid;
+        }
     </style>
 </head>
 <body>
@@ -212,13 +230,15 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label">Event Image</label>
-                                <div class="input-group mb-2">
-                                    <input type="url" class="form-control" id="eventImageUrl" placeholder="Or paste an image URL">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('imageFileInput').click()">
-                                        <i class="fas fa-upload"></i> Upload
-                                    </button>
+                                <div id="dropZone" class="drop-zone mb-2" onclick="document.getElementById('imageFileInput').click()">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-2"></i>
+                                    <p class="mb-1"><strong>Drag & drop image here</strong></p>
+                                    <p class="text-muted small mb-0">or click to browse (max 5MB)</p>
                                 </div>
                                 <input type="file" id="imageFileInput" accept="image/*" style="display: none" onchange="uploadEventImage()">
+                                <div class="input-group mb-2">
+                                    <input type="url" class="form-control" id="eventImageUrl" placeholder="Or paste an image URL">
+                                </div>
                                 <div id="imagePreview" class="mt-2" style="display: none;">
                                     <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
                                 </div>
@@ -829,6 +849,45 @@
                 fileInput.value = ''; // Reset file input
             }
         }
+
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('imageFileInput');
+
+        // Prevent default drag behaviors on the whole document
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                uploadEventImage();
+            }
+        }, false);
 
         // Update preview when URL is pasted
         document.getElementById('eventImageUrl').addEventListener('input', function() {
