@@ -20,8 +20,14 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-# Ensure logs directory exists
+# Ensure required directories exist
 mkdir -p logs
+mkdir -p static/event_images
+chmod 755 static/event_images
+echo -e "${GREEN}✓ Directories created${NC}"
+echo "  - logs/"
+echo "  - static/event_images/"
+echo ""
 
 echo "Step 1: Pulling latest code from GitHub..."
 git pull origin main
