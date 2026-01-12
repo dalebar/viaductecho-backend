@@ -23,7 +23,7 @@ class GitHubPublisher:
         }
 
     def publish_article(self, article_data: dict, summary: str, image_url: str) -> bool:
-        """Publish article to GitHub Pages"""
+        """Publish article to GitHub Pages (creates new or updates existing)"""
         try:
             jekyll_content = self._create_jekyll_content(
                 article_data, summary, image_url
@@ -38,11 +38,26 @@ class GitHubPublisher:
             )
 
             url = f"https://api.github.com/repos/{self.repo}/contents/_posts/{filename}"
+
+            # Check if file already exists to get SHA for updates
+            get_response = requests.get(
+                url,
+                headers=self.headers,
+                params={"ref": self.branch},
+                timeout=Config.HTTP_TIMEOUT,
+            )
+
             data = {
                 "message": f"Auto-post: {article_data['original_title']}",
                 "content": encoded_content,
                 "branch": self.branch,
             }
+
+            # If file exists, include SHA for update
+            if get_response.status_code == 200:
+                file_sha = get_response.json().get("sha")
+                data["sha"] = file_sha
+                logging.info(f"Updating existing article: {filename}")
 
             if Config.HTTP_TIMEOUT is not None:
                 response = requests.put(
@@ -51,7 +66,7 @@ class GitHubPublisher:
             else:
                 response = requests.put(url, json=data, headers=self.headers)
 
-            if response.status_code == 201:
+            if response.status_code in (200, 201):
                 logging.info(f"Published: {article_data['original_title']}")
                 return True
             else:
