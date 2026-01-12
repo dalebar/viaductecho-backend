@@ -41,17 +41,40 @@ class JekyllRepoCleaner:
         }
 
     def get_all_posts(self) -> list:
-        """Get all files from _posts directory."""
-        url = f"https://api.github.com/repos/{self.repo}/contents/_posts"
-        params = {"ref": self.branch}
+        """Get all files from _posts directory using Git Trees API (handles >1000 files)."""
+        # First, get the branch's latest commit SHA
+        branch_url = f"https://api.github.com/repos/{self.repo}/branches/{self.branch}"
+        branch_response = requests.get(branch_url, headers=self.headers, timeout=30)
 
-        response = requests.get(url, headers=self.headers, params=params, timeout=30)
-
-        if response.status_code != 200:
-            logging.error(f"Failed to get posts: {response.status_code}")
+        if branch_response.status_code != 200:
+            logging.error(f"Failed to get branch: {branch_response.status_code}")
             return []
 
-        return response.json()
+        commit_sha = branch_response.json()["commit"]["sha"]
+
+        # Get the tree recursively
+        tree_url = f"https://api.github.com/repos/{self.repo}/git/trees/{commit_sha}?recursive=1"
+        tree_response = requests.get(tree_url, headers=self.headers, timeout=60)
+
+        if tree_response.status_code != 200:
+            logging.error(f"Failed to get tree: {tree_response.status_code}")
+            return []
+
+        tree_data = tree_response.json()
+
+        # Filter to only _posts/*.md files
+        posts = []
+        for item in tree_data.get("tree", []):
+            if item["path"].startswith("_posts/") and item["path"].endswith(".md"):
+                posts.append(
+                    {
+                        "name": item["path"].replace("_posts/", ""),
+                        "sha": item["sha"],
+                        "path": item["path"],
+                    }
+                )
+
+        return posts
 
     def extract_slug(self, filename: str) -> str:
         """Extract slug from filename (remove date prefix and .md extension)."""
