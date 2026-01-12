@@ -68,9 +68,12 @@ class GitHubPublisher:
         self, article: dict, summary: str, image_url: str
     ) -> str:
         """Create Jekyll markdown content"""
+        # Escape double quotes in title to prevent YAML parsing errors
+        safe_title = article["original_title"].replace('"', '\\"')
+
         content = f"""---
 layout: post
-title: "{article['original_title']}"
+title: "{safe_title}"
 author: archie
 categories: news
 image: {image_url}
