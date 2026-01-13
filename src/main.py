@@ -123,9 +123,10 @@ class ViaductEcho:
     def start_scheduler(self):
         """Start scheduled execution"""
         scheduler = BlockingScheduler()
-        scheduler.add_job(self.run_aggregation, "cron", hour="5-20", minute=0)
+        # Run at 6 AM and 5 PM only
+        scheduler.add_job(self.run_aggregation, "cron", hour="6,17", minute=0)
 
-        logging.info("Scheduler started - running hourly between 5 AM and 8 PM")
+        logging.info("Scheduler started - running at 6 AM and 5 PM")
 
         try:
             scheduler.start()
