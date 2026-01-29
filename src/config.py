@@ -153,3 +153,10 @@ class Config:
 
     # Admin API configuration
     ADMIN_API_KEY = os.getenv("ADMIN_API_KEY", "viaduct-echo-admin-2025")
+
+    # Odioba Configuration
+    ODIOBA_ENABLED = os.getenv("ODIOBA_ENABLED", "true").lower() == "true"
+    ODIOBA_DEFAULT_IMAGE = os.getenv(
+        "ODIOBA_DEFAULT_IMAGE",
+        "https://api.viaductecho.info/static/event_images/odioba-default.png",
+    )

@@ -14,6 +14,7 @@ from typing import Any, Dict, List
 
 from .config import Config
 from .database.event_operations import EventOperations
+from .sources.events.odioba_source import OdiobaSource
 from .sources.events.skiddle_source import SkiddleSource
 
 
@@ -60,9 +61,13 @@ class EventsAggregator:
         else:
             self.logger.warning("Skiddle API key not configured, skipping")
 
-        # Future sources would be added here
-        # if Config.SOME_OTHER_SOURCE:
-        #     self.sources.append(SomeOtherSource())
+        # Odioba (DJ events scraper)
+        if Config.ODIOBA_ENABLED:
+            try:
+                self.sources.append(OdiobaSource())
+                self.logger.info("Odioba source initialized")
+            except Exception as e:
+                self.logger.error(f"Failed to initialize Odioba source: {e}")
 
     def process_event(
         self, event_data: Dict[str, Any], source_name: str, source_type: str
